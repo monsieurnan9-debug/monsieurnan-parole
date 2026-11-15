@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billet de sortie : Mes habitudes alimentaires</title>
+
+  <!-- Google Font: Inter for clean, legible typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Pure-JS MP3 Encoder (lame.all.min.js bundle with jsDelivr fallback) for reliable .mp3 audio output -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.all.min.js"></script>
+  <script>
+    if (!window.lamejs) {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.all.min.js"><\/script>');
+    }
+  </script>
+
+  <style>
+    /* Base typography and smooth transitions */
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f4f7fb;
+      color: #1e293b;
+    }
+
+    /* Subtle shake animation for missing required student name */
+    @keyframes gentleShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake-input {
+      animation: gentleShake 0.35s ease-in-out;
+    }
+
+    /* Pulsing red dot for active recording badge */
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+    .recording-dot {
+      animation: pulseDot 1.2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between py-6 px-4 sm:px-6 lg:px-8">
+
+  <!-- Main Centered Card Container -->
+  <main class="w-full max-w-[780px] mx-auto bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
+
+    <!-- Subtle French-inspired tricolor accent bar -->
+    <div class="h-1.5 w-full flex">
+      <div class="w-1/3 bg-[#164b9b]"></div>
+      <div class="w-1/3 bg-white"></div>
+      <div class="w-1/3 bg-[#d9383a]"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="px-6 pt-6 pb-5 sm:px-8 border-b border-slate-100 bg-gradient-to-b from-slate-50/70 to-white">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-[#164b9b] text-white flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
+            <!-- Microphone SVG Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h1 class="text-xl sm:text-2xl font-bold text-[#164b9b] tracking-tight">
+                Billet de sortie : Mes habitudes alimentaires
+              </h1>
+              <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-[#d9383a] text-xs font-bold uppercase tracking-wide">
+                La santé &amp; l'alimentation
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Décrivez vos habitudes alimentaires pendant au moins 30 secondes, puis téléchargez vos 2 fichiers.
+            </p>
+          </div>
+        </div>
+
+        <!-- Live Recording Badge & Timer -->
+        <div id="recordingBadge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium transition-colors" title="Objectif : parler pendant au moins 30 secondes">
+          <span id="recordingDot" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+          <span id="recordingLabel" class="text-xs uppercase tracking-wider font-semibold">Prêt</span>
+          <span class="text-slate-300">|</span>
+          <span id="timer" class="font-mono font-semibold text-slate-800">00:00</span>
+          <span class="text-xs text-slate-400 font-mono">/ 00:30+</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Form / Step-by-Step Content -->
+    <div class="p-6 sm:p-8 space-y-8">
+
+      <!-- ========================================================= -->
+      <!-- ÉTAPE 1 : CONSIGNE & IDENTIFICATION                        -->
+      <!-- ========================================================= -->
+      <section aria-labelledby="step1-heading" class="space-y-4">
+        <div class="flex items-center gap-2.5">
+          <span class="w-7 h-7 rounded-full bg-[#164b9b] text-white text-xs font-bold flex items-center justify-center shadow-sm">
+            1
+          </span>
+          <h2 id="step1-heading" class="text-base sm:text-lg font-semibold text-slate-800">
+            Étape 1 : Consigne &amp; Identification
+          </h2>
+        </div>
+
+        <div class="pl-0 sm:pl-9 space-y-5">
+
+          <!-- Assignment Prompt Card: Billet de sortie • Mes habitudes alimentaires -->
+          <div class="rounded-2xl border-2 border-rose-200/90 bg-gradient-to-br from-rose-50/75 via-white to-amber-50/50 p-4 sm:p-5 space-y-3.5 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-rose-100 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-[#d9383a] text-white text-xs font-bold uppercase tracking-wider">
+                  Billet de sortie
+                </span>
+                <span class="text-xs sm:text-sm font-bold text-slate-800">
+                  Unité 4 • Mes habitudes alimentaires (Speaking • 30+ sec)
+                </span>
+              </div>
+              <button
+                type="button"
+                id="toggleModelBtn"
+                aria-expanded="true"
+                class="px-2.5 py-1 rounded-lg border border-rose-200 bg-white hover:bg-rose-50 text-[#d9383a] text-xs font-semibold transition cursor-pointer shrink-0"
+              >
+                Masquer le modèle
+              </button>
+            </div>
+
+            <!-- Prompt Explanation -->
+            <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+              <strong>Prompt :</strong> Describe <strong>YOUR food habits</strong>. Are you healthy? Gourmand(e)? Allergic? What good practices do you have?
+            </p>
+
+            <!-- The 4 Target Requirements on Screen -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+                <div>
+                  <p class="font-semibold">Être + 2 expressions</p>
+                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">allergique, au régime, en bonne santé, gourmand(e)</span></p>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+                <div>
+                  <p class="font-semibold">3 verbes cibles</p>
+                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">cuisiner, déguster, gaspiller, partager, recycler</span></p>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+                <div>
+                  <p class="font-semibold">Une négation</p>
+                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">ne... pas / ne... plus / ne... jamais</span></p>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">4</span>
+                <div>
+                  <p class="font-semibold">Durée minimale</p>
+                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">Parler pendant au moins 30 secondes</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dashed Model Box (matches the worksheet model) -->
+            <div id="modelSentencesBox" class="rounded-xl border-2 border-dashed border-rose-300 bg-white/95 px-3.5 py-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <span class="block text-[11px] font-bold uppercase tracking-wider text-[#d9383a] mb-1">
+                💬 Amorces / Modèle de phrases :
+              </span>
+              <p class="italic">
+                « Je suis <strong>gourmand(e)</strong> / <strong>en bonne santé</strong>. Je (ne) suis (pas) <strong>allergique</strong> à / au / aux ___ .<br />
+                Je <strong>recycle</strong> ___ . Je <strong>ne gaspille jamais</strong> ___ . Je <strong>partage</strong> ___ avec ___ . J'aime <strong>cuisiner</strong> ___ . »
+              </p>
+            </div>
+
+            <!-- Success Criteria Pills -->
+            <div class="space-y-1.5">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-slate-600">
+                Success criteria — check ✓ before you submit:
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#164b9b] text-[11px] font-semibold">
+                  ✓ être + 2 expressions (allergique, au régime, en bonne santé, gourmand)
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#164b9b] text-[11px] font-semibold">
+                  ✓ 3 verbs: cuisiner, déguster, gaspiller, partager, recycler
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#164b9b] text-[11px] font-semibold">
+                  ✓ 1 negative (ne... pas / plus / jamais)
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-[#d9383a] text-[11px] font-semibold">
+                  ✓ Speak for at least 30 seconds
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Mode Selection Cards -->
+          <div role="radiogroup" aria-label="Choisir le mode d'enregistrement" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Mode 1: Solo Exit Ticket -->
+            <button
+              type="button"
+              id="modeIndependentBtn"
+              role="radio"
+              aria-checked="true"
+              class="text-left p-4 rounded-xl border-2 border-[#164b9b] bg-blue-50/60 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold text-sm sm:text-base text-[#164b9b]">
+                  👤 Solo — Billet de sortie
+                </span>
+                <span id="modeIndependentCheck" class="w-5 h-5 rounded-full bg-[#164b9b] text-white flex items-center justify-center text-xs font-bold">
+                  ✓
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 mt-1">
+                1 élève — Présentez vos habitudes alimentaires pendant au moins 30 secondes.
+              </p>
+            </button>
+
+            <!-- Mode 2: Pair Conversation -->
+            <button
+              type="button"
+              id="modePairBtn"
+              role="radio"
+              aria-checked="false"
+              class="text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold text-sm sm:text-base text-slate-800">
+                  👥 Binôme — Échange oral
+                </span>
+                <span id="modePairCheck" class="w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold">
+                  ✓
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 mt-1">
+                2 élèves — Discutez de vos habitudes alimentaires et gestes écoresponsables à tour de rôle.
+              </p>
+            </button>
+          </div>
+
+          <!-- Independent Mode Input (1 Student) -->
+          <div id="independentInputs">
+            <label for="studentName" class="block text-sm font-medium text-slate-700 mb-1.5">
+              Nom et prénom de l'élève <span class="text-[#d9383a] font-bold">*</span>
+            </label>
+            <input
+              type="text"
+              id="studentName"
+              autocomplete="name"
+              placeholder="Ex. Marie Dupont"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
+            />
+          </div>
+
+          <!-- Pair Mode Inputs (2 Students + Swap Order Button) -->
+          <div id="pairInputs" class="hidden space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="student1Name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                  Élève 1 (commence en premier) <span class="text-[#d9383a] font-bold">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="student1Name"
+                  placeholder="Ex. Marie Dupont"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
+                />
+              </div>
+
+              <div>
+                <label for="student2Name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                  Élève 2 (partenaire) <span class="text-[#d9383a] font-bold">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="student2Name"
+                  placeholder="Ex. Lucas Martin"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-start sm:justify-center">
+              <button
+                type="button"
+                id="swapSpeakersBtn"
+                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed"
+              >
+                <span>⇄ Inverser l'ordre</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dialect / Language Selector -->
+          <div>
+            <label for="language" class="block text-sm font-medium text-slate-700 mb-1.5">
+              Dialecte / Langue de transcription
+            </label>
+            <select
+              id="language"
+              class="w-full sm:w-72 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
+            >
+              <option value="fr-FR">Français (France)</option>
+              <option value="fr-CA">Français (Canada)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <hr class="border-slate-100" />
+
+      <!-- ========================================================= -->
+      <!-- ÉTAPE 2 : ENREGISTREMENT & TRANSCRIPTION EN DIRECT        -->
+      <!-- ========================================================= -->
+      <section aria-labelledby="step2-heading" class="space-y-4">
+        <div class="flex items-center gap-2.5">
+          <span class="w-7 h-7 rounded-full bg-[#164b9b] text-white text-xs font-bold flex items-center justify-center shadow-sm">
+            2
+          </span>
+          <h2 id="step2-heading" class="text-base sm:text-lg font-semibold text-slate-800">
+            Étape 2 : Enregistrement &amp; Transcription en direct
+          </h2>
+        </div>
+
+        <div class="pl-0 sm:pl-9 space-y-4">
+          <!-- Real-time Audio Waveform / Equalizer Visualizer -->
+          <div class="bg-slate-900 rounded-xl p-3.5 border border-slate-800 shadow-inner">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 mb-2 px-1">
+              <div class="flex items-center gap-2.5">
+                <span class="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z" />
+                  </svg>
+                  Signal microphone en direct
+                </span>
+                <!-- Background Noise Suppression Toggle Pill -->
+                <button
+                  type="button"
+                  id="noiseSuppressToggle"
+                  aria-pressed="true"
+                  title="Activer ou désactiver la réduction des bruits de fond de la classe"
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[11px] font-medium hover:bg-emerald-500/25 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <span id="noiseSuppressIcon">🔇</span>
+                  <span id="noiseSuppressLabel">Anti-bruit : Activé</span>
+                </button>
+              </div>
+              <span id="micHint" class="text-slate-400">En attente du microphone</span>
+            </div>
+            <div class="w-full h-16 relative">
+              <canvas id="visualizer" class="w-full h-full block rounded-lg"></canvas>
+            </div>
+          </div>
+
+          <!-- Pair Mode Turn-Taking Panel (Shown ONLY when Binôme is selected) -->
+          <div
+            id="pairTurnPanel"
+            class="hidden rounded-xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50/90 to-blue-50/70 p-4 space-y-3.5 shadow-sm"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-900">
+                Échange en binôme — Tour de parole
+              </span>
+              <span class="text-xs text-indigo-700/80">
+                Raccourci : <kbd class="px-1.5 py-0.5 rounded bg-white border border-indigo-200 font-mono text-[11px]">Tab</kbd> ou <kbd class="px-1.5 py-0.5 rounded bg-white border border-indigo-200 font-mono text-[11px]">Alt+S</kbd>
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div
+                id="speaker1Badge"
+                class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#164b9b] text-white text-sm font-semibold shadow-sm transition-all"
+              >
+                <span id="speaker1BadgeText" class="truncate">🎙️ À la parole : Élève 1</span>
+              </div>
+              <div
+                id="speaker2Badge"
+                class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all"
+              >
+                <span id="speaker2BadgeText" class="truncate">⏳ En attente : Élève 2</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              id="passTurnBtn"
+              disabled
+              class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-bold text-sm sm:text-base shadow-md shadow-amber-500/20 transition cursor-pointer disabled:opacity-45 disabled:shadow-none disabled:cursor-not-allowed"
+            >
+              <span id="passTurnBtnLabel">🔄 Passer la parole à Élève 2</span>
+            </button>
+          </div>
+
+          <!-- Primary Recording Control Buttons -->
+          <div class="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              id="startBtn"
+              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#164b9b] hover:bg-blue-900 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed"
+            >
+              <span>● Commencer</span>
+            </button>
+
+            <button
+              type="button"
+              id="stopBtn"
+              disabled
+              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#d9383a] hover:bg-red-700 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <span>■ Arrêter</span>
+            </button>
+
+            <button
+              type="button"
+              id="clearBtn"
+              class="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 active:scale-[0.99] text-slate-700 font-medium text-sm transition cursor-pointer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span id="clearBtnLabel">Effacer</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Status Banner -->
+          <div
+            id="statusBanner"
+            role="status"
+            aria-live="polite"
+            class="flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50/80 border border-blue-200/80 text-slate-700 text-sm transition-colors"
+          >
+            <svg id="statusIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#1e3a8a] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="statusText">Prêt. Entrez votre nom, puis parlez pendant au moins 30 secondes sur vos habitudes alimentaires !</span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="border-slate-100" />
+
+      <!-- ========================================================= -->
+      <!-- ÉTAPE 3 : VÉRIFICATION, FEEDBACK & TÉLÉCHARGEMENT         -->
+      <!-- ========================================================= -->
+      <section aria-labelledby="step3-heading" class="space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-[#164b9b] text-white text-xs font-bold flex items-center justify-center shadow-sm">
+              3
+            </span>
+            <h2 id="step3-heading" class="text-base sm:text-lg font-semibold text-slate-800">
+              Étape 3 : Vérification &amp; Téléchargement
+            </h2>
+          </div>
+          <span id="wordCount" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+            0 mot
+          </span>
+        </div>
+
+        <div class="pl-0 sm:pl-9 space-y-4">
+          <!-- Read-Only Transcript Textarea -->
+          <div>
+            <label for="transcript" class="block text-sm font-medium text-slate-700 mb-1.5">
+              Transcription en français <span class="text-xs font-normal text-slate-500">(lecture seule — générée automatiquement pendant que vous parlez)</span>
+            </label>
+            <textarea
+              id="transcript"
+              rows="6"
+              readonly
+              aria-readonly="true"
+              placeholder="Votre texte transcrit apparaîtra automatiquement ici pendant que vous parlez..."
+              class="w-full p-3.5 rounded-xl border border-slate-300 bg-slate-50/90 text-slate-700 placeholder-slate-400 text-sm leading-relaxed cursor-default select-text focus:outline-none"
+            ></textarea>
+            <p class="text-xs text-slate-500 mt-1.5">
+              🔒 Remarque : La transcription est verrouillée afin de conserver une trace authentique de votre production orale. Pour ajouter des éléments ou atteindre 30 secondes, utilisez <strong>Reattempt Recording</strong> ci-dessous.
+            </p>
+          </div>
+
+          <!-- Audio Playback Player -->
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+            <span class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+              Réécoute de l'enregistrement (MP3)
+            </span>
+            <audio id="playback" controls class="w-full h-10 rounded-lg"></audio>
+          </div>
+
+          <!-- Food Habits Feedback Loop (in English) & Reattempt Encouragement -->
+          <div
+            id="grammarFeedbackSection"
+            class="hidden rounded-2xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50/90 via-white to-rose-50/60 p-4 sm:p-5 space-y-4 shadow-sm"
+            aria-live="polite"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-[#164b9b] text-white flex items-center justify-center text-sm shadow-sm">
+                  🎯
+                </span>
+                <div>
+                  <h3 class="text-sm sm:text-base font-bold text-indigo-950">
+                    Food Habits Feedback — Exit Ticket Check (English)
+                  </h3>
+                  <p class="text-xs text-slate-500">
+                    Checks être + 2 expressions, 3 target verbs, 1 negative (ne... pas/plus/jamais), and 30+ seconds.
+                  </p>
+                </div>
+              </div>
+              <span id="criteriaScorePill" class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-950 text-xs font-bold">
+                0 / 4 criteria
+              </span>
+            </div>
+
+            <!-- Encouraging Summary Banner -->
+            <p id="feedbackEncouragement" class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-white/90 rounded-xl p-3 border border-indigo-100"></p>
+
+            <!-- 4-Criteria Visual Scorecard Grid -->
+            <div class="space-y-1.5">
+              <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                1. Four Success Criteria Checklist:
+              </span>
+              <div id="criteriaFourGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+            </div>
+
+            <!-- Detected Vocabulary & Structures Chips -->
+            <div id="feedbackStrengths" class="flex flex-wrap gap-2"></div>
+
+            <!-- Actionable Grammar & Vocabulary Suggestions List -->
+            <div id="feedbackSuggestionsList" class="space-y-2.5"></div>
+
+            <!-- Reattempt Callout & Action Button -->
+            <div id="reattemptCalloutBox" class="rounded-xl bg-amber-50/90 border border-amber-200 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-0.5">
+                <p id="reattemptCalloutTitle" class="text-xs sm:text-sm font-bold text-amber-950">
+                  Want to aim for 4/4 criteria and 30+ seconds? Try one more take!
+                </p>
+                <p id="reattemptCalloutDesc" class="text-xs text-amber-800/90">
+                  Remember to pronounce <em>ne / n'</em> clearly before the verb and expand on what you cook, share, or recycle.
+                </p>
+              </div>
+              <button
+                type="button"
+                id="reattemptBtn"
+                class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-bold text-xs sm:text-sm shadow-sm transition cursor-pointer"
+              >
+                <span>🔄 Reattempt Recording</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Download Action Area: Always Produces 2 Files (Unlocked at 2/4+ criteria) -->
+          <div class="pt-1 space-y-3">
+            <!-- Lock Notice shown when fewer than 2/4 criteria are met -->
+            <div
+              id="downloadLockNotice"
+              class="hidden rounded-xl bg-amber-50 border border-amber-300 px-4 py-3 text-xs sm:text-sm font-medium text-amber-950 flex items-start gap-2.5"
+            >
+              <span class="text-base leading-none mt-0.5">🔒</span>
+              <span id="downloadLockText">
+                Téléchargement verrouillé : atteignez au moins <strong>2 critères sur 4</strong> pour débloquer vos fichiers.
+              </span>
+            </div>
+
+            <!-- Primary Dual-File Download Button -->
+            <button
+              type="button"
+              id="downloadBothBtn"
+              disabled
+              class="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-md shadow-emerald-600/15 transition cursor-pointer disabled:opacity-45 disabled:shadow-none disabled:cursor-not-allowed"
+            >
+              <span>📥 Télécharger les 2 fichiers (Audio MP3 + Transcription)</span>
+            </button>
+
+            <!-- Visual Confirmation Badge after Dual Download -->
+            <div
+              id="downloadConfirmBadge"
+              class="hidden rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-xs sm:text-sm font-medium text-emerald-900 text-center"
+            >
+              ✅ 2 fichiers générés et téléchargés ! Pensez à déposer les 2 fichiers sur votre plateforme de classe.
+            </div>
+
+            <!-- Subtle Secondary Backup Download Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
+              <button
+                type="button"
+                id="audioDownload"
+                disabled
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span>🎵 Audio MP3 seul</span>
+              </button>
+              <button
+                type="button"
+                id="textDownload"
+                disabled
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span>📄 Transcription TXT seule</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Privacy & Browser Notice Footer -->
+    <footer class="px-6 py-4 sm:px-8 bg-slate-50 border-t border-slate-200/70">
+      <div class="flex items-start gap-2.5 text-xs text-slate-500 leading-relaxed">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        <p>
+          <strong>Confidentialité :</strong> L'audio reste localement dans cet onglet jusqu'à son téléchargement. La reconnaissance vocale de Google Chrome peut transmettre l'audio à un service externe. Utilisez cet outil selon les directives de votre établissement scolaire.
+        </p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Confirmation Modal for Reattempt / Clear -->
+  <div id="confirmModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg shrink-0">
+          🔄
+        </div>
+        <div>
+          <h3 id="modalTitle" class="text-base font-bold text-slate-900">
+            Recommencer l'enregistrement ?
+          </h3>
+          <p class="text-xs text-slate-500">
+            Votre audio et votre transcription actuels seront effacés pour ce nouvel essai.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button
+          type="button"
+          id="cancelModalBtn"
+          class="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-medium transition cursor-pointer"
+        >
+          Annuler
+        </button>
+        <button
+          type="button"
+          id="confirmModalBtn"
+          class="px-4 py-2 rounded-xl bg-[#164b9b] hover:bg-blue-900 text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer"
+        >
+          Oui, recommencer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    // State variables
+    let mode = 'independent'; // 'independent' | 'pair'
+    let activeSpeaker = 1; // 1 | 2
+    let noiseSuppression = true;
+    let recorder = null;
+    let stream = null;
+    let chunks = [];
+    let recognition = null;
+    let finalText = '';
+    let mp3Blob = null;
+    let audioUrl = '';
+    let audioExt = 'mp3';
+    let startTimeMs = 0;
+    let elapsedSeconds = 0;
+    let timerInterval = null;
+    let audioCtx = null;
+    let analyser = null;
+    let animFrameId = null;
+    let lastEvaluation = null;
+
+    const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    // ---------------------------------------------------------
+    // 1. Model Toggle
+    // ---------------------------------------------------------
+    $('toggleModelBtn').addEventListener('click', () => {
+      const box = $('modelSentencesBox');
+      const isHidden = box.classList.toggle('hidden');
+      $('toggleModelBtn').textContent = isHidden ? 'Afficher le modèle' : 'Masquer le modèle';
+      $('toggleModelBtn').setAttribute('aria-expanded', String(!isHidden));
+    });
+
+    // ---------------------------------------------------------
+    // 2. Solo vs. Binôme Mode Switching & Speaker Controls
+    // ---------------------------------------------------------
+    function setMode(newMode) {
+      if (recorder && recorder.state === 'recording') return;
+      mode = newMode;
+      const isSolo = mode === 'independent';
+
+      $('modeIndependentBtn').setAttribute('aria-checked', String(isSolo));
+      $('modePairBtn').setAttribute('aria-checked', String(!isSolo));
+
+      $('modeIndependentBtn').className = isSolo
+        ? 'text-left p-4 rounded-xl border-2 border-[#164b9b] bg-blue-50/60 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed'
+        : 'text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed';
+
+      $('modePairBtn').className = !isSolo
+        ? 'text-left p-4 rounded-xl border-2 border-[#164b9b] bg-blue-50/60 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed'
+        : 'text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed';
+
+      $('modeIndependentCheck').className = isSolo
+        ? 'w-5 h-5 rounded-full bg-[#164b9b] text-white flex items-center justify-center text-xs font-bold'
+        : 'w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold';
+
+      $('modePairCheck').className = !isSolo
+        ? 'w-5 h-5 rounded-full bg-[#164b9b] text-white flex items-center justify-center text-xs font-bold'
+        : 'w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold';
+
+      $('independentInputs').classList.toggle('hidden', !isSolo);
+      $('pairInputs').classList.toggle('hidden', isSolo);
+      $('pairTurnPanel').classList.toggle('hidden', isSolo);
+      updateSpeakerBadges();
+    }
+
+    $('modeIndependentBtn').addEventListener('click', () => setMode('independent'));
+    $('modePairBtn').addEventListener('click', () => setMode('pair'));
+
+    function getSpeakerNames() {
+      const s1 = ($('student1Name').value || '').trim() || 'Élève 1';
+      const s2 = ($('student2Name').value || '').trim() || 'Élève 2';
+      return { s1, s2 };
+    }
+
+    function updateSpeakerBadges() {
+      const { s1, s2 } = getSpeakerNames();
+      const s1Active = activeSpeaker === 1;
+
+      $('speaker1Badge').className = s1Active
+        ? 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#164b9b] text-white text-sm font-semibold shadow-sm transition-all'
+        : 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all';
+
+      $('speaker2Badge').className = !s1Active
+        ? 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#164b9b] text-white text-sm font-semibold shadow-sm transition-all'
+        : 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all';
+
+      $('speaker1BadgeText').textContent = (s1Active ? '🎙️ À la parole : ' : '⏳ En attente : ') + s1;
+      $('speaker2BadgeText').textContent = (!s1Active ? '🎙️ À la parole : ' : '⏳ En attente : ') + s2;
+      $('passTurnBtnLabel').textContent = '🔄 Passer la parole à ' + (s1Active ? s2 : s1);
+    }
+
+    ['studentName', 'student1Name', 'student2Name'].forEach((id) => {
+      $(id).addEventListener('input', (e) => {
+        e.target.classList.remove('border-[#d9383a]');
+        if (id !== 'studentName') updateSpeakerBadges();
+      });
+    });
+
+    $('swapSpeakersBtn').addEventListener('click', () => {
+      const tmp = $('student1Name').value;
+      $('student1Name').value = $('student2Name').value;
+      $('student2Name').value = tmp;
+      updateSpeakerBadges();
+    });
+
+    function passTurn() {
+      if (mode !== 'pair' || !recorder || recorder.state !== 'recording') return;
+      const { s1, s2 } = getSpeakerNames();
+      activeSpeaker = activeSpeaker === 1 ? 2 : 1;
+      const speakerLabel = activeSpeaker === 1 ? s1 : s2;
+      finalText = finalText.trim() + (finalText.trim() ? '\n\n' : '') + `[${speakerLabel}] : `;
+      $('transcript').value = finalText;
+      updateSpeakerBadges();
+    }
+
+    $('passTurnBtn').addEventListener('click', passTurn);
+
+    document.addEventListener('keydown', (e) => {
+      if (mode === 'pair' && recorder && recorder.state === 'recording') {
+        if (e.key === 'Tab' || (e.altKey && e.key.toLowerCase() === 's')) {
+          e.preventDefault();
+          passTurn();
+        }
+      }
+    });
+
+    // ---------------------------------------------------------
+    // 3. Noise Suppression Toggle & Visualizer
+    // ---------------------------------------------------------
+    $('noiseSuppressToggle').addEventListener('click', () => {
+      if (recorder && recorder.state === 'recording') return;
+      noiseSuppression = !noiseSuppression;
+      $('noiseSuppressToggle').setAttribute('aria-pressed', String(noiseSuppression));
+      $('noiseSuppressIcon').textContent = noiseSuppression ? '🔇' : '🎙️';
+      $('noiseSuppressLabel').textContent = noiseSuppression ? 'Anti-bruit : Activé' : 'Anti-bruit : Désactivé';
+      $('noiseSuppressToggle').className = noiseSuppression
+        ? 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[11px] font-medium hover:bg-emerald-500/25 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
+        : 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-700/70 border border-slate-600 text-slate-300 text-[11px] font-medium hover:bg-slate-700 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed';
+    });
+
+    function drawBar(ctx, x, y, w, h, r) {
+      if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(x, y, w, h, r);
+      } else {
+        ctx.rect(x, y, w, h);
+      }
+    }
+
+    function drawIdleVisualizer() {
+      const canvas = $('visualizer');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth || 640;
+      canvas.height = canvas.offsetHeight || 64;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const bars = 44;
+      const barWidth = Math.max(3, (canvas.width / bars) - 3);
+      for (let i = 0; i < bars; i++) {
+        const x = i * (barWidth + 3);
+        const h = 6;
+        const y = (canvas.height - h) / 2;
+        ctx.fillStyle = '#334155';
+        ctx.beginPath();
+        drawBar(ctx, x, y, barWidth, h, 3);
+        ctx.fill();
+      }
+    }
+
+    function startVisualizer(mediaStream) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContextClass();
+      const source = audioCtx.createMediaStreamSource(mediaStream);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128;
+      source.connect(analyser);
+
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      const canvas = $('visualizer');
+      const ctx = canvas.getContext('2d');
+
+      function renderFrame() {
+        animFrameId = requestAnimationFrame(renderFrame);
+        analyser.getByteFrequencyData(dataArray);
+        canvas.width = canvas.offsetWidth || 640;
+        canvas.height = canvas.offsetHeight || 64;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const bars = 44;
+        const barWidth = Math.max(3, (canvas.width / bars) - 3);
+        for (let i = 0; i < bars; i++) {
+          const val = dataArray[i % bufferLength] || 0;
+          const percent = val / 255;
+          const h = Math.max(6, percent * (canvas.height - 8));
+          const x = i * (barWidth + 3);
+          const y = (canvas.height - h) / 2;
+          ctx.fillStyle = percent > 0.55 ? '#38bdf8' : percent > 0.2 ? '#60a5fa' : '#475569';
+          ctx.beginPath();
+          drawBar(ctx, x, y, barWidth, h, 3);
+          ctx.fill();
+        }
+      }
+      renderFrame();
+    }
+
+    function stopVisualizer() {
+      if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+      }
+      if (audioCtx) {
+        audioCtx.close().catch(() => {});
+        audioCtx = null;
+      }
+      drawIdleVisualizer();
+    }
+
+    window.addEventListener('resize', () => {
+      if (!animFrameId) drawIdleVisualizer();
+    });
+    drawIdleVisualizer();
+
+    // ---------------------------------------------------------
+    // 4. Helpers: Status, Timer, Word Count, Name Validation
+    // ---------------------------------------------------------
+    function setStatus(text, tone = 'info') {
+      $('statusText').textContent = text;
+      const banner = $('statusBanner');
+      if (tone === 'recording') {
+        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-rose-50/90 border border-rose-200 text-rose-950 text-sm transition-colors';
+      } else if (tone === 'success') {
+        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-emerald-50/90 border border-emerald-200 text-emerald-950 text-sm transition-colors';
+      } else if (tone === 'error') {
+        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50/90 border border-amber-200 text-amber-950 text-sm transition-colors';
+      } else {
+        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50/80 border border-blue-200/80 text-slate-700 text-sm transition-colors';
+      }
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+
+    function updateTimerDisplay(isRecording) {
+      $('timer').textContent = formatTime(elapsedSeconds);
+      const badge = $('recordingBadge');
+      const dot = $('recordingDot');
+      const label = $('recordingLabel');
+
+      if (elapsedSeconds >= 30) {
+        badge.className = 'flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-sm font-medium transition-colors';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500' + (isRecording ? ' recording-dot' : '');
+        label.textContent = isRecording ? '30s+ ✓' : 'Terminé';
+      } else if (isRecording) {
+        badge.className = 'flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-[#d9383a] text-sm font-medium transition-colors';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-[#d9383a] recording-dot';
+        label.textContent = 'En direct';
+      } else {
+        badge.className = 'flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium transition-colors';
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-slate-400';
+        label.textContent = 'Prêt';
+      }
+    }
+
+    function updateWordCount() {
+      const raw = ($('transcript').value || '').trim();
+      const words = raw ? raw.split(/\s+/).filter(Boolean).length : 0;
+      $('wordCount').textContent = words + (words > 1 ? ' mots' : ' mot');
+    }
+
+    function validateNames() {
+      if (mode === 'independent') {
+        const input = $('studentName');
+        if (!input.value.trim()) {
+          input.classList.remove('shake-input');
+          void input.offsetWidth;
+          input.classList.add('shake-input', 'border-[#d9383a]');
+          input.focus();
+          setStatus('Veuillez entrer votre nom et prénom avant de commencer.', 'error');
+          return false;
+        }
+        input.classList.remove('border-[#d9383a]');
+        return true;
+      } else {
+        const in1 = $('student1Name');
+        const in2 = $('student2Name');
+        let ok = true;
+        if (!in1.value.trim()) {
+          in1.classList.remove('shake-input');
+          void in1.offsetWidth;
+          in1.classList.add('shake-input', 'border-[#d9383a]');
+          in1.focus();
+          ok = false;
+        } else {
+          in1.classList.remove('border-[#d9383a]');
+        }
+        if (!in2.value.trim()) {
+          in2.classList.remove('shake-input');
+          void in2.offsetWidth;
+          in2.classList.add('shake-input', 'border-[#d9383a]');
+          if (ok) in2.focus();
+          ok = false;
+        } else {
+          in2.classList.remove('border-[#d9383a]');
+        }
+        if (!ok) {
+          setStatus('Veuillez entrer les noms des deux élèves avant de commencer.', 'error');
+        }
+        return ok;
+      }
+    }
+
+    function slugify(str) {
+      return (str || 'eleve')
+        .trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zA-Z0-9_-]+/g, '_')
+        .replace(/^_+|_+$/g, '') || 'eleve';
+    }
+
+    function getFileBaseName() {
+      if (mode === 'independent') {
+        return slugify($('studentName').value) + '_habitudes-alimentaires';
+      }
+      const { s1, s2 } = getSpeakerNames();
+      return slugify(s1) + '_' + slugify(s2) + '_habitudes-alimentaires';
+    }
+
+    // ---------------------------------------------------------
+    // 5. MP3 Audio Encoding via lamejs
+    // ---------------------------------------------------------
+    async function convertToMp3(rawBlob, fallbackExt) {
+      try {
+        if (!window.lamejs || !window.lamejs.Mp3Encoder) {
+          return { blob: rawBlob, ext: fallbackExt };
+        }
+        const arrayBuf = await rawBlob.arrayBuffer();
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        const decodeCtx = new Ctx();
+        const audioBuf = await decodeCtx.decodeAudioData(arrayBuf);
+        await decodeCtx.close();
+
+        const sampleRate = audioBuf.sampleRate;
+        const channelData = audioBuf.getChannelData(0);
+        const samples = new Int16Array(channelData.length);
+        for (let i = 0; i < channelData.length; i++) {
+          const s = Math.max(-1, Math.min(1, channelData[i]));
+          samples[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+        }
+
+        const encoder = new window.lamejs.Mp3Encoder(1, sampleRate, 128);
+        const mp3Chunks = [];
+        const step = 1152;
+        for (let i = 0; i < samples.length; i += step) {
+          const slice = samples.subarray(i, i + step);
+          const buf = encoder.encodeBuffer(slice);
+          if (buf.length > 0) mp3Chunks.push(buf);
+        }
+        const tail = encoder.flush();
+        if (tail.length > 0) mp3Chunks.push(tail);
+
+        return {
+          blob: new Blob(mp3Chunks, { type: 'audio/mp3' }),
+          ext: 'mp3'
+        };
+      } catch (err) {
+        console.warn('MP3 fallback used:', err);
+        return { blob: rawBlob, ext: fallbackExt };
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 6. Food Habits Exit Ticket Evaluation Engine (English Feedback)
+    // ---------------------------------------------------------
+    function evaluateFoodHabits(transcriptText, durationSec) {
+      const cleanedText = (transcriptText || '')
+        .replace(/\[[^\]]+\]\s*:\s*/g, ' ')
+        .trim();
+      const lower = cleanedText.toLowerCase();
+
+      // Unicode-friendly French word boundaries
+      const B_START = '(?:^|[^a-zA-ZÀ-ÿ])';
+      const B_END = '(?=$|[^a-zA-ZÀ-ÿ])';
+
+      // Criterion 1: être + 2 expressions (allergique, au régime, en bonne santé, gourmand)
+      const hasEtre =
+        new RegExp(B_START + '(suis|es|est|sommes|êtes|etes|sont|étais|etais|était|etait|serai|sera|être|etre)' + B_END, 'i').test(lower) ||
+        new RegExp(B_START + "(c['’]est|n['’]est)" + B_END, 'i').test(lower);
+
+      const exprList = [
+        { label: 'allergique', regex: new RegExp(B_START + 'allergiques?' + B_END, 'i') },
+        { label: 'au régime', regex: new RegExp(B_START + 'au\\s+r[ée]gimes?' + B_END, 'i') },
+        { label: 'en bonne santé', regex: new RegExp(B_START + '(?:en\\s+)?bonne\\s+sant[ée]' + B_END, 'i') },
+        { label: 'gourmand(e)', regex: new RegExp(B_START + 'gourmand(?:e|s|es)?' + B_END, 'i') }
+      ];
+
+      const exprMatches = exprList.map((e) => ({ label: e.label, found: e.regex.test(lower) }));
+      const foundExprs = exprMatches.filter((e) => e.found);
+      const usedAllergique = exprMatches[0].found;
+      const allergiqueHasPrep = new RegExp(B_START + 'allergiques?\\s+(?:à|a|au|aux)' + B_END, 'i').test(lower);
+      const crit1Pass = hasEtre && foundExprs.length >= 2;
+
+      // Criterion 2: 3 verbs (cuisiner, déguster, gaspiller, partager, recycler)
+      const verbList = [
+        { label: 'cuisiner', regex: new RegExp(B_START + 'cuisin(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') },
+        { label: 'déguster', regex: new RegExp(B_START + 'd[ée]gust(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') },
+        { label: 'gaspiller', regex: new RegExp(B_START + 'gaspill(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') },
+        { label: 'partager', regex: new RegExp(B_START + 'partag(?:e|es|eons|ons|ez|ent|er|[ée](?:e|s|es)?|eais|eait|ais|ait|erai|era)' + B_END, 'i') },
+        { label: 'recycler', regex: new RegExp(B_START + 'recycl(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') }
+      ];
+
+      const verbMatches = verbList.map((v) => ({ label: v.label, found: v.regex.test(lower) }));
+      const foundVerbs = verbMatches.filter((v) => v.found);
+      const crit2Pass = foundVerbs.length >= 3;
+
+      // Criterion 3: 1 negative (ne... pas / plus / jamais / rien / personne)
+      const completeNegRegex = new RegExp(
+        B_START + "(?:ne|n['’])\\s*[a-zàâäéèêëîïôöùûüç'-]+(?:\\s+[a-zàâäéèêëîïôöùûüç'-]+){0,2}\\s+(?:pas|plus|jamais|rien|personne)" + B_END,
+        'gi'
+      );
+      const personneSubjectRegex = new RegExp(B_START + "personne\\s+(?:ne|n['’])" + B_END, 'gi');
+      const completeNegMatches = [
+        ...(cleanedText.match(completeNegRegex) || []),
+        ...(cleanedText.match(personneSubjectRegex) || [])
+      ].map((m) => m.trim());
+
+      const hasDroppedNe = new RegExp(B_START + '(?:pas|plus|jamais)' + B_END, 'i').test(lower) && completeNegMatches.length === 0;
+      const hasUnreducedArticleAfterNeg = new RegExp(B_START + '(?:pas|plus|jamais)\\s+(?:du|de\\s+la|des|un|une)' + B_END, 'i').test(lower);
+      const crit3Pass = completeNegMatches.length >= 1;
+
+      // Criterion 4: Spoke for at least 30 seconds
+      const crit4Pass = durationSec >= 30;
+
+      const totalScore = [crit1Pass, crit2Pass, crit3Pass, crit4Pass].filter(Boolean).length;
+
+      // Build English encouragement & suggestions
+      let encouragement = '';
+      if (!cleanedText) {
+        encouragement = 'No French speech was detected in the transcript. Check that your microphone is unmuted, speak clearly in French, and click Reattempt Recording.';
+      } else if (totalScore === 4) {
+        encouragement = `Bravo ! You met all 4 exit ticket criteria and spoke for ${durationSec} seconds. Listen to your MP3 playback to double-check pronunciation, then download your 2 files.`;
+      } else if (totalScore >= 2) {
+        encouragement = `Bon travail ! You met ${totalScore} out of 4 criteria (${durationSec}s). Review the quick tips below and try one more recording to hit all 4 targets.`;
+      } else {
+        encouragement = `Good start (${durationSec}s)! Use the checklist and model sentences above to add the missing expressions, verbs, and negation in your next take.`;
+      }
+
+      const suggestions = [];
+
+      if (!hasEtre) {
+        suggestions.push({
+          title: 'Add conjugated être',
+          detail: 'Start by describing yourself with <strong>être</strong> (e.g., <em>Je suis gourmand(e)</em> or <em>Je suis en bonne santé</em>).'
+        });
+      }
+      if (foundExprs.length < 2) {
+        const missingExpr = exprMatches.filter((e) => !e.found).map((e) => '<em>' + e.label + '</em>').join(', ');
+        suggestions.push({
+          title: `Use 2 expressions with être (${foundExprs.length}/2 detected)`,
+          detail: `Include at least two of: <em>allergique, au régime, en bonne santé, gourmand(e)</em>. Missing options: ${missingExpr}.`
+        });
+      }
+      if (usedAllergique && !allergiqueHasPrep) {
+        suggestions.push({
+          title: 'Preposition after allergique',
+          detail: "Remember to follow <strong>allergique</strong> with <strong>à / au / à la / à l' / aux</strong> (e.g., <em>Je suis allergique aux arachides</em>)."
+        });
+      }
+
+      if (!crit2Pass) {
+        const missingVerbs = verbMatches.filter((v) => !v.found).map((v) => '<em>' + v.label + '</em>').join(', ');
+        suggestions.push({
+          title: `Include 3 target verbs (${foundVerbs.length}/3 detected)`,
+          detail: `Use at least 3 of: <em>cuisiner, déguster, gaspiller, partager, recycler</em>. Try adding sentences with: ${missingVerbs}.`
+        });
+      }
+
+      if (!crit3Pass) {
+        if (hasDroppedNe) {
+          suggestions.push({
+            title: "Keep « ne / n' » before the verb",
+            detail: "You used <em>pas / plus / jamais</em>, but missed <strong>ne</strong> or <strong>n'</strong> before the verb (e.g., <em>Je <strong>ne</strong> gaspille jamais...</em> or <em>Je <strong>ne</strong> suis pas...</em>)."
+          });
+        } else {
+          suggestions.push({
+            title: 'Add 1 negative sentence (ne... pas / plus / jamais)',
+            detail: 'Include at least one negative structure such as <em>Je ne gaspille jamais de nourriture</em> or <em>Je ne suis pas au régime</em>.'
+          });
+        }
+      } else if (hasUnreducedArticleAfterNeg) {
+        suggestions.push({
+          title: "Article change after negation (de / d')",
+          detail: "After <em>ne... pas / plus / jamais</em>, replace <em>du / de la / des / un / une</em> with <strong>de</strong> or <strong>d'</strong> (e.g., <em>Je ne gaspille jamais <strong>de</strong> plastique</em>)."
+        });
+      }
+
+      if (!crit4Pass) {
+        const diff = 30 - durationSec;
+        suggestions.push({
+          title: `Speak for at least 30 seconds (${durationSec}s / 30s)`,
+          detail: `Add about <strong>${diff} more second${diff === 1 ? '' : 's'}</strong> by giving examples of what you cook, who you share meals with, or what you recycle.`
+        });
+      }
+
+      return {
+        totalScore,
+        crit1Pass,
+        hasEtre,
+        exprMatches,
+        foundExprs,
+        crit2Pass,
+        verbMatches,
+        foundVerbs,
+        crit3Pass,
+        completeNegMatches,
+        crit4Pass,
+        durationSec,
+        encouragement,
+        suggestions
+      };
+    }
+
+    function renderFeedbackUI(ev) {
+      lastEvaluation = ev;
+      const section = $('grammarFeedbackSection');
+      section.classList.remove('hidden');
+
+      $('criteriaScorePill').textContent = `${ev.totalScore} / 4 criteria`;
+      $('criteriaScorePill').className =
+        ev.totalScore === 4
+          ? 'px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold'
+          : 'px-3 py-1 rounded-full bg-indigo-100 text-indigo-950 text-xs font-bold';
+
+      $('feedbackEncouragement').textContent = ev.encouragement;
+
+      // 4-Criteria Visual Scorecard Grid
+      const cards = [
+        {
+          pass: ev.crit1Pass,
+          title: '1. Être + 2 expr.',
+          status: `${ev.foundExprs.length}/2 expr.`,
+          sub: ev.foundExprs.length ? ev.foundExprs.map((e) => e.label).join(', ') : 'allergique, au régime, en bonne santé, gourmand'
+        },
+        {
+          pass: ev.crit2Pass,
+          title: '2. 3 verbes cibles',
+          status: `${ev.foundVerbs.length}/3 verbs`,
+          sub: ev.foundVerbs.length ? ev.foundVerbs.map((v) => v.label).join(', ') : 'cuisiner, déguster, gaspiller, partager, recycler'
+        },
+        {
+          pass: ev.crit3Pass,
+          title: '3. Une négation',
+          status: ev.crit3Pass ? 'Detected' : 'Missing',
+          sub: ev.crit3Pass ? ev.completeNegMatches[0] : 'ne... pas / ne... plus / ne... jamais'
+        },
+        {
+          pass: ev.crit4Pass,
+          title: '4. Durée (30s+)',
+          status: `${ev.durationSec}s / 30s`,
+          sub: ev.crit4Pass ? 'Goal reached!' : `Need ${30 - ev.durationSec}s more`
+        }
+      ];
+
+      const grid = $('criteriaFourGrid');
+      grid.innerHTML = '';
+      cards.forEach((c) => {
+        const div = document.createElement('div');
+        div.className = c.pass
+          ? 'rounded-xl border border-emerald-300 bg-emerald-50/80 px-3 py-2.5 text-xs'
+          : 'rounded-xl border border-amber-300 bg-amber-50/70 px-3 py-2.5 text-xs';
+        div.innerHTML = `
+          <div class="flex items-center justify-between gap-2 font-bold ${c.pass ? 'text-emerald-900' : 'text-amber-950'}">
+            <span>${c.pass ? '✅' : '⚠️'} ${c.title}</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] ${c.pass ? 'bg-emerald-200/80 text-emerald-950' : 'bg-amber-200/80 text-amber-950'}">${c.status}</span>
+          </div>
+          <p class="text-[11px] mt-1 truncate ${c.pass ? 'text-emerald-800' : 'text-amber-900'}">${c.sub}</p>
+        `;
+        grid.appendChild(div);
+      });
+
+      // Detected Chips
+      const chipsWrap = $('feedbackStrengths');
+      chipsWrap.innerHTML = '';
+      const allChips = [
+        { label: 'être', ok: ev.hasEtre },
+        ...ev.exprMatches.map((e) => ({ label: e.label, ok: e.found })),
+        ...ev.verbMatches.map((v) => ({ label: v.label, ok: v.found })),
+        { label: 'ne... pas/plus/jamais', ok: ev.crit3Pass }
+      ];
+      allChips.forEach((chip) => {
+        const span = document.createElement('span');
+        span.className = chip.ok
+          ? 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100/90 border border-emerald-300 text-emerald-900 text-[11px] font-semibold'
+          : 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-medium';
+        span.textContent = (chip.ok ? '✓ ' : '') + chip.label;
+        chipsWrap.appendChild(span);
+      });
+
+      // Actionable Suggestions List
+      const list = $('feedbackSuggestionsList');
+      list.innerHTML = '';
+      ev.suggestions.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'rounded-xl bg-white border border-indigo-100 px-3.5 py-2.5 text-xs text-slate-700 leading-relaxed';
+        card.innerHTML = `<p class="font-bold text-indigo-950 mb-0.5">💡 ${item.title}</p><p>${item.detail}</p>`;
+        list.appendChild(card);
+      });
+
+      // Update Reattempt callout depending on whether the 2/4 unlock threshold is met
+      if (ev.totalScore < 2) {
+        $('reattemptCalloutTitle').textContent = `🔒 Download locked (${ev.totalScore}/4 criteria) — Meet at least 2/4 criteria to unlock!`;
+        $('reattemptCalloutDesc').innerHTML =
+          'Click <strong>Reattempt Recording</strong> and include at least 2 of the 4 checklist targets (e.g., <em>être + 2 expressions</em>, <em>3 target verbs</em>, <em>1 negative</em>, or <em>30+ seconds</em>).';
+      } else {
+        $('reattemptCalloutTitle').textContent = 'Want to aim for 4/4 criteria and 30+ seconds? Try one more take!';
+        $('reattemptCalloutDesc').innerHTML =
+          "Remember to pronounce <em>ne / n'</em> clearly before the verb and expand on what you cook, share, or recycle.";
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 7. Recording Start / Stop & SpeechRecognition
+    // ---------------------------------------------------------
+    function unlockControlsAfterRecording() {
+      $('startBtn').disabled = false;
+      $('stopBtn').disabled = true;
+      $('passTurnBtn').disabled = true;
+      $('modeIndependentBtn').disabled = false;
+      $('modePairBtn').disabled = false;
+      $('swapSpeakersBtn').disabled = false;
+      $('noiseSuppressToggle').disabled = false;
+    }
+
+    $('startBtn').addEventListener('click', async () => {
+      if (!validateNames()) return;
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setStatus('Votre navigateur ne prend pas en charge l\'enregistrement microphone.', 'error');
+        return;
+      }
+
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: noiseSuppression,
+            autoGainControl: true
+          }
+        });
+
+        chunks = [];
+        finalText = '';
+        mp3Blob = null;
+        lastEvaluation = null;
+        if (audioUrl) {
+          URL.revokeObjectURL(audioUrl);
+          audioUrl = '';
+        }
+
+        $('playback').removeAttribute('src');
+        $('grammarFeedbackSection').classList.add('hidden');
+        $('downloadLockNotice').classList.add('hidden');
+        $('downloadConfirmBadge').classList.add('hidden');
+        $('downloadBothBtn').disabled = true;
+        $('audioDownload').disabled = true;
+        $('textDownload').disabled = true;
+
+        if (mode === 'pair') {
+          activeSpeaker = 1;
+          updateSpeakerBadges();
+          const { s1 } = getSpeakerNames();
+          finalText = `[${s1}] : `;
+          $('passTurnBtn').disabled = false;
+        }
+        $('transcript').value = finalText;
+        updateWordCount();
+
+        // Lock mode/name inputs while recording
+        $('modeIndependentBtn').disabled = true;
+        $('modePairBtn').disabled = true;
+        $('swapSpeakersBtn').disabled = true;
+        $('noiseSuppressToggle').disabled = true;
+
+        const mimeType =
+          typeof MediaRecorder !== 'undefined' && typeof MediaRecorder.isTypeSupported === 'function'
+            ? ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'].find((t) => MediaRecorder.isTypeSupported(t))
+            : undefined;
+        recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+        const nativeExt = (recorder.mimeType || '').includes('mp4') ? 'm4a' : 'webm';
+
+        recorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) chunks.push(e.data);
+        };
+
+        recorder.onstop = async () => {
+          clearInterval(timerInterval);
+          elapsedSeconds = Math.max(1, Math.round((Date.now() - startTimeMs) / 1000));
+          updateTimerDisplay(false);
+          stopVisualizer();
+
+          if (stream) {
+            stream.getTracks().forEach((t) => t.stop());
+            stream = null;
+          }
+          $('micHint').textContent = 'Microphone arrêté';
+
+          setStatus('Encodage MP3 et analyse de vos habitudes alimentaires en cours...', 'info');
+
+          const rawBlob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+          const converted = await convertToMp3(rawBlob, nativeExt);
+          mp3Blob = converted.blob;
+          audioExt = converted.ext;
+
+          audioUrl = URL.createObjectURL(mp3Blob);
+          $('playback').src = audioUrl;
+
+          unlockControlsAfterRecording();
+
+          const evaluation = evaluateFoodHabits($('transcript').value, elapsedSeconds);
+          renderFeedbackUI(evaluation);
+
+          // Only unlock download buttons if the student meets 2/4 requirements or more
+          const canDownload = evaluation.totalScore >= 2;
+          $('downloadBothBtn').disabled = !canDownload;
+          $('audioDownload').disabled = !canDownload;
+          $('textDownload').disabled = !canDownload;
+
+          if (canDownload) {
+            $('downloadLockNotice').classList.add('hidden');
+            setStatus(
+              `Enregistrement terminé ! Critères atteints (${evaluation.totalScore}/4). Lisez votre feedback ci-dessous, puis téléchargez vos 2 fichiers.`,
+              'success'
+            );
+          } else {
+            $('downloadLockText').innerHTML =
+              `Téléchargement verrouillé (<strong>${evaluation.totalScore}/4 critères</strong>) : atteignez au moins <strong>2 critères sur 4</strong> pour débloquer vos fichiers. Cliquez sur <strong>Reattempt Recording</strong> pour réessayer !`;
+            $('downloadLockNotice').classList.remove('hidden');
+            setStatus(
+              `Téléchargement verrouillé (${evaluation.totalScore}/4 critère). Atteignez au moins 2/4 critères pour débloquer vos fichiers.`,
+              'error'
+            );
+          }
+        };
+
+        recorder.start(500);
+        startVisualizer(stream);
+        $('micHint').textContent = 'Microphone actif';
+
+        startTimeMs = Date.now();
+        elapsedSeconds = 0;
+        updateTimerDisplay(true);
+        timerInterval = setInterval(() => {
+          elapsedSeconds = Math.floor((Date.now() - startTimeMs) / 1000);
+          updateTimerDisplay(true);
+        }, 250);
+
+        $('startBtn').disabled = true;
+        $('stopBtn').disabled = false;
+
+        if (Speech) {
+          recognition = new Speech();
+          recognition.lang = $('language').value;
+          recognition.continuous = true;
+          recognition.interimResults = true;
+
+          recognition.onresult = (e) => {
+            let interim = '';
+            for (let i = e.resultIndex; i < e.results.length; i++) {
+              const seg = e.results[i][0].transcript;
+              if (e.results[i].isFinal) {
+                finalText += seg + ' ';
+              } else {
+                interim += seg;
+              }
+            }
+            $('transcript').value = (finalText + interim).trim();
+            updateWordCount();
+          };
+
+          recognition.onerror = (e) => {
+            if (e.error !== 'no-speech') {
+              setStatus('Enregistrement audio actif (remarque transcription : ' + e.error + ').', 'recording');
+            }
+          };
+
+          recognition.onend = () => {
+            if (recorder && recorder.state === 'recording') {
+              try {
+                recognition.start();
+              } catch (err) {}
+            }
+          };
+
+          try {
+            recognition.start();
+            setStatus('🎙️ Enregistrement en cours... Décrivez vos habitudes alimentaires pendant au moins 30 secondes.', 'recording');
+          } catch (err) {
+            setStatus('🎙️ Enregistrement audio en cours...', 'recording');
+          }
+        } else {
+          setStatus('🎙️ Enregistrement audio en cours (reconnaissance vocale non disponible sur ce navigateur).', 'recording');
+        }
+      } catch (err) {
+        if (stream) {
+          stream.getTracks().forEach((t) => t.stop());
+          stream = null;
+        }
+        stopVisualizer();
+        unlockControlsAfterRecording();
+        setStatus('Erreur microphone : ' + err.message, 'error');
+      }
+    });
+
+    $('stopBtn').addEventListener('click', () => {
+      $('stopBtn').disabled = true;
+      if (recognition) {
+        try {
+          recognition.onend = null;
+          recognition.stop();
+        } catch (err) {}
+      }
+      if (recorder && recorder.state !== 'inactive') {
+        recorder.stop();
+      } else {
+        unlockControlsAfterRecording();
+      }
+    });
+
+    // ---------------------------------------------------------
+    // 8. Reset / Reattempt Confirmation Modal
+    // ---------------------------------------------------------
+    function resetSession() {
+      if (recorder && recorder.state === 'recording') {
+        $('stopBtn').click();
+      }
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+        audioUrl = '';
+      }
+      mp3Blob = null;
+      chunks = [];
+      finalText = '';
+      elapsedSeconds = 0;
+      lastEvaluation = null;
+      updateTimerDisplay(false);
+
+      $('transcript').value = '';
+      updateWordCount();
+      $('playback').removeAttribute('src');
+      $('grammarFeedbackSection').classList.add('hidden');
+      $('downloadLockNotice').classList.add('hidden');
+      $('downloadConfirmBadge').classList.add('hidden');
+      $('downloadBothBtn').disabled = true;
+      $('audioDownload').disabled = true;
+      $('textDownload').disabled = true;
+
+      setStatus('Prêt pour un nouvel essai. Cliquez sur « ● Commencer » et parlez pendant au moins 30 secondes !', 'info');
+    }
+
+    function openConfirmModal() {
+      $('confirmModal').classList.remove('hidden');
+    }
+    function closeConfirmModal() {
+      $('confirmModal').classList.add('hidden');
+    }
+
+    $('clearBtn').addEventListener('click', () => {
+      if ($('transcript').value.trim() || mp3Blob) {
+        openConfirmModal();
+      } else {
+        resetSession();
+      }
+    });
+
+    $('reattemptBtn').addEventListener('click', openConfirmModal);
+    $('cancelModalBtn').addEventListener('click', closeConfirmModal);
+    $('confirmModalBtn').addEventListener('click', () => {
+      closeConfirmModal();
+      resetSession();
+    });
+
+    // ---------------------------------------------------------
+    // 9. Dual File Download (.mp3 + .txt)
+    // ---------------------------------------------------------
+    function triggerDownload(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2500);
+    }
+
+    function buildReportText() {
+      const studentLabel =
+        mode === 'independent'
+          ? ($('studentName').value || '').trim() || 'Non renseigné'
+          : `${getSpeakerNames().s1} & ${getSpeakerNames().s2} (Binôme)`;
+      const transcript = ($('transcript').value || '').trim() || '(Aucune transcription capturée)';
+      const ev = lastEvaluation || evaluateFoodHabits(transcript, elapsedSeconds);
+      const dateStr = new Date().toLocaleString('fr-FR');
+
+      return [
+        '================================================================',
+        'BILLET DE SORTIE : MES HABITUDES ALIMENTAIRES (FRANÇAIS)',
+        '================================================================',
+        `Élève(s) : ${studentLabel}`,
+        `Mode : ${mode === 'independent' ? 'Solo — Billet de sortie' : 'Binôme — Échange oral'}`,
+        `Date : ${dateStr}`,
+        `Durée : ${formatTime(ev.durationSec)} (${ev.durationSec}s / objectif : 30s+)`,
+        `Score critères : ${ev.totalScore} / 4`,
+        '',
+        '--- CRITÈRES DE RÉUSSITE ---',
+        `[${ev.crit1Pass ? '✓' : ' '}] 1. Être + 2 expressions : ${ev.foundExprs.map((e) => e.label).join(', ') || 'aucune'}`,
+        `[${ev.crit2Pass ? '✓' : ' '}] 2. 3 verbes cibles : ${ev.foundVerbs.map((v) => v.label).join(', ') || 'aucun'}`,
+        `[${ev.crit3Pass ? '✓' : ' '}] 3. Négation (ne... pas/plus/jamais) : ${ev.completeNegMatches.join(', ') || 'non détectée'}`,
+        `[${ev.crit4Pass ? '✓' : ' '}] 4. Durée >= 30 secondes : ${ev.durationSec}s`,
+        '',
+        '--- TRANSCRIPTION EN FRANÇAIS ---',
+        transcript,
+        ''
+      ].join('\n');
+    }
+
+    function downloadAudioOnly() {
+      if (!mp3Blob || !lastEvaluation || lastEvaluation.totalScore < 2) return;
+      triggerDownload(mp3Blob, `${getFileBaseName()}.${audioExt}`);
+    }
+
+    function downloadTextOnly() {
+      if (!lastEvaluation || lastEvaluation.totalScore < 2) return;
+      const txtBlob = new Blob([buildReportText()], { type: 'text/plain;charset=utf-8' });
+      triggerDownload(txtBlob, `${getFileBaseName()}.txt`);
+    }
+
+    $('downloadBothBtn').addEventListener('click', () => {
+      if (!lastEvaluation || lastEvaluation.totalScore < 2) return;
+      downloadAudioOnly();
+      setTimeout(() => {
+        downloadTextOnly();
+        $('downloadConfirmBadge').classList.remove('hidden');
+      }, 350);
+    });
+
+    $('audioDownload').addEventListener('click', downloadAudioOnly);
+    $('textDownload').addEventListener('click', downloadTextOnly);
+  </script>
+</body>
+</html>
