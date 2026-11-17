@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bayside High School • World Languages Oral Recording Studio</title>
+  <title>Studio Oral • Bayside High School World Languages Recording Studio</title>
 
   <!-- Google Fonts: Inter + CJK Fonts (Simplified Chinese, Japanese, Korean) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -55,7 +55,7 @@
       overflow-x: hidden;
     }
 
-    /* Gentle shake animation for required field validation */
+    /* Gentle shake animation for required student name validation */
     @keyframes gentleShake {
       0%, 100% { transform: translateX(0); }
       20% { transform: translateX(-6px); }
@@ -85,10 +85,10 @@
     }
 
     .view-panel:not(.hidden) {
-      animation: viewFadeIn 0.25s ease-out;
+      animation: viewFadeIn 0.24s ease-out;
     }
 
-    /* Custom scrollbar hiding for horizontal pill bar on mobile */
+    /* Hide scrollbar on compact mobile horizontal nav */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -103,10 +103,14 @@
   <!-- Top Multi-Color World Languages Accent Bar -->
   <div class="h-1.5 w-full bg-gradient-to-r from-[#164b9b] via-[#d9383a] via-[#d97706] via-[#be123c] to-[#1d4ed8]"></div>
 
-  <!-- Sticky Top Navigation Bar -->
+  <!-- ======================================================================= -->
+  <!-- STICKY TOP HEADER BAR: BRANDING, STUDIO NAV & GLOBAL UI LANG SWITCHER   -->
+  <!-- ======================================================================= -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between py-2.5 gap-2.5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 space-y-2.5">
+
+      <!-- Top Row: Bayside High School Branding + Global Interface & Instructions Language Switcher -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2.5">
         <!-- Brand Identity -->
         <button
           type="button"
@@ -114,90 +118,117 @@
           class="flex items-center gap-3 text-left group focus:outline-none"
         >
           <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#164b9b] to-[#0f172a] text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform shrink-0">
-            <!-- Studio Microphone SVG Icon -->
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
             </svg>
           </div>
           <div>
-            <div class="flex items-center gap-2">
-              <span class="font-extrabold text-slate-900 tracking-tight text-sm sm:text-base">
-                Studio Oral <span class="text-slate-400 font-normal">•</span> Lycée de Bayside
-              </span>
+            <div class="font-extrabold text-slate-900 tracking-tight text-sm sm:text-base">
+              Studio Oral <span class="text-slate-400 font-normal">•</span> Bayside High School
             </div>
-            <p class="text-[11px] sm:text-xs text-slate-500 font-medium">
-              Bayside High School World Languages Recording Studio
+            <p id="headerSubtitle" class="text-[11px] sm:text-xs text-slate-500 font-medium">
+              World Languages Oral Recording &amp; Live Transcription Studio
             </p>
           </div>
         </button>
 
-        <!-- Quick-Switch Navigation Pills for All 6 Views -->
-        <nav aria-label="Language Studios Navigation" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
-          <button
-            type="button"
-            data-nav="home"
-            onclick="switchView('home')"
-            class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 bg-slate-900 text-white shadow-sm"
-          >
-            <span>🏠</span>
-            <span>Accueil / Home</span>
-          </button>
-
-          <button
-            type="button"
-            data-nav="french"
-            onclick="switchView('french')"
-            class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            <span>🇫🇷</span>
-            <span>Français</span>
-          </button>
-
-          <button
-            type="button"
-            data-nav="chinese"
-            onclick="switchView('chinese')"
-            class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            <span>🇨🇳</span>
-            <span>中文</span>
-          </button>
-
-          <button
-            type="button"
-            data-nav="spanish"
-            onclick="switchView('spanish')"
-            class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            <span>🇪🇸</span>
-            <span>Español</span>
-          </button>
-
-          <button
-            type="button"
-            data-nav="japanese"
-            onclick="switchView('japanese')"
-            class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            <span>🇯🇵</span>
-            <span>日本語</span>
-          </button>
-
-          <button
-            type="button"
-            data-nav="korean"
-            onclick="switchView('korean')"
-            class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
-          >
-            <span>🇰🇷</span>
-            <span>한국어</span>
-          </button>
-        </nav>
+        <!-- Global Interface & Instructions Language Switcher -->
+        <div class="flex flex-wrap items-center gap-1.5 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/90">
+          <span id="uiLangLabel" class="text-[11px] font-bold text-slate-600 px-2 flex items-center gap-1">
+            <span>🌐</span>
+            <span>Interface:</span>
+          </span>
+          <div id="uiLangButtons" class="flex flex-wrap items-center gap-1" role="group" aria-label="Interface and Instructions Language">
+            <button type="button" data-uilang="en" onclick="setUiLanguage('en')" class="ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition bg-[#164b9b] text-white shadow-2xs">
+              English
+            </button>
+            <button type="button" data-uilang="fr" onclick="setUiLanguage('fr')" class="ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition text-slate-700 hover:bg-white">
+              Français
+            </button>
+            <button type="button" data-uilang="zh" onclick="setUiLanguage('zh')" class="ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition text-slate-700 hover:bg-white">
+              中文
+            </button>
+            <button type="button" data-uilang="es" onclick="setUiLanguage('es')" class="ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition text-slate-700 hover:bg-white">
+              Español
+            </button>
+            <button type="button" data-uilang="ja" onclick="setUiLanguage('ja')" class="ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition text-slate-700 hover:bg-white">
+              日本語
+            </button>
+            <button type="button" data-uilang="ko" onclick="setUiLanguage('ko')" class="ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition text-slate-700 hover:bg-white">
+              한국어
+            </button>
+          </div>
+        </div>
       </div>
+
+      <!-- Bottom Row: Studio Navigation Pills (Home + 5 Language Studios) -->
+      <nav aria-label="Language Studios Navigation" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 border-t border-slate-100">
+        <button
+          type="button"
+          data-nav="home"
+          onclick="switchView('home')"
+          class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 bg-slate-900 text-white shadow-sm"
+        >
+          <span>🏠</span>
+          <span id="navHomeLabel">Home</span>
+        </button>
+
+        <button
+          type="button"
+          data-nav="french"
+          onclick="switchView('french')"
+          class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
+        >
+          <span>🇫🇷</span>
+          <span>Français</span>
+        </button>
+
+        <button
+          type="button"
+          data-nav="chinese"
+          onclick="switchView('chinese')"
+          class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
+        >
+          <span>🇨🇳</span>
+          <span>中文</span>
+        </button>
+
+        <button
+          type="button"
+          data-nav="spanish"
+          onclick="switchView('spanish')"
+          class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
+        >
+          <span>🇪🇸</span>
+          <span>Español</span>
+        </button>
+
+        <button
+          type="button"
+          data-nav="japanese"
+          onclick="switchView('japanese')"
+          class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
+        >
+          <span>🇯🇵</span>
+          <span>日本語</span>
+        </button>
+
+        <button
+          type="button"
+          data-nav="korean"
+          onclick="switchView('korean')"
+          class="nav-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 text-slate-700 hover:bg-slate-100"
+        >
+          <span>🇰🇷</span>
+          <span>한국어</span>
+        </button>
+      </nav>
     </div>
   </header>
 
-  <!-- Main Content Container -->
+  <!-- ======================================================================= -->
+  <!-- MAIN CONTENT CONTAINER                                                  -->
+  <!-- ======================================================================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
     <!-- ===================================================================== -->
@@ -205,15 +236,13 @@
     <!-- ===================================================================== -->
     <section id="homeView" class="view-panel space-y-8 sm:space-y-10">
 
-      <!-- Asymmetric 2-Column Hero Section -->
+      <!-- Asymmetric 2-Column Hero Section with French Tricolor Top Accent Bar -->
       <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
-        <!-- Subtle World Languages Accent Bar -->
-        <div class="h-1.5 w-full flex">
-          <div class="flex-1 bg-[#164b9b]"></div>
-          <div class="flex-1 bg-[#d9383a]"></div>
-          <div class="flex-1 bg-[#d97706]"></div>
-          <div class="flex-1 bg-[#be123c]"></div>
-          <div class="flex-1 bg-[#1d4ed8]"></div>
+        <!-- French Tricolor Top Accent Bar -->
+        <div class="h-2 w-full flex">
+          <div class="w-1/3 bg-[#164b9b]"></div>
+          <div class="w-1/3 bg-white border-b border-slate-100"></div>
+          <div class="w-1/3 bg-[#d9383a]"></div>
         </div>
 
         <div class="p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -221,17 +250,15 @@
           <div class="lg:col-span-7 space-y-5">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-[#164b9b] text-xs font-bold tracking-wide uppercase">
               <span class="w-2 h-2 rounded-full bg-[#164b9b]"></span>
-              <span>Bayside High School • World Languages Studio</span>
+              <span id="homeHeroBadge">Bayside High School • World Languages Studio</span>
             </div>
 
-            <h1 class="text-3xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            <h1 id="homeHeroTitle" class="text-3xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-slate-900 tracking-tight leading-[1.15]">
               Oral Speaking &amp; Live Transcription Studio
             </h1>
 
-            <p class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
-              Designed for Bayside High School language learners in
-              <span class="font-semibold text-slate-800">French, Chinese, Spanish, Japanese, and Korean</span>.
-              Record solo presentations or interactive pair dialogues with real-time speech-to-text, receive instant English grammar feedback, and export both your <span class="font-semibold text-slate-800">MP3 audio</span> and <span class="font-semibold text-slate-800">TXT transcript</span> in one click.
+            <p id="homeHeroDesc" class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
+              Designed for Bayside High School language learners in French, Chinese, Spanish, Japanese, and Korean. Record solo presentations or interactive pair dialogues with real-time speech-to-text, receive instant English grammar feedback, and export both your MP3 audio and TXT transcript in one click.
             </p>
 
             <!-- Primary Quick-Launch Buttons -->
@@ -240,7 +267,7 @@
                 href="#languageGrid"
                 class="px-5 py-3 rounded-xl bg-[#164b9b] hover:bg-blue-800 text-white font-bold text-sm shadow-sm hover:shadow transition-all flex items-center gap-2"
               >
-                <span>Choose a Language Studio</span>
+                <span id="homeCtaChoose">Choose a Language Studio</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
@@ -269,18 +296,16 @@
           <!-- Right Column (5 cols on lg): Dark-Slate Interactive Studio Showcase -->
           <div class="lg:col-span-5">
             <div class="bg-[#0f172a] rounded-2xl p-5 sm:p-6 text-white shadow-lg border border-slate-800 relative overflow-hidden">
-              <!-- Subtle ambient glow -->
               <div class="absolute -top-16 -right-16 w-44 h-44 bg-blue-500/15 rounded-full blur-2xl pointer-events-none"></div>
               <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-rose-500/15 rounded-full blur-2xl pointer-events-none"></div>
 
-              <!-- Studio Top Bar & Voice Mode Preview Toggle -->
+              <!-- Studio Top Bar & 1-Voice / 2-Voice Preview Toggle -->
               <div class="flex items-center justify-between gap-2 mb-4 relative z-10">
                 <div class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span class="text-xs font-bold tracking-wider uppercase text-slate-300">Live Studio Preview</span>
+                  <span id="homeShowcaseTitle" class="text-xs font-bold tracking-wider uppercase text-slate-300">Live Studio Preview</span>
                 </div>
 
-                <!-- 1 Voice / 2 Voices Visual Preview Toggle -->
                 <div class="inline-flex rounded-xl bg-slate-800/90 p-1 border border-slate-700/80">
                   <button
                     type="button"
@@ -301,7 +326,7 @@
                 </div>
               </div>
 
-              <!-- Animated HTML5 Canvas Multi-Bar Frequency Waveform -->
+              <!-- Animated HTML5 Canvas Acoustic Waveform -->
               <div class="rounded-xl bg-slate-950/90 border border-slate-800 p-3 mb-4 relative">
                 <canvas id="homeShowcaseCanvas" class="w-full h-32 block rounded-lg"></canvas>
                 <div class="mt-2 flex items-center justify-between text-[11px] text-slate-400">
@@ -312,30 +337,30 @@
                 </div>
               </div>
 
-              <!-- Floating Glass Studio Badges -->
+              <!-- Floating Glass Feature Badges -->
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 relative z-10">
                 <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl px-3 py-2.5">
                   <div class="text-xs font-bold text-white flex items-center gap-1.5">
                     <span>🎙️</span>
-                    <span>Solo &amp; Pair Modes</span>
+                    <span id="homeBadge1Title">Solo &amp; Pair</span>
                   </div>
-                  <p class="text-[11px] text-slate-300 mt-0.5">Live turn-taking labels</p>
+                  <p id="homeBadge1Desc" class="text-[11px] text-slate-300 mt-0.5">Live speaker labels</p>
                 </div>
 
                 <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl px-3 py-2.5">
                   <div class="text-xs font-bold text-white flex items-center gap-1.5">
                     <span>✨</span>
-                    <span>Instant Grammar Check</span>
+                    <span id="homeBadge2Title">Grammar Check</span>
                   </div>
-                  <p class="text-[11px] text-slate-300 mt-0.5">Tailored English tips</p>
+                  <p id="homeBadge2Desc" class="text-[11px] text-slate-300 mt-0.5">Instant English tips</p>
                 </div>
 
                 <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl px-3 py-2.5">
                   <div class="text-xs font-bold text-white flex items-center gap-1.5">
                     <span>📦</span>
-                    <span>Dual Export: MP3 + TXT</span>
+                    <span id="homeBadge3Title">MP3 + TXT</span>
                   </div>
-                  <p class="text-[11px] text-slate-300 mt-0.5">One-click submission</p>
+                  <p id="homeBadge3Desc" class="text-[11px] text-slate-300 mt-0.5">One-click dual export</p>
                 </div>
               </div>
             </div>
@@ -343,15 +368,15 @@
         </div>
       </div>
 
-      <!-- 3-Step Visual Classroom Workflow Section -->
+      <!-- 3-Step Visual Workflow Guide -->
       <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-              Simple 3-Step Classroom Workflow
-            </h2>
-            <p class="text-sm text-slate-600">Built for Chromebooks, laptops, tablets, and phones — 100% browser-based with no login required.</p>
-          </div>
+        <div>
+          <h2 id="homeWorkflowHeading" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            Simple 3-Step Classroom Workflow
+          </h2>
+          <p id="homeWorkflowSubheading" class="text-sm text-slate-600">
+            Built for Chromebooks, laptops, tablets, and phones — 100% browser-based with no login required.
+          </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
@@ -361,9 +386,9 @@
               1
             </div>
             <div>
-              <h3 class="font-bold text-slate-900 text-base">Choose Language &amp; Mode</h3>
-              <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                Select your target language studio, pick <strong>Independent (1 Student)</strong> or <strong>Pair Task (2 Students)</strong>, enter your name(s), and choose your dialect.
+              <h3 id="homeStep1Title" class="font-bold text-slate-900 text-base">Choose Language &amp; Mode</h3>
+              <p id="homeStep1Desc" class="text-sm text-slate-600 mt-1 leading-relaxed">
+                Select your target language studio, pick Independent (1 Student) or Pair Task (2 Students), enter your name(s), and choose your dialect.
               </p>
             </div>
           </div>
@@ -374,9 +399,9 @@
               2
             </div>
             <div>
-              <h3 class="font-bold text-slate-900 text-base">Speak with Live Transcription</h3>
-              <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                Click <strong>Start Recording</strong> to watch live audio frequency bars and automatic real-time speech transcription. In Pair Mode, press <strong>Pass Turn</strong> (or <kbd class="px-1.5 py-0.5 text-xs bg-slate-100 border border-slate-300 rounded">Tab</kbd>) between speakers.
+              <h3 id="homeStep2Title" class="font-bold text-slate-900 text-base">Speak with Live Transcription</h3>
+              <p id="homeStep2Desc" class="text-sm text-slate-600 mt-1 leading-relaxed">
+                Click Start Recording to watch live audio frequency bars and automatic real-time speech transcription. In Pair Mode, press Pass Turn (or Tab) between speakers.
               </p>
             </div>
           </div>
@@ -387,9 +412,9 @@
               3
             </div>
             <div>
-              <h3 class="font-bold text-slate-900 text-base">Review Feedback &amp; Download MP3 + TXT</h3>
-              <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                Listen to your recording, review instant English grammar feedback, reattempt if desired, or download both your <strong>MP3 audio</strong> and <strong>TXT report</strong> in one click.
+              <h3 id="homeStep3Title" class="font-bold text-slate-900 text-base">Review Feedback &amp; Download MP3 + TXT</h3>
+              <p id="homeStep3Desc" class="text-sm text-slate-600 mt-1 leading-relaxed">
+                Listen to your recording, review instant English grammar feedback, reattempt if desired, or download both your MP3 audio and TXT report in one click.
               </p>
             </div>
           </div>
@@ -397,12 +422,14 @@
       </div>
 
       <!-- 5-Language Launch Grid -->
-      <div id="languageGrid" class="space-y-4 scroll-mt-24">
+      <div id="languageGrid" class="space-y-4 scroll-mt-28">
         <div>
-          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+          <h2 id="homeGridHeading" class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
             Select Your World Language Studio
           </h2>
-          <p class="text-sm text-slate-600">Click any language card below to launch its dedicated speaking recorder and grammar feedback engine.</p>
+          <p id="homeGridSubheading" class="text-sm text-slate-600">
+            Click any language card below to launch its dedicated speaking recorder and grammar feedback engine.
+          </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -428,16 +455,16 @@
                 <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#164b9b] transition-colors">
                   Français
                 </h3>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                  Enregistrement oral Français • French Speaking Studio
+                <p id="homeCardFrSub" class="text-xs font-semibold text-slate-500 mt-0.5">
+                  French Oral Recording Studio
                 </p>
-                <p class="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Includes instant French grammar checks for <em>avoir</em> age expressions, <em>être</em> movement verbs in <em>passé composé</em>, vowel elisions (<em>j'</em>), negation (<em>ne...pas</em>), and connectors.
+                <p id="homeCardFrDesc" class="text-sm text-slate-600 mt-3 leading-relaxed">
+                  Includes instant French grammar checks for avoir age expressions, être movement verbs in passé composé, vowel elisions (j'), negation (ne...pas), and connectors.
                 </p>
               </div>
             </div>
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-[#164b9b]">
-              <span>Launch French Studio</span>
+              <span id="homeCardFrBtn">Launch French Studio</span>
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </button>
@@ -460,16 +487,16 @@
                 <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#b91c1c] transition-colors">
                   中文 <span class="text-base font-bold text-slate-600">(Chinese)</span>
                 </h3>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                  中文口语录音 • Chinese Speaking Recorder
+                <p id="homeCardZhSub" class="text-xs font-semibold text-slate-500 mt-0.5">
+                  Chinese Speaking Recorder • 中文口语录音
                 </p>
-                <p class="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Features <strong>Integrated Chinese L1–20 Vocabulary Boost</strong>, Lesson 1–20 browser, and grammar feedback for 没有 vs. 不有, 没 + verb (without 了), 很 + adjective, question words, and 比 comparisons.
+                <p id="homeCardZhDesc" class="text-sm text-slate-600 mt-3 leading-relaxed">
+                  Features Integrated Chinese L1–20 Vocabulary Boost, Lesson 1–20 browser, and grammar feedback for 没有 vs. 不有, 没 + verb (without 了), 很 + adjective, question words, and 比 comparisons.
                 </p>
               </div>
             </div>
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-[#b91c1c]">
-              <span>Launch Chinese Studio</span>
+              <span id="homeCardZhBtn">Launch Chinese Studio</span>
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </button>
@@ -486,22 +513,22 @@
                 <div class="flex items-center justify-between mb-3">
                   <span class="text-3xl">🇪🇸</span>
                   <span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200/70">
-                    es-ES • es-MX • es-US • es-AR
+                    es-ES • es-MX • es-US
                   </span>
                 </div>
                 <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#b91c1c] transition-colors">
                   Español <span class="text-base font-bold text-slate-600">(Spanish)</span>
                 </h3>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                  Grabación Oral en Español • Spanish Speaking Studio
+                <p id="homeCardEsSub" class="text-xs font-semibold text-slate-500 mt-0.5">
+                  Spanish Speaking Studio • Grabación Oral
                 </p>
-                <p class="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Includes a Connectors &amp; Expressions drawer plus instant Spanish grammar checks for <em>ser</em> vs. <em>estar</em>, <em>tener</em> for age and states, <em>gustar</em> constructions, and linking words.
+                <p id="homeCardEsDesc" class="text-sm text-slate-600 mt-3 leading-relaxed">
+                  Includes a Connectors &amp; Expressions drawer plus instant Spanish grammar checks for ser vs. estar, tener for age and states, gustar constructions, and linking words.
                 </p>
               </div>
             </div>
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-[#b91c1c]">
-              <span>Launch Spanish Studio</span>
+              <span id="homeCardEsBtn">Launch Spanish Studio</span>
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </button>
@@ -524,16 +551,16 @@
                 <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#1e3a8a] transition-colors">
                   日本語 <span class="text-base font-bold text-slate-600">(Japanese)</span>
                 </h3>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                  日本語スピーキング録音 • Japanese Speaking Studio
+                <p id="homeCardJaSub" class="text-xs font-semibold text-slate-500 mt-0.5">
+                  Japanese Speaking Studio • 日本語スピーキング録音
                 </p>
-                <p class="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Includes a Core Particles &amp; Connectors guide plus grammar feedback for polite <em>Desu/Masu</em> endings, core particles (は, が, を, に, で, の), discourse markers, and opinion/desire patterns.
+                <p id="homeCardJaDesc" class="text-sm text-slate-600 mt-3 leading-relaxed">
+                  Includes a Core Particles &amp; Connectors guide plus grammar feedback for polite Desu/Masu endings, core particles (は, が, を, に, で, の), past negative forms, and connectors.
                 </p>
               </div>
             </div>
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-[#1e3a8a]">
-              <span>Launch Japanese Studio</span>
+              <span id="homeCardJaBtn">Launch Japanese Studio</span>
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </button>
@@ -556,46 +583,39 @@
                 <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-[#1d4ed8] transition-colors">
                   한국어 <span class="text-base font-bold text-slate-600">(Korean)</span>
                 </h3>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                  한국어 말하기 녹음 • Korean Speaking Studio
+                <p id="homeCardKoSub" class="text-xs font-semibold text-slate-500 mt-0.5">
+                  Korean Speaking Studio • 한국어 말하기 녹음
                 </p>
-                <p class="text-sm text-slate-600 mt-3 leading-relaxed">
-                  Includes a Core Particles &amp; Connectors reference plus grammar checks for polite <em>Haeyoche/Hasipsioche</em> endings (-아요/-어요/-해요/-습니다), particles (은/는, 이/가, 을/를, 에/에서), and expressions.
+                <p id="homeCardKoDesc" class="text-sm text-slate-600 mt-3 leading-relaxed">
+                  Includes a Core Particles &amp; Connectors reference plus grammar checks for polite Haeyoche/Hasipsioche endings (-아요/-어요/-해요/-습니다), particles (은/는, 이/가, 을/를, 에/에서), and past tense.
                 </p>
               </div>
             </div>
             <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-sm font-bold text-[#1d4ed8]">
-              <span>Launch Korean Studio</span>
+              <span id="homeCardKoBtn">Launch Korean Studio</span>
               <span class="group-hover:translate-x-1 transition-transform">→</span>
             </div>
           </button>
 
-          <!-- Classroom Info & Privacy Card -->
+          <!-- Privacy & Local Processing Card -->
           <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-sm flex flex-col justify-between border border-slate-800">
             <div class="space-y-3">
               <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl">
                 🔒
               </div>
-              <h3 class="text-lg font-extrabold tracking-tight">
+              <h3 id="homePrivacyTitle" class="text-lg font-extrabold tracking-tight">
                 100% Local &amp; Student-Safe
               </h3>
-              <p class="text-sm text-slate-300 leading-relaxed">
-                All audio encoding (MP3) and grammar checks run directly inside your browser. Recordings are never uploaded to external servers — students download their files directly to submit on Google Classroom or Canvas.
+              <p id="homePrivacyDesc" class="text-sm text-slate-300 leading-relaxed">
+                All MP3 audio encoding and grammar checks run directly inside your browser. Recordings are never uploaded to external servers — students download their files directly to submit on Google Classroom or Canvas.
               </p>
             </div>
-            <div class="pt-4 mt-4 border-t border-slate-800 text-xs text-slate-400">
+            <div id="homePrivacyFootnote" class="pt-4 mt-4 border-t border-slate-800 text-xs text-slate-400">
               Supports Chrome, Edge, Safari &amp; Chromebook microphones.
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Home View Attribution Footer -->
-      <footer class="pt-4 pb-2 text-center border-t border-slate-200/80">
-        <p class="text-xs sm:text-sm font-medium text-slate-500">
-          Tous droits réservés Monsieur Nan du lycée de Bayside
-        </p>
-      </footer>
     </section>
 
     <!-- ===================================================================== -->
@@ -608,6 +628,30 @@
     <section id="koreanView" class="view-panel hidden"></section>
 
   </main>
+
+  <!-- ======================================================================= -->
+  <!-- PERSISTENT GLOBAL FOOTER (VISIBLE ACROSS ALL VIEWS)                     -->
+  <!-- ======================================================================= -->
+  <footer class="bg-white border-t border-slate-200/90 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center space-y-2">
+      <p id="globalPrivacyFooter" class="text-xs text-slate-500 max-w-3xl mx-auto">
+        Privacy Notice: Audio recording, speech transcription, and grammar analysis occur locally in your browser.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm font-semibold text-slate-700 pt-1">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-[#164b9b]">
+          <span>✉️</span>
+          <span>Support - Contacter moi !</span>
+          <a
+            href="mailto:KNan@schools.nyc.gov"
+            class="underline font-bold hover:text-blue-900 transition"
+          >KNan@schools.nyc.gov</a>
+        </span>
+      </div>
+      <p class="text-xs sm:text-sm font-medium text-slate-500 pt-1">
+        Tous droits réservés Monsieur Nan du lycée de Bayside
+      </p>
+    </div>
+  </footer>
 
   <!-- ======================================================================= -->
   <!-- CUSTOM REATTEMPT CONFIRMATION MODAL (No window.confirm / alert)         -->
@@ -628,7 +672,7 @@
           <h3 id="reattemptModalTitle" class="text-lg font-extrabold text-slate-900">
             Reattempt Recording?
           </h3>
-          <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">
+          <p id="reattemptModalBody" class="text-sm text-slate-600 mt-1.5 leading-relaxed">
             This will erase your current audio recording, live transcription, and grammar feedback so you can record a fresh take from the beginning.
           </p>
         </div>
@@ -637,6 +681,7 @@
       <div class="mt-6 flex items-center justify-end gap-3">
         <button
           type="button"
+          id="cancelReattemptBtn"
           onclick="closeReattemptModal()"
           class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition"
         >
@@ -654,113 +699,685 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- APPLICATION LOGIC: INTEGRATED CHINESE VOCAB, RECORDERS & NAVIGATION     -->
+  <!-- APPLICATION LOGIC: 6-LANGUAGE UI i18n, IC VOCAB, RECORDERS & NAVIGATION -->
   <!-- ======================================================================= -->
   <script>
     /* =========================================================================
-       1. INTEGRATED CHINESE VOL. 1 & 2 (LESSONS 1–20) VOCABULARY DATABASE
+       1. COMPLETE 6-LANGUAGE INTERFACE & INSTRUCTIONS DICTIONARY
+          (English, Français, 中文, Español, 日本語, 한국어)
+       ========================================================================= */
+    const UI_TRANSLATIONS = {
+      en: {
+        headerSubtitle: "World Languages Oral Recording & Live Transcription Studio",
+        uiLangLabel: "Interface:",
+        navHome: "Home",
+        // Home View
+        homeHeroBadge: "Bayside High School • World Languages Studio",
+        homeHeroTitle: "Oral Speaking & Live Transcription Studio",
+        homeHeroDesc: "Designed for Bayside High School language learners in French, Chinese, Spanish, Japanese, and Korean. Record solo presentations or interactive pair dialogues with real-time speech-to-text, receive instant English grammar feedback, and export both your MP3 audio and TXT transcript in one click.",
+        homeCtaChoose: "Choose a Language Studio",
+        homeShowcaseTitle: "Live Studio Preview",
+        homePreview1Voice: "1 Voice",
+        homePreview2Voices: "2 Voices",
+        homeCaptionSolo: "Solo Presentation Mode • Single Speaker Stream",
+        homeCaptionPair: "Pair Dialogue Mode • Alternating Speaker Turns",
+        homeBadge1Title: "Solo & Pair",
+        homeBadge1Desc: "Live speaker labels",
+        homeBadge2Title: "Grammar Check",
+        homeBadge2Desc: "Instant English tips",
+        homeBadge3Title: "MP3 + TXT",
+        homeBadge3Desc: "One-click dual export",
+        homeWorkflowHeading: "Simple 3-Step Classroom Workflow",
+        homeWorkflowSubheading: "Built for Chromebooks, laptops, tablets, and phones — 100% browser-based with no login required.",
+        homeStep1Title: "Choose Language & Mode",
+        homeStep1Desc: "Select your target language studio, pick Independent (1 Student) or Pair Task (2 Students), enter your name(s), and choose your dialect.",
+        homeStep2Title: "Speak with Live Transcription",
+        homeStep2Desc: "Click Start Recording to watch live audio frequency bars and automatic real-time speech transcription. In Pair Mode, press Pass Turn (or Tab) between speakers.",
+        homeStep3Title: "Review Feedback & Download MP3 + TXT",
+        homeStep3Desc: "Listen to your recording, review instant English grammar feedback, reattempt if desired, or download both your MP3 audio and TXT report in one click.",
+        homeGridHeading: "Select Your World Language Studio",
+        homeGridSubheading: "Click any language card below to launch its dedicated speaking recorder and grammar feedback engine.",
+        homeCardFrSub: "French Oral Recording Studio",
+        homeCardFrDesc: "Includes instant French grammar checks for avoir age expressions, être movement verbs in passé composé, vowel elisions (j'), negation (ne...pas), and connectors.",
+        homeCardFrBtn: "Launch French Studio",
+        homeCardZhSub: "Chinese Speaking Recorder • 中文口语录音",
+        homeCardZhDesc: "Features Integrated Chinese L1–20 Vocabulary Boost, Lesson 1–20 browser, and grammar feedback for 没有 vs. 不有, 没 + verb (without 了), 很 + adjective, question words, and 比 comparisons.",
+        homeCardZhBtn: "Launch Chinese Studio",
+        homeCardEsSub: "Spanish Speaking Studio • Grabación Oral",
+        homeCardEsDesc: "Includes a Connectors & Expressions drawer plus instant Spanish grammar checks for ser vs. estar, tener for age and states, gustar constructions, and linking words.",
+        homeCardEsBtn: "Launch Spanish Studio",
+        homeCardJaSub: "Japanese Speaking Studio • 日本語スピーキング録音",
+        homeCardJaDesc: "Includes a Core Particles & Connectors guide plus grammar feedback for polite Desu/Masu endings, core particles (は, が, を, に, で, の), past negative forms, and connectors.",
+        homeCardJaBtn: "Launch Japanese Studio",
+        homeCardKoSub: "Korean Speaking Studio • 한국어 말하기 녹음",
+        homeCardKoDesc: "Includes a Core Particles & Connectors reference plus grammar checks for polite Haeyoche/Hasipsioche endings (-아요/-어요/-해요/-습니다), particles (은/는, 이/가, 을/를, 에/에서), and past tense.",
+        homeCardKoBtn: "Launch Korean Studio",
+        homePrivacyTitle: "100% Local & Student-Safe",
+        homePrivacyDesc: "All MP3 audio encoding and grammar checks run directly inside your browser. Recordings are never uploaded to external servers — students download their files directly to submit on Google Classroom or Canvas.",
+        homePrivacyFootnote: "Supports Chrome, Edge, Safari & Chromebook microphones.",
+        globalPrivacyFooter: "Privacy Notice: Audio recording, speech transcription, and grammar analysis occur locally in your browser.",
+        // Studio Shared Controls & Instructions
+        step1Title: "Step 1 • Task Type & Student Identification",
+        soloTitle: "Independent Task",
+        soloDesc: "1 Student • Individual speaking presentation or monologue",
+        pairTitle: "Pair Task",
+        pairDesc: "2 Students • Interactive dialogue with live turn-taking",
+        student1Label: "Student 1 Full Name",
+        student2Label: "Student 2 Full Name",
+        swapBtn: "Swap Speaker Order",
+        dialectLabel: "Target Dialect / Script",
+        step2Title: "Step 2 • Recording & Live Transcription",
+        noiseLabel: "Classroom Noise Suppression",
+        noiseOn: "ON",
+        noiseOff: "OFF",
+        speakingNow: "Speaking Now",
+        waitingTurn: "Waiting",
+        passTurnBtn: "Pass Turn",
+        startBtn: "Start Recording",
+        stopBtn: "Stop",
+        clearBtn: "Clear",
+        step3Title: "Step 3 • Review, Grammar Feedback & Download",
+        transcriptLabel: "Live Automatic Transcript (Read-Only)",
+        audioPlaybackLabel: "Audio Playback (MP3)",
+        noRecordingYet: "No recording yet",
+        recordingInProgressMeta: "Recording in progress...",
+        feedbackHeading: "Instant English Grammar & Speaking Feedback",
+        strengthsHeading: "What You Did Well",
+        suggestionsHeading: "Targeted Grammar & Fluency Suggestions",
+        reattemptBoxTitle: "Want to try again after reviewing your feedback?",
+        reattemptBoxDesc: "You can erase this attempt and record a fresh take before downloading your files.",
+        reattemptBtn: "Reattempt Recording",
+        downloadBothBtn: "Download Both Files (Audio MP3 + Transcription)",
+        downloadAudioBtn: "Download Audio Only (MP3)",
+        downloadTextBtn: "Download Text Only (TXT)",
+        readyBadge: "Ready",
+        recordingBadge: "Recording",
+        finishedBadge: "Finished",
+        wordSingular: "word",
+        wordPlural: "words",
+        charSingular: "character",
+        charPlural: "characters",
+        // Status Banners
+        bannerInitial: "Enter your name above and click Start Recording when you are ready to speak.",
+        bannerSwapped: "Speaker order swapped.",
+        bannerNameRequired: "Please enter the required student name(s) before starting the recording.",
+        bannerRecordingActive: "Microphone active! Speak clearly into your microphone — live transcription and MP3 capture are running.",
+        bannerTurnPassed: "Turn passed to {name}. Continue speaking!",
+        bannerNoSpeechSupport: "Live speech-to-text is not supported in this browser, but your MP3 audio is recording normally.",
+        bannerMicDenied: "Microphone access denied or unavailable. Please allow microphone permissions in your browser settings and try again.",
+        bannerEncoding: "Encoding your MP3 audio and analyzing your speaking grammar...",
+        bannerNoAudioCaptured: "Recording stopped, but no microphone audio samples were captured.",
+        bannerComplete: "Recording complete! Your {ext} audio and grammar feedback are ready below.",
+        bannerCleared: "Studio cleared and ready for a fresh recording.",
+        // Modal
+        modalTitle: "Reattempt Recording?",
+        modalBody: "This will erase your current audio recording, live transcription, and grammar feedback so you can record a fresh take from the beginning.",
+        modalKeep: "Keep Current Recording",
+        modalConfirm: "Yes, Reattempt"
+      },
+
+      fr: {
+        headerSubtitle: "Studio d'enregistrement oral et de transcription en direct • Langues du monde",
+        uiLangLabel: "Interface :",
+        navHome: "Accueil",
+        homeHeroBadge: "Lycée de Bayside • Studio des Langues du Monde",
+        homeHeroTitle: "Studio d'expression orale et de transcription en direct",
+        homeHeroDesc: "Conçu pour les élèves de langues du lycée de Bayside en français, chinois, espagnol, japonais et coréen. Enregistrez des présentations individuelles ou des dialogues en binôme avec transcription vocale en direct, recevez des conseils de grammaire instantanés et téléchargez vos fichiers MP3 et TXT en un clic.",
+        homeCtaChoose: "Choisir un studio de langue",
+        homeShowcaseTitle: "Aperçu du studio en direct",
+        homePreview1Voice: "1 Voix",
+        homePreview2Voices: "2 Voix",
+        homeCaptionSolo: "Mode Présentation Solo • Flux vocal unique",
+        homeCaptionPair: "Mode Dialogue en Binôme • Alternance des locuteurs",
+        homeBadge1Title: "Solo & Binôme",
+        homeBadge1Desc: "Étiquettes en direct",
+        homeBadge2Title: "Grammaire",
+        homeBadge2Desc: "Conseils instantanés",
+        homeBadge3Title: "MP3 + TXT",
+        homeBadge3Desc: "Double export en 1 clic",
+        homeWorkflowHeading: "Fonctionnement simple en 3 étapes",
+        homeWorkflowSubheading: "Compatible avec Chromebooks, ordinateurs, tablettes et téléphones — 100 % dans le navigateur sans connexion.",
+        homeStep1Title: "Choisir la langue et le mode",
+        homeStep1Desc: "Sélectionnez votre studio de langue, choisissez Tâche individuelle (1 élève) ou Tâche en binôme (2 élèves), saisissez votre nom et choisissez votre dialecte.",
+        homeStep2Title: "Parler avec transcription en direct",
+        homeStep2Desc: "Cliquez sur Démarrer l'enregistrement pour voir les barres de fréquence audio et la transcription automatique. En mode binôme, appuyez sur Passer la parole (ou Tab).",
+        homeStep3Title: "Vérifier les conseils et télécharger MP3 + TXT",
+        homeStep3Desc: "Réécoutez votre enregistrement, consultez les conseils de grammaire, recommencez si besoin, ou téléchargez vos fichiers audio MP3 et texte TXT en un clic.",
+        homeGridHeading: "Sélectionnez votre studio de langue",
+        homeGridSubheading: "Cliquez sur une carte ci-dessous pour ouvrir l'enregistreur vocal et l'analyse grammaticale dédiés.",
+        homeCardFrSub: "Studio d'enregistrement oral en français",
+        homeCardFrDesc: "Vérification grammaticale instantanée : âge avec avoir, verbes de mouvement avec être au passé composé, élision (j'), négation (ne...pas) et connecteurs.",
+        homeCardFrBtn: "Ouvrir le studio Français",
+        homeCardZhSub: "Enregistreur oral chinois • 中文口语录音",
+        homeCardZhDesc: "Inclut le boost de vocabulaire Integrated Chinese L1–20, l'explorateur des leçons 1–20 et la vérification de 没有, 没 + verbe, 很 + adjectif, mots interrogatifs et 比.",
+        homeCardZhBtn: "Ouvrir le studio Chinois",
+        homeCardEsSub: "Studio oral espagnol • Grabación Oral",
+        homeCardEsDesc: "Inclut un guide de connecteurs et d'expressions ainsi que la vérification de ser/estar, tener pour l'âge, gustar et les mots de liaison.",
+        homeCardEsBtn: "Ouvrir le studio Espagnol",
+        homeCardJaSub: "Studio oral japonais • 日本語スピーキング録音",
+        homeCardJaDesc: "Inclut un guide des particules et connecteurs ainsi que l'analyse de la forme polie Desu/Masu, des particules (は, が, を, に, で, の) et du passé négatif.",
+        homeCardJaBtn: "Ouvrir le studio Japonais",
+        homeCardKoSub: "Studio oral coréen • 한국어 말하기 녹음",
+        homeCardKoDesc: "Inclut un guide des particules et connecteurs ainsi que l'analyse des terminaisons polies (-아요/-어요/-해요/-습니다), des particules et du passé.",
+        homeCardKoBtn: "Ouvrir le studio Coréen",
+        homePrivacyTitle: "100 % Local et Sécurisé",
+        homePrivacyDesc: "L'encodage audio MP3 et l'analyse grammaticale s'exécutent directement dans votre navigateur. Aucun enregistrement n'est envoyé sur un serveur externe.",
+        homePrivacyFootnote: "Compatible avec les microphones Chrome, Edge, Safari et Chromebook.",
+        globalPrivacyFooter: "Confidentialité : L'enregistrement audio, la transcription vocale et l'analyse grammaticale s'effectuent localement dans votre navigateur.",
+        step1Title: "Étape 1 • Type de tâche et identification de l'élève",
+        soloTitle: "Tâche individuelle",
+        soloDesc: "1 élève • Présentation orale ou monologue individuel",
+        pairTitle: "Tâche en binôme",
+        pairDesc: "2 élèves • Dialogue interactif avec alternance des tours",
+        student1Label: "Nom complet de l'élève 1",
+        student2Label: "Nom complet de l'élève 2",
+        swapBtn: "Inverser l'ordre des locuteurs",
+        dialectLabel: "Dialecte / Variante linguistique",
+        step2Title: "Étape 2 • Enregistrement et transcription en direct",
+        noiseLabel: "Réduction du bruit de classe",
+        noiseOn: "ACTIVÉ",
+        noiseOff: "DÉSACTIVÉ",
+        speakingNow: "À la parole",
+        waitingTurn: "En attente",
+        passTurnBtn: "Passer la parole",
+        startBtn: "Démarrer l'enregistrement",
+        stopBtn: "Arrêter",
+        clearBtn: "Effacer",
+        step3Title: "Étape 3 • Révision, grammaire et téléchargement",
+        transcriptLabel: "Transcription automatique en direct (lecture seule)",
+        audioPlaybackLabel: "Réécoute audio (MP3)",
+        noRecordingYet: "Aucun enregistrement",
+        recordingInProgressMeta: "Enregistrement en cours...",
+        feedbackHeading: "Retour grammatical et conseils d'expression orale",
+        strengthsHeading: "Points forts réussis",
+        suggestionsHeading: "Suggestions ciblées de grammaire et de fluidité",
+        reattemptBoxTitle: "Voulez-vous réessayer après avoir lu vos conseils ?",
+        reattemptBoxDesc: "Vous pouvez effacer cet essai et enregistrer une nouvelle prise avant de télécharger vos fichiers.",
+        reattemptBtn: "Recommencer l'enregistrement",
+        downloadBothBtn: "Télécharger les 2 fichiers (Audio MP3 + Transcription)",
+        downloadAudioBtn: "Télécharger l'audio seul (MP3)",
+        downloadTextBtn: "Télécharger le texte seul (TXT)",
+        readyBadge: "Prêt",
+        recordingBadge: "En direct",
+        finishedBadge: "Terminé",
+        wordSingular: "mot",
+        wordPlural: "mots",
+        charSingular: "caractère",
+        charPlural: "caractères",
+        bannerInitial: "Entrez votre nom ci-dessus et cliquez sur Démarrer l'enregistrement lorsque vous êtes prêt(e) à parler.",
+        bannerSwapped: "L'ordre des locuteurs a été inversé.",
+        bannerNameRequired: "Veuillez saisir le nom de l'élève (ou des élèves) avant de démarrer l'enregistrement.",
+        bannerRecordingActive: "Microphone actif ! Parlez clairement — la transcription en direct et l'enregistrement MP3 sont en cours.",
+        bannerTurnPassed: "Parole passée à {name}. Continuez à parler !",
+        bannerNoSpeechSupport: "La reconnaissance vocale en direct n'est pas prise en charge par ce navigateur, mais votre audio MP3 est bien enregistré.",
+        bannerMicDenied: "Accès au microphone refusé ou indisponible. Veuillez autoriser le microphone dans les paramètres du navigateur.",
+        bannerEncoding: "Encodage de votre fichier audio MP3 et analyse de votre grammaire...",
+        bannerNoAudioCaptured: "Enregistrement arrêté, mais aucun signal audio n'a été capturé.",
+        bannerComplete: "Enregistrement terminé ! Votre audio {ext} et vos conseils de grammaire sont prêts ci-dessous.",
+        bannerCleared: "Studio effacé et prêt pour un nouvel enregistrement.",
+        modalTitle: "Recommencer l'enregistrement ?",
+        modalBody: "Cela effacera votre enregistrement audio actuel, la transcription en direct et les conseils de grammaire afin de recommencer à zéro.",
+        modalKeep: "Conserver l'enregistrement",
+        modalConfirm: "Oui, recommencer"
+      },
+
+      zh: {
+        headerSubtitle: "Bayside 高中世界语言口语录音与实时转写工作室",
+        uiLangLabel: "界面语言：",
+        navHome: "首页",
+        homeHeroBadge: "Bayside 高中 • 世界语言口语工作室",
+        homeHeroTitle: "口语录音与实时语音转写工作室",
+        homeHeroDesc: "专为 Bayside 高中法语、中文、西班牙语、日语和韩语学习者打造。支持个人演讲或双人对话实时语音转写、即时语法反馈，并可一键导出 MP3 音频和 TXT 文本。",
+        homeCtaChoose: "选择语言录音室",
+        homeShowcaseTitle: "录音室实时预览",
+        homePreview1Voice: "单人模式",
+        homePreview2Voices: "双人模式",
+        homeCaptionSolo: "个人演讲模式 • 单声道实时波形",
+        homeCaptionPair: "双人对话模式 • 说话人轮流切换",
+        homeBadge1Title: "单人与双人",
+        homeBadge1Desc: "实时说话人标签",
+        homeBadge2Title: "语法反馈",
+        homeBadge2Desc: "即时语法建议",
+        homeBadge3Title: "MP3 + TXT",
+        homeBadge3Desc: "一键双文件导出",
+        homeWorkflowHeading: "简单三步课堂录音流程",
+        homeWorkflowSubheading: "完美支持 Chromebook、笔记本电脑、平板和手机——无需登录，100% 浏览器本地运行。",
+        homeStep1Title: "选择语言与任务模式",
+        homeStep1Desc: "选择目标语言录音室，选择“个人任务（1名学生）”或“双人任务（2名学生）”，输入姓名并选择方言或字体。",
+        homeStep2Title: "开始录音与实时转写",
+        homeStep2Desc: "点击“开始录音”即可查看实时音频频谱条与自动语音转写。在双人模式下，可点击“切换说话人”（或按 Tab 键）切换发言者。",
+        homeStep3Title: "查看语法反馈并下载 MP3 + TXT",
+        homeStep3Desc: "回放录音、查看即时语法建议、随时重新录制，或一键同时下载 MP3 音频文件和 TXT 转写报告。",
+        homeGridHeading: "选择您的世界语言录音室",
+        homeGridSubheading: "点击下方任意语言卡片，启动专属口语录音与语法分析系统。",
+        homeCardFrSub: "法语口语录音室 • Enregistrement oral Français",
+        homeCardFrDesc: "提供法语即时语法检查：avoir 年龄表达、être 复合过去时、元音省音 (j')、否定结构 (ne...pas) 及连接词。",
+        homeCardFrBtn: "进入法语录音室",
+        homeCardZhSub: "中文口语录音室 • Chinese Speaking Recorder",
+        homeCardZhDesc: "内置《中文听说读写》第1–20课词汇增强与词表浏览器，自动检查“没有/不有”、“没+动词”、“很+形容词”、疑问词及“比”字句。",
+        homeCardZhBtn: "进入中文录音室",
+        homeCardEsSub: "西班牙语口语录音室 • Grabación Oral",
+        homeCardEsDesc: "内置连接词与常用表达参考，自动检查 ser 与 estar 用法、tener 年龄表达、gustar 结构及衔接词。",
+        homeCardEsBtn: "进入西班牙语录音室",
+        homeCardJaSub: "日语口语录音室 • 日本語スピーキング録音",
+        homeCardJaDesc: "内置核心助词与连接词指南，自动检查です/ます敬体、核心助词（は、が、を、に、で、の）、过去否定及连接词。",
+        homeCardJaBtn: "进入日语录音室",
+        homeCardKoSub: "韩语口语录音室 • 한국어 말하기 녹음",
+        homeCardKoDesc: "内置核心助词与连接词参考，自动检查敬语词尾（-아요/-어요/-해요/-습니다）、助词（은/는, 이/가, 을/를, 에/에서）及过去时。",
+        homeCardKoBtn: "进入韩语录音室",
+        homePrivacyTitle: "100% 本地处理与学生隐私保护",
+        homePrivacyDesc: "所有 MP3 音频编码与语法分析均在浏览器本地完成，录音绝不上传至外部服务器，学生可直接下载文件提交至课堂平台。",
+        homePrivacyFootnote: "支持 Chrome、Edge、Safari 及 Chromebook 麦克风。",
+        globalPrivacyFooter: "隐私声明：音频录制、语音转写和语法分析均在您的浏览器本地进行。",
+        step1Title: "第 1 步 • 任务类型与学生信息",
+        soloTitle: "个人任务 (Independent Task)",
+        soloDesc: "1 名学生 • 个人口语陈述或演讲",
+        pairTitle: "双人任务 (Pair Task)",
+        pairDesc: "2 名学生 • 实时轮流切换说话人的对话录音",
+        student1Label: "学生 1 姓名",
+        student2Label: "学生 2 姓名",
+        swapBtn: "交换说话人顺序",
+        dialectLabel: "目标方言 / 字体选择",
+        step2Title: "第 2 步 • 录音与实时语音转写",
+        noiseLabel: "教室背景降噪",
+        noiseOn: "开启",
+        noiseOff: "关闭",
+        speakingNow: "正在发言",
+        waitingTurn: "等待发言",
+        passTurnBtn: "切换说话人",
+        startBtn: "开始录音",
+        stopBtn: "停止录音",
+        clearBtn: "清除内容",
+        step3Title: "第 3 步 • 检查文本、语法反馈与下载",
+        transcriptLabel: "实时自动转写文本（只读）",
+        audioPlaybackLabel: "音频回放 (MP3)",
+        noRecordingYet: "尚无录音",
+        recordingInProgressMeta: "正在录音中...",
+        feedbackHeading: "即时语法与口语表达反馈",
+        strengthsHeading: "表现优秀的亮点",
+        suggestionsHeading: "语法与表达改进建议",
+        reattemptBoxTitle: "查看反馈后想再试一次吗？",
+        reattemptBoxDesc: "在下载文件之前，您可以清除本次录音并重新录制一遍。",
+        reattemptBtn: "重新录制",
+        downloadBothBtn: "同时下载两个文件 (MP3 音频 + TXT 文本)",
+        downloadAudioBtn: "仅下载音频 (MP3)",
+        downloadTextBtn: "仅下载文本 (TXT)",
+        readyBadge: "准备就绪",
+        recordingBadge: "正在录音",
+        finishedBadge: "已完成",
+        wordSingular: "词",
+        wordPlural: "词",
+        charSingular: "字",
+        charPlural: "字",
+        bannerInitial: "请在上方输入您的姓名，准备好后点击“开始录音”。",
+        bannerSwapped: "已交换说话人顺序。",
+        bannerNameRequired: "开始录音前，请先填写必填的学生姓名。",
+        bannerRecordingActive: "麦克风已开启！请清晰说话，系统正在进行实时转写和 MP3 录音。",
+        bannerTurnPassed: "已切换至 {name} 发言，请继续说话！",
+        bannerNoSpeechSupport: "当前浏览器不支持实时语音转文字，但您的 MP3 音频仍在正常录制中。",
+        bannerMicDenied: "无法访问麦克风，请在浏览器设置中允许麦克风权限后重试。",
+        bannerEncoding: "正在编码 MP3 音频并分析口语语法...",
+        bannerNoAudioCaptured: "录音已停止，但未检测到麦克风音频信号。",
+        bannerComplete: "录音完成！您的 {ext} 音频和语法反馈已在下方生成。",
+        bannerCleared: "已清除所有内容，可以开始新的录音。",
+        modalTitle: "确定要重新录制吗？",
+        modalBody: "此操作将清除当前的音频录音、实时转写文本和语法反馈，以便您从头开始重新录制。",
+        modalKeep: "保留当前录音",
+        modalConfirm: "确认重新录制"
+      },
+
+      es: {
+        headerSubtitle: "Estudio de Grabación Oral y Transcripción en Vivo • Lenguas del Mundo",
+        uiLangLabel: "Interfaz:",
+        navHome: "Inicio",
+        homeHeroBadge: "Bayside High School • Estudio de Lenguas del Mundo",
+        homeHeroTitle: "Estudio de Expresión Oral y Transcripción en Vivo",
+        homeHeroDesc: "Diseñado para estudiantes de idiomas de Bayside High School en francés, chino, español, japonés y coreano. Graba presentaciones individuales o diálogos en pareja con transcripción en tiempo real, recibe comentarios gramaticales al instante y descarga tu audio MP3 y transcripción TXT con un clic.",
+        homeCtaChoose: "Elegir un estudio de idiomas",
+        homeShowcaseTitle: "Vista previa del estudio",
+        homePreview1Voice: "1 Voz",
+        homePreview2Voices: "2 Voces",
+        homeCaptionSolo: "Modo Presentación Individual • Flujo de un hablante",
+        homeCaptionPair: "Modo Diálogo en Pareja • Turnos alternos",
+        homeBadge1Title: "Solo y Pareja",
+        homeBadge1Desc: "Etiquetas en vivo",
+        homeBadge2Title: "Gramática",
+        homeBadge2Desc: "Consejos al instante",
+        homeBadge3Title: "MP3 + TXT",
+        homeBadge3Desc: "Doble descarga en 1 clic",
+        homeWorkflowHeading: "Flujo de trabajo en 3 sencillos pasos",
+        homeWorkflowSubheading: "Compatible con Chromebooks, portátiles, tabletas y teléfonos — 100 % en el navegador sin iniciar sesión.",
+        homeStep1Title: "Elige idioma y modo",
+        homeStep1Desc: "Selecciona tu estudio de idiomas, elige Tarea individual (1 estudiante) o Tarea en pareja (2 estudiantes), escribe tu nombre y selecciona el dialecto.",
+        homeStep2Title: "Habla con transcripción en vivo",
+        homeStep2Desc: "Haz clic en Iniciar grabación para ver las barras de frecuencia de audio y la transcripción automática. En modo pareja, pulsa Pasar turno (o Tab).",
+        homeStep3Title: "Revisa comentarios y descarga MP3 + TXT",
+        homeStep3Desc: "Escucha tu grabación, revisa los consejos gramaticales, vuelve a intentarlo si deseas o descarga ambos archivos (MP3 y TXT) con un clic.",
+        homeGridHeading: "Selecciona tu estudio de idiomas",
+        homeGridSubheading: "Haz clic en cualquier tarjeta para abrir su grabadora oral y motor de revisión gramatical.",
+        homeCardFrSub: "Estudio de Grabación Oral en Francés",
+        homeCardFrDesc: "Incluye revisión gramatical de francés: edad con avoir, verbos de movimiento con être en passé composé, elisión (j'), negación (ne...pas) y conectores.",
+        homeCardFrBtn: "Abrir estudio de Francés",
+        homeCardZhSub: "Grabadora Oral en Chino • 中文口语录音",
+        homeCardZhDesc: "Incluye refuerzo de vocabulario Integrated Chinese L1–20, explorador de lecciones 1–20 y revisión de 没有, 没 + verbo, 很 + adjetivo, preguntas y 比.",
+        homeCardZhBtn: "Abrir estudio de Chino",
+        homeCardEsSub: "Estudio de Grabación Oral en Español",
+        homeCardEsDesc: "Incluye guía de conectores y expresiones junto con revisión instantánea de ser vs. estar, tener para la edad, gustar y palabras de enlace.",
+        homeCardEsBtn: "Abrir estudio de Español",
+        homeCardJaSub: "Estudio Oral en Japonés • 日本語スピーキング録音",
+        homeCardJaDesc: "Incluye guía de partículas y conectores más revisión de terminaciones corteses Desu/Masu, partículas (は, が, を, に, で, の) y pasado negativo.",
+        homeCardJaBtn: "Abrir estudio de Japonés",
+        homeCardKoSub: "Estudio Oral en Coreano • 한국어 말하기 녹음",
+        homeCardKoDesc: "Incluye referencia de partículas y conectores más revisión de terminaciones corteses (-아요/-어요/-해요/-습니다), partículas y tiempo pasado.",
+        homeCardKoBtn: "Abrir estudio de Coreano",
+        homePrivacyTitle: "100 % Local y Seguro para Estudiantes",
+        homePrivacyDesc: "Toda la codificación MP3 y el análisis gramatical ocurren dentro de tu navegador. Las grabaciones nunca se suben a servidores externos.",
+        homePrivacyFootnote: "Compatible con micrófonos de Chrome, Edge, Safari y Chromebook.",
+        globalPrivacyFooter: "Aviso de privacidad: La grabación de audio, la transcripción de voz y el análisis gramatical se realizan localmente en tu navegador.",
+        step1Title: "Paso 1 • Tipo de tarea e identificación del estudiante",
+        soloTitle: "Tarea individual",
+        soloDesc: "1 estudiante • Presentación o monólogo oral",
+        pairTitle: "Tarea en pareja",
+        pairDesc: "2 estudiantes • Diálogo interactivo con cambio de turnos",
+        student1Label: "Nombre completo del estudiante 1",
+        student2Label: "Nombre completo del estudiante 2",
+        swapBtn: "Invertir orden de hablantes",
+        dialectLabel: "Dialecto / Variante lingüística",
+        step2Title: "Paso 2 • Grabación y transcripción en vivo",
+        noiseLabel: "Supresión de ruido del aula",
+        noiseOn: "ACTIVADO",
+        noiseOff: "DESACTIVADO",
+        speakingNow: "Hablando ahora",
+        waitingTurn: "En espera",
+        passTurnBtn: "Pasar turno",
+        startBtn: "Iniciar grabación",
+        stopBtn: "Detener",
+        clearBtn: "Borrar",
+        step3Title: "Paso 3 • Revisión, gramática y descarga",
+        transcriptLabel: "Transcripción automática en vivo (solo lectura)",
+        audioPlaybackLabel: "Reproducción de audio (MP3)",
+        noRecordingYet: "Sin grabación todavía",
+        recordingInProgressMeta: "Grabación en curso...",
+        feedbackHeading: "Retroalimentación instantánea de gramática y expresión oral",
+        strengthsHeading: "Lo que hiciste bien",
+        suggestionsHeading: "Sugerencias de gramática y fluidez",
+        reattemptBoxTitle: "¿Quieres intentarlo de nuevo después de revisar tus consejos?",
+        reattemptBoxDesc: "Puedes borrar este intento y grabar una nueva toma antes de descargar tus archivos.",
+        reattemptBtn: "Reintentar grabación",
+        downloadBothBtn: "Descargar ambos archivos (Audio MP3 + Transcripción)",
+        downloadAudioBtn: "Descargar solo el audio (MP3)",
+        downloadTextBtn: "Descargar solo el texto (TXT)",
+        readyBadge: "Listo",
+        recordingBadge: "En vivo",
+        finishedBadge: "Terminado",
+        wordSingular: "palabra",
+        wordPlural: "palabras",
+        charSingular: "carácter",
+        charPlural: "caracteres",
+        bannerInitial: "Escribe tu nombre arriba y haz clic en Iniciar grabación cuando estés listo para hablar.",
+        bannerSwapped: "Se ha invertido el orden de los hablantes.",
+        bannerNameRequired: "Por favor, ingresa el nombre del estudiante antes de iniciar la grabación.",
+        bannerRecordingActive: "¡Micrófono activo! Habla con claridad — la transcripción en vivo y la captura MP3 están activas.",
+        bannerTurnPassed: "Turno pasado a {name}. ¡Continúa hablando!",
+        bannerNoSpeechSupport: "La transcripción en vivo no es compatible con este navegador, pero tu audio MP3 se está grabando correctamente.",
+        bannerMicDenied: "Acceso al micrófono denegado o no disponible. Permite el acceso al micrófono en la configuración de tu navegador.",
+        bannerEncoding: "Codificando tu audio MP3 y analizando tu gramática...",
+        bannerNoAudioCaptured: "Grabación detenida, pero no se capturaron muestras de audio.",
+        bannerComplete: "¡Grabación completada! Tu audio {ext} y los comentarios gramaticales están listos abajo.",
+        bannerCleared: "Estudio borrado y listo para una nueva grabación.",
+        modalTitle: "¿Reintentar la grabación?",
+        modalBody: "Esto borrará tu grabación de audio actual, la transcripción en vivo y los comentarios gramaticales para comenzar de nuevo.",
+        modalKeep: "Conservar grabación",
+        modalConfirm: "Sí, reintentar"
+      },
+
+      ja: {
+        headerSubtitle: "Bayside 高校 外国語スピーキング録音＆リアルタイム文字起こしスタジオ",
+        uiLangLabel: "表示言語：",
+        navHome: "ホーム",
+        homeHeroBadge: "Bayside 高校 • 外国語スピーキングスタジオ",
+        homeHeroTitle: "スピーキング録音＆リアルタイム文字起こしスタジオ",
+        homeHeroDesc: "Bayside 高校のフランス語・中国語・スペイン語・日本語・韓国語学習者のための録音スタジオです。個人発表やペア対話をリアルタイム文字起こし付きで録音し、即座に文法フィードバックを確認して MP3 音声と TXT テキストを一括ダウンロードできます。",
+        homeCtaChoose: "言語スタジオを選択",
+        homeShowcaseTitle: "スタジオライブプレビュー",
+        homePreview1Voice: "1人モード",
+        homePreview2Voices: "2人モード",
+        homeCaptionSolo: "個人プレゼンモード • シングル音声ストリーム",
+        homeCaptionPair: "ペア対話モード • 話者交代表示",
+        homeBadge1Title: "個人＆ペア",
+        homeBadge1Desc: "リアルタイム話者表示",
+        homeBadge2Title: "文法チェック",
+        homeBadge2Desc: "即時フィードバック",
+        homeBadge3Title: "MP3 + TXT",
+        homeBadge3Desc: "ワンクリック同時保存",
+        homeWorkflowHeading: "シンプルな3ステップ学習フロー",
+        homeWorkflowSubheading: "Chromebook・PC・タブレット・スマートフォン対応 — ログイン不要でブラウザ上で完結します。",
+        homeStep1Title: "言語とタスク形式を選択",
+        homeStep1Desc: "学習言語のスタジオを選び、個人タスク（1名）またはペアタスク（2名）を選択して氏名を入力します。",
+        homeStep2Title: "音声波形とリアルタイム文字起こしで録音",
+        homeStep2Desc: "「録音開始」をクリックすると周波数バーと自動文字起こしが動作します。ペアモードでは「交代する」（または Tab キー）で話者を切り替えます。",
+        homeStep3Title: "フィードバック確認と MP3 + TXT ダウンロード",
+        homeStep3Desc: "録音を再生し、文法アドバイスを確認して必要に応じて録り直すか、MP3 音声と TXT レポートをワンクリックで保存します。",
+        homeGridHeading: "外国語スタジオを選択してください",
+        homeGridSubheading: "下の言語カードをクリックすると、専用のスピーキング録音＆文法チェック画面が開きます。",
+        homeCardFrSub: "フランス語スピーキング録音スタジオ",
+        homeCardFrDesc: "avoir を使った年齢表現、移動動詞の être 複合過去、エリジオン (j')、否定形 (ne...pas)、接続詞を自動チェックします。",
+        homeCardFrBtn: "フランス語スタジオを開く",
+        homeCardZhSub: "中国語スピーキング録音 • 中文口语录音",
+        homeCardZhDesc: "Integrated Chinese L1–20 語彙ブースト・単語帳を搭載し、没有/不有、没+動詞、很+形容詞、疑問詞、比構文をチェックします。",
+        homeCardZhBtn: "中国語スタジオを開く",
+        homeCardEsSub: "スペイン語スピーキング録音 • Grabación Oral",
+        homeCardEsDesc: "接続詞・表現ガイド付き。ser と estar の使い分け、tener による年齢表現、gustar 構文などをチェックします。",
+        homeCardEsBtn: "スペイン語スタジオを開く",
+        homeCardJaSub: "日本語スピーキング録音スタジオ",
+        homeCardJaDesc: "基本助詞と接続詞ガイド付き。です・ます調の丁寧体、助詞（は・が・を・に・で・の）、過去否定形、接続表現をチェックします。",
+        homeCardJaBtn: "日本語スタジオを開く",
+        homeCardKoSub: "韓国語スピーキング録音 • 한국어 말하기 녹음",
+        homeCardKoDesc: "基本助詞と接続詞リファレンス付き。丁寧語尾（-아요/-어요/-해요/-습니다）、助詞（은/는, 이/가, 을/를, 에/에서）、過去形をチェックします。",
+        homeCardKoBtn: "韓国語スタジオを開く",
+        homePrivacyTitle: "100% ローカル処理で安心・安全",
+        homePrivacyDesc: "MP3 音声エンコードと文法チェックはすべてブラウザ内で直接実行されます。音声が外部サーバーに送信されることはありません。",
+        homePrivacyFootnote: "Chrome・Edge・Safari・Chromebook のマイクに対応しています。",
+        globalPrivacyFooter: "プライバシー通知：音声録音、文字起こし、文法分析はすべてブラウザ内でローカルに実行されます。",
+        step1Title: "ステップ 1 • タスクの種類と生徒情報",
+        soloTitle: "個人タスク (Independent Task)",
+        soloDesc: "生徒1名 • スピーチ・プレゼンテーション",
+        pairTitle: "ペアタスク (Pair Task)",
+        pairDesc: "生徒2名 • 交代制の対話・ロールプレイ",
+        student1Label: "生徒 1 の氏名",
+        student2Label: "生徒 2 の氏名",
+        swapBtn: "話者の順番を入れ替える",
+        dialectLabel: "言語・地域設定",
+        step2Title: "ステップ 2 • 録音とリアルタイム文字起こし",
+        noiseLabel: "教室の雑音抑制",
+        noiseOn: "オン",
+        noiseOff: "オフ",
+        speakingNow: "発言中",
+        waitingTurn: "待機中",
+        passTurnBtn: "交代する",
+        startBtn: "録音開始",
+        stopBtn: "停止",
+        clearBtn: "クリア",
+        step3Title: "ステップ 3 • 確認・文法フィードバック・ダウンロード",
+        transcriptLabel: "自動リアルタイム文字起こし（読み取り専用）",
+        audioPlaybackLabel: "音声再生 (MP3)",
+        noRecordingYet: "録音データなし",
+        recordingInProgressMeta: "録音中...",
+        feedbackHeading: "即時文法＆スピーキングフィードバック",
+        strengthsHeading: "良かった点",
+        suggestionsHeading: "文法と表現の改善アドバイス",
+        reattemptBoxTitle: "フィードバックを確認してもう一度録音しますか？",
+        reattemptBoxDesc: "ファイルをダウンロードする前に、現在の録音を消去して最初から録り直すことができます。",
+        reattemptBtn: "録り直す",
+        downloadBothBtn: "両方のファイルをダウンロード (MP3 音声 + TXT テキスト)",
+        downloadAudioBtn: "音声のみダウンロード (MP3)",
+        downloadTextBtn: "テキストのみダウンロード (TXT)",
+        readyBadge: "準備完了",
+        recordingBadge: "録音中",
+        finishedBadge: "完了",
+        wordSingular: "語",
+        wordPlural: "語",
+        charSingular: "文字",
+        charPlural: "文字",
+        bannerInitial: "上に氏名を入力し、準備ができたら「録音開始」をクリックしてください。",
+        bannerSwapped: "話者の順番を入れ替えました。",
+        bannerNameRequired: "録音を開始する前に、必須の生徒氏名を入力してください。",
+        bannerRecordingActive: "マイクが有効です！はっきりと話してください。リアルタイム文字起こしと MP3 録音を実行中です。",
+        bannerTurnPassed: "{name} さんに交代しました。続けて話してください！",
+        bannerNoSpeechSupport: "このブラウザはリアルタイム文字起こしに非対応ですが、MP3 音声は正常に録音されています。",
+        bannerMicDenied: "マイクへのアクセスが拒否されたか利用できません。ブラウザの設定でマイクを許可してください。",
+        bannerEncoding: "MP3 音声のエンコードと文法分析を行っています...",
+        bannerNoAudioCaptured: "録音を停止しましたが、マイク音声が検出されませんでした。",
+        bannerComplete: "録音が完了しました！{ext} 音声と文法フィードバックが下に表示されています。",
+        bannerCleared: "内容をクリアしました。新しい録音の準備ができています。",
+        modalTitle: "録音をやり直しますか？",
+        modalBody: "現在の音声録音、リアルタイム文字起こし、文法フィードバックが消去され、最初から新しく録音します。",
+        modalKeep: "現在の録音を保持",
+        modalConfirm: "はい、やり直す"
+      },
+
+      ko: {
+        headerSubtitle: "Bayside 고등학교 세계 언어 말하기 녹음 및 실시간 받아쓰기 스튜디오",
+        uiLangLabel: "인터페이스 언어:",
+        navHome: "홈",
+        homeHeroBadge: "Bayside 고등학교 • 세계 언어 말하기 스튜디오",
+        homeHeroTitle: "말하기 녹음 및 실시간 받아쓰기 스튜디오",
+        homeHeroDesc: "Bayside 고등학교의 프랑스어, 중국어, 스페인어, 일본어, 한국어 학습자를 위해 제작되었습니다. 개인 발표나 짝 대화를 실시간 받아쓰기와 함께 녹음하고, 즉각적인 문법 피드백을 받은 후 MP3 오디오와 TXT 텍스트를 한 번에 다운로드하세요.",
+        homeCtaChoose: "언어 스튜디오 선택하기",
+        homeShowcaseTitle: "스튜디오 실시간 미리보기",
+        homePreview1Voice: "1인 모드",
+        homePreview2Voices: "2인 모드",
+        homeCaptionSolo: "개인 발표 모드 • 단일 화자 스트림",
+        homeCaptionPair: "짝 대화 모드 • 화자 교대 전환",
+        homeBadge1Title: "개인 및 짝 활동",
+        homeBadge1Desc: "실시간 화자 표시",
+        homeBadge2Title: "문법 피드백",
+        homeBadge2Desc: "즉각적인 문법 조언",
+        homeBadge3Title: "MP3 + TXT",
+        homeBadge3Desc: "원클릭 동시 다운로드",
+        homeWorkflowHeading: "간편한 3단계 수업 녹음 절차",
+        homeWorkflowSubheading: "크롬북, 노트북, 태블릿, 스마트폰 완벽 지원 — 로그인 없이 브라우저에서 100% 작동합니다.",
+        homeStep1Title: "언어 및 과제 유형 선택",
+        homeStep1Desc: "목표 언어 스튜디오를 선택하고 개별 과제(학생 1명) 또는 짝 활동(학생 2명)을 고른 뒤 이름과 방언을 선택하세요.",
+        homeStep2Title: "실시간 받아쓰기와 함께 말하기",
+        homeStep2Desc: "'녹음 시작'을 누르면 오디오 주파수 막대와 자동 받아쓰기가 작동합니다. 짝 모드에서는 '순서 넘기기'(또는 Tab 키)로 화자를 전환합니다.",
+        homeStep3Title: "피드백 확인 및 MP3 + TXT 다운로드",
+        homeStep3Desc: "녹음을 다시 듣고 문법 피드백을 확인한 뒤 필요하면 다시 녹음하거나, MP3 오디오와 TXT 보고서를 한 번에 다운로드하세요.",
+        homeGridHeading: "세계 언어 스튜디오를 선택하세요",
+        homeGridSubheading: "아래 언어 카드를 클릭하면 전용 말하기 녹음기와 문법 분석 도구가 열립니다.",
+        homeCardFrSub: "프랑스어 말하기 녹음 스튜디오",
+        homeCardFrDesc: "avoir 나이 표현, 이동 동사 être 복합과거, 모음 축약(j'), 부정문(ne...pas), 연결어 문법을 자동으로 점검합니다.",
+        homeCardFrBtn: "프랑스어 스튜디오 열기",
+        homeCardZhSub: "중국어 말하기 녹음 • 中文口语录音",
+        homeCardZhDesc: "Integrated Chinese 1–20과 어휘 부스트 및 단어장을 제공하며 没有/不有, 没+동사, 很+형용사, 의문사, 比 비교문을 점검합니다.",
+        homeCardZhBtn: "중국어 스튜디오 열기",
+        homeCardEsSub: "스페인어 말하기 녹음 • Grabación Oral",
+        homeCardEsDesc: "연결어 및 표현 가이드와 함께 ser/estar 구분, tener 나이 표현, gustar 구문, 연결 표현을 즉시 점검합니다.",
+        homeCardEsBtn: "스페인어 스튜디오 열기",
+        homeCardJaSub: "일본어 말하기 녹음 • 日本語スピーキング録音",
+        homeCardJaDesc: "핵심 조사 및 연결어 가이드를 제공하며 정중체(です/ます), 조사(は, が, を, に, で, の), 과거 부정형을 점검합니다.",
+        homeCardJaBtn: "일본어 스튜디오 열기",
+        homeCardKoSub: "한국어 말하기 녹음 스튜디오",
+        homeCardKoDesc: "핵심 조사 및 연결어 가이드를 제공하며 해요체/하십시오체 어미(-아요/-어요/-해요/-습니다), 조사(은/는, 이/가, 을/를, 에/에서), 과거 시제를 점검합니다.",
+        homeCardKoBtn: "한국어 스튜디오 열기",
+        homePrivacyTitle: "100% 로컬 처리 및 학생 개인정보 보호",
+        homePrivacyDesc: "모든 MP3 오디오 인코딩과 문법 분석은 브라우저 내부에서만 실행됩니다. 녹음 파일은 외부 서버로 절대 전송되지 않습니다.",
+        homePrivacyFootnote: "Chrome, Edge, Safari 및 Chromebook 마이크를 지원합니다.",
+        globalPrivacyFooter: "개인정보 안내: 오디오 녹음, 음성 받아쓰기 및 문법 분석은 모두 사용자의 브라우저 내에서 로컬로 처리됩니다.",
+        step1Title: "1단계 • 과제 유형 및 학생 정보",
+        soloTitle: "개별 과제 (Independent Task)",
+        soloDesc: "학생 1명 • 개인 말하기 발표 또는 독백",
+        pairTitle: "짝 활동 과제 (Pair Task)",
+        pairDesc: "학생 2명 • 순서 교대 대화 녹음",
+        student1Label: "학생 1 이름",
+        student2Label: "학생 2 이름",
+        swapBtn: "발화 순서 바꾸기",
+        dialectLabel: "목표 방언 / 언어 설정",
+        step2Title: "2단계 • 녹음 및 실시간 받아쓰기",
+        noiseLabel: "교실 배경 소음 억제",
+        noiseOn: "켜짐",
+        noiseOff: "꺼짐",
+        speakingNow: "발화 중",
+        waitingTurn: "대기 중",
+        passTurnBtn: "순서 넘기기",
+        startBtn: "녹음 시작",
+        stopBtn: "중지",
+        clearBtn: "지우기",
+        step3Title: "3단계 • 검토, 문법 피드백 및 다운로드",
+        transcriptLabel: "자동 실시간 받아쓰기 (읽기 전용)",
+        audioPlaybackLabel: "오디오 재생 (MP3)",
+        noRecordingYet: "아직 녹음 없음",
+        recordingInProgressMeta: "녹음 진행 중...",
+        feedbackHeading: "즉각적인 문법 및 말하기 피드백",
+        strengthsHeading: "잘한 점",
+        suggestionsHeading: "문법 및 유창성 향상 제안",
+        reattemptBoxTitle: "피드백을 확인한 후 다시 녹음해 보시겠어요?",
+        reattemptBoxDesc: "파일을 다운로드하기 전에 현재 녹음을 지우고 처음부터 새로 녹음할 수 있습니다.",
+        reattemptBtn: "다시 녹음하기",
+        downloadBothBtn: "두 파일 모두 다운로드 (MP3 오디오 + TXT 텍스트)",
+        downloadAudioBtn: "오디오만 다운로드 (MP3)",
+        downloadTextBtn: "텍스트만 다운로드 (TXT)",
+        readyBadge: "준비됨",
+        recordingBadge: "녹음 중",
+        finishedBadge: "완료됨",
+        wordSingular: "단어",
+        wordPlural: "단어",
+        charSingular: "글자",
+        charPlural: "글자",
+        bannerInitial: "위에 이름을 입력하고 말할 준비가 되면 '녹음 시작'을 클릭하세요.",
+        bannerSwapped: "발화 순서가 서로 바뀌었습니다.",
+        bannerNameRequired: "녹음을 시작하기 전에 필수 학생 이름을 입력해 주세요.",
+        bannerRecordingActive: "마이크가 활성화되었습니다! 또렷하게 말씀해 주세요 — 실시간 받아쓰기와 MP3 녹음이 진행 중입니다.",
+        bannerTurnPassed: "{name} 학생에게 순서가 넘어갔습니다. 계속 말씀하세요!",
+        bannerNoSpeechSupport: "현재 브라우저에서는 실시간 음성 인식이 지원되지 않지만 MP3 오디오는 정상적으로 녹음되고 있습니다.",
+        bannerMicDenied: "마이크 접근이 거부되었거나 사용할 수 없습니다. 브라우저 설정에서 마이크 권한을 허용해 주세요.",
+        bannerEncoding: "MP3 오디오를 인코딩하고 말하기 문법을 분석하는 중입니다...",
+        bannerNoAudioCaptured: "녹음이 중지되었지만 마이크 오디오 신호가 감지되지 않았습니다.",
+        bannerComplete: "녹음이 완료되었습니다! 아래에서 {ext} 오디오와 문법 피드백을 확인하세요.",
+        bannerCleared: "모든 내용이 지워졌으며 새 녹음을 시작할 준비가 되었습니다.",
+        modalTitle: "녹음을 다시 시도하시겠습니까?",
+        modalBody: "현재 오디오 녹음, 실시간 받아쓰기 및 문법 피드백이 삭제되며 처음부터 새로 녹음하게 됩니다.",
+        modalKeep: "현재 녹음 유지",
+        modalConfirm: "예, 다시 녹음"
+      }
+    };
+
+    let currentUiLang = 'en';
+
+    /* Helper to retrieve a translated string in the active UI language */
+    function t(key, vars = {}) {
+      const dict = UI_TRANSLATIONS[currentUiLang] || UI_TRANSLATIONS.en;
+      let text = dict[key] !== undefined ? dict[key] : (UI_TRANSLATIONS.en[key] || key);
+      for (const [k, v] of Object.entries(vars)) {
+        text = text.replace(`{${k}}`, v);
+      }
+      return text;
+    }
+
+    /* =========================================================================
+       2. INTEGRATED CHINESE VOL. 1 & 2 (LESSONS 1–20) VOCABULARY DATABASE
        ========================================================================= */
     const IC_LESSONS_DATA = [
-      {
-        lesson: 1,
-        title: "Lesson 1: Greetings (问好)",
-        terms: ["你好", "请问", "贵姓", "我姓", "叫什么名字", "先生", "小姐", "王朋", "李友", "美国人", "中国人", "学生", "老师"]
-      },
-      {
-        lesson: 2,
-        title: "Lesson 2: Family (家庭)",
-        terms: ["爸爸", "妈妈", "哥哥", "姐姐", "弟弟", "妹妹", "照片", "家里", "几口人", "律师", "英文", "大学生", "高文中", "白英爱"]
-      },
-      {
-        lesson: 3,
-        title: "Lesson 3: Dates & Time (时间)",
-        terms: ["九月", "十二号", "星期四", "生日", "今年", "多大", "十八岁", "请客", "吃晚饭", "怎么样", "太好了", "现在", "几点", "一刻", "半"]
-      },
-      {
-        lesson: 4,
-        title: "Lesson 4: Hobbies (爱好)",
-        terms: ["周末", "打球", "看电视", "唱歌", "跳舞", "听音乐", "看书", "电影", "外国", "请客", "昨天", "所以", "小", "好久不见", "不错"]
-      },
-      {
-        lesson: 5,
-        title: "Lesson 5: Visiting Friends (看朋友)",
-        terms: ["进来", "快进来", "介绍一下", "高兴", "漂亮", "坐", "喝茶", "咖啡", "可乐", "矿泉水", "工作", "学校", "图书馆", "一起", "聊天"]
-      },
-      {
-        lesson: 6,
-        title: "Lesson 6: Making Appointments (约时间)",
-        terms: ["打电话", "喂", "在", "就", "您", "哪位", "下午", "时间", "问题", "要", "开会", "上午", "节", "课", "年级", "考试", "以后", "有空", "要是", "方便", "办公室", "等", "别", "客气", "常老师"]
-      },
-      {
-        lesson: 7,
-        title: "Lesson 7: Studying Chinese (学中文)",
-        terms: ["说话", "上个", "得", "复习", "写字", "慢", "枝", "笔", "张", "纸", "教", "怎么", "懂", "真", "哪里", "预习", "生词", "语法", "容易", "多", "第", "平常", "早", "这么", "晚", "早上", "功课", "大家", "开始", "念", "课文", "录音", "学习", "帅", "酷"]
-      },
-      {
-        lesson: 8,
-        title: "Lesson 8: School Life (学校生活)",
-        terms: ["一篇", "日记", "累", "起床", "洗澡", "早饭", "一边", "教室", "发音", "新", "电脑", "中午", "餐厅", "午饭", "宿舍", "那里", "正在", "以前", "告诉", "已经", "知道", "封", "信", "最近", "学期", "除了", "专业", "会", "后来", "音乐会", "希望", "能", "用", "笑", "祝"]
-      },
-      {
-        lesson: 9,
-        title: "Lesson 9: Shopping (买东西)",
-        terms: ["商店", "买", "东西", "售货员", "衣服", "件", "衬衫", "颜色", "黄", "红", "穿", "条", "裤子", "号", "中", "便宜", "贵", "块", "毛", "分", "百", "找", "双", "鞋", "换", "一样", "虽然", "大小", "咖啡色", "黑", "样子", "挺", "它", "这儿", "刷卡", "收", "信用卡", "不过", "再", "付钱"]
-      },
-      {
-        lesson: 10,
-        title: "Lesson 10: Transportation (交通)",
-        terms: ["寒假", "飞机", "票", "飞机场", "坐", "公共汽车", "或者", "地铁", "走", "先", "站", "下车", "然后", "绿", "线", "最后", "蓝", "麻烦", "打车", "出租汽车", "开车", "送", "电子邮件", "让", "花", "不好意思", "每", "城市", "特别", "高速公路", "紧张", "自己", "手机", "发短信", "新年", "快乐"]
-      },
-      {
-        lesson: 11,
-        title: "Lesson 11: Talking About the Weather (谈天气)",
-        terms: ["天气", "比", "下雪", "约", "公园", "滑冰", "会", "刚才", "网上", "预报", "更", "不但", "而且", "暖和", "冷", "办", "碟", "加州", "舒服", "秋天", "热", "春天", "夏天", "冬天", "刮风", "下雨", "糟糕"]
-      },
-      {
-        lesson: 12,
-        title: "Lesson 12: Dining (吃饭)",
-        terms: ["饭馆", "好像", "位子", "服务员", "桌子", "点菜", "盘", "饺子", "素", "家常", "豆腐", "放", "肉", "碗", "酸辣汤", "味精", "盐", "白菜", "新鲜", "甜", "极", "红烧", "鱼", "凉拌", "黄瓜", "米饭", "忘", "带", "饭卡", "错", "清楚", "没关系", "上海", "小笼包", "现金", "够", "饿", "渴", "些", "水果", "苹果", "梨", "西瓜", "住"]
-      },
-      {
-        lesson: 13,
-        title: "Lesson 13: Asking Directions (问路)",
-        terms: ["上", "图书馆", "借", "词典", "还", "灯", "会议", "结束", "方向", "场", "运动", "旁边", "远", "离", "活动", "中心", "中间", "书店", "地方", "里", "边", "中国城", "地图", "拿", "次", "从", "一直", "往", "南", "过", "路口", "西", "拐", "哎", "东", "北", "前", "后", "左", "右", "高小音", "张天明", "柯林", "丽莎"]
-      },
-      {
-        lesson: 14,
-        title: "Lesson 14: Birthday Party (生日晚会)",
-        terms: ["表姐", "中学", "送", "礼物", "本", "词典", "束", "花", "爱", "苹果", "梨", "西瓜", "住", "重", "接", "楼", "红", "脸", "圆", "眼睛", "鼻子", "嘴", "像", "长大", "一定", "蛋糕", "最", "先", "吹", "蜡烛", "钟头", "以为", "聪明", "用功", "暑期", "班", "长", "可爱", "去年", "属", "狗", "属相"]
-      },
-      {
-        lesson: 15,
-        title: "Lesson 15: Seeing a Doctor (看病)",
-        terms: ["医院", "看病", "肚子", "疼", "死", "夜里", "好几", "厕所", "冰箱", "发烧", "躺", "检查", "吃坏", "打针", "吃药", "片", "遍", "最好", "小时", "办法", "健康", "保险", "赶快", "休息", "懒", "再说", "乱", "扔", "房间", "收拾", "干净", "沙发", "旁边", "担心", "想家", "照顾", "一般", "容易", "得病"]
-      },
-      {
-        lesson: 16,
-        title: "Lesson 16: Dating (约会)",
-        terms: ["印象", "深", "演", "费", "力气", "就", "俩", "后天", "一言为定", "记得", "想起来", "号码", "搬", "扫除", "整理", "房间", "旅行", "电", "灯", "抓紧", "修", "钥匙", "忘", "带", "进", "门"]
-      },
-      {
-        lesson: 17,
-        title: "Lesson 17: Renting an Apartment (租房子)",
-        terms: ["吵", "连", "做饭", "报纸", "广告", "附近", "套", "公寓", "出租", "走路", "分钟", "卧室", "厨房", "卫生间", "客厅", "家具", "可能", "大概", "房租", "水电费", "另外", "准", "养", "宠物", "兴趣", "联系", "房东", "套房", "安全", "押金", "还", "美元", "人民币", "差不多", "费"]
-      },
-      {
-        lesson: 18,
-        title: "Lesson 18: Sports (运动)",
-        terms: ["胖", "怕", "简单", "跑步", "难受", "网球", "拍", "篮球", "游泳", "危险", "淹死", "愿意", "上", "大学", "为了", "提高", "水平", "足球", "国际", "比赛", "美式", "应该", "脚", "踢", "手", "抱", "压", "担心", "棒", "比", "锻炼", "身体", "林雪梅"]
-      },
-      {
-        lesson: 19,
-        title: "Lesson 19: Travel (旅行)",
-        terms: ["放假", "公司", "实习", "打工", "计划", "暑假", "打算", "父母", "首都", "政治", "文化", "名胜古迹", "有名的", "颐和园", "长城", "天安门", "孔子学院", "首都机场", "千", "万", "人口", "导游", "护照", "订", "旅馆", "单程", "往返", "航空", "查", "网上", "打折", "转机", "靠", "窗户", "走道", "素食", "餐", "西安", "兵马俑", "香港", "台北"]
-      },
-      {
-        lesson: 20,
-        title: "Lesson 20: At the Airport (在机场)",
-        terms: ["舅舅", "舅妈", "叔叔", "阿姨", "爷爷", "奶奶", "外公", "外婆", "表弟", "表妹", "堂哥", "堂姐", "机场", "行李", "托运", "箱子", "超重", "登机牌", "安检", "海关", "出口", "欢迎", "一路平安", "纽约", "波士顿", "芝加哥", "洛杉矶", "旧金山"]
-      }
+      { lesson: 1, title: "Lesson 1: Greetings (问好)", terms: ["你好", "请问", "贵姓", "我姓", "叫什么名字", "先生", "小姐", "王朋", "李友", "美国人", "中国人", "学生", "老师"] },
+      { lesson: 2, title: "Lesson 2: Family (家庭)", terms: ["爸爸", "妈妈", "哥哥", "姐姐", "弟弟", "妹妹", "照片", "家里", "几口人", "律师", "英文", "大学生", "高文中", "白英爱"] },
+      { lesson: 3, title: "Lesson 3: Dates & Time (时间)", terms: ["九月", "十二号", "星期四", "生日", "今年", "多大", "十八岁", "请客", "吃晚饭", "怎么样", "太好了", "现在", "几点", "一刻", "半"] },
+      { lesson: 4, title: "Lesson 4: Hobbies (爱好)", terms: ["周末", "打球", "看电视", "唱歌", "跳舞", "听音乐", "看书", "电影", "外国", "请客", "昨天", "所以", "小", "好久不见", "不错"] },
+      { lesson: 5, title: "Lesson 5: Visiting Friends (看朋友)", terms: ["进来", "快进来", "介绍一下", "高兴", "漂亮", "坐", "喝茶", "咖啡", "可乐", "矿泉水", "工作", "学校", "图书馆", "一起", "聊天"] },
+      { lesson: 6, title: "Lesson 6: Making Appointments (约时间)", terms: ["打电话", "喂", "在", "就", "您", "哪位", "下午", "时间", "问题", "要", "开会", "上午", "节", "课", "年级", "考试", "以后", "有空", "要是", "方便", "办公室", "等", "别", "客气", "常老师"] },
+      { lesson: 7, title: "Lesson 7: Studying Chinese (学中文)", terms: ["说话", "上个", "得", "复习", "写字", "慢", "枝", "笔", "张", "纸", "教", "怎么", "懂", "真", "哪里", "预习", "生词", "语法", "容易", "多", "第", "平常", "早", "这么", "晚", "早上", "功课", "大家", "开始", "念", "课文", "录音", "学习", "帅", "酷"] },
+      { lesson: 8, title: "Lesson 8: School Life (学校生活)", terms: ["一篇", "日记", "累", "起床", "洗澡", "早饭", "一边", "教室", "发音", "新", "电脑", "中午", "餐厅", "午饭", "宿舍", "那里", "正在", "以前", "告诉", "已经", "知道", "封", "信", "最近", "学期", "除了", "专业", "会", "后来", "音乐会", "希望", "能", "用", "笑", "祝"] },
+      { lesson: 9, title: "Lesson 9: Shopping (买东西)", terms: ["商店", "买", "东西", "售货员", "衣服", "件", "衬衫", "颜色", "黄", "红", "穿", "条", "裤子", "号", "中", "便宜", "贵", "块", "毛", "分", "百", "找", "双", "鞋", "换", "一样", "虽然", "大小", "咖啡色", "黑", "样子", "挺", "它", "这儿", "刷卡", "收", "信用卡", "不过", "再", "付钱"] },
+      { lesson: 10, title: "Lesson 10: Transportation (交通)", terms: ["寒假", "飞机", "票", "飞机场", "坐", "公共汽车", "或者", "地铁", "走", "先", "站", "下车", "然后", "绿", "线", "最后", "蓝", "麻烦", "打车", "出租汽车", "开车", "送", "电子邮件", "让", "花", "不好意思", "每", "城市", "特别", "高速公路", "紧张", "自己", "手机", "发短信", "新年", "快乐"] },
+      { lesson: 11, title: "Lesson 11: Talking About the Weather (谈天气)", terms: ["天气", "比", "下雪", "约", "公园", "滑冰", "会", "刚才", "网上", "预报", "更", "不但", "而且", "暖和", "冷", "办", "碟", "加州", "舒服", "秋天", "热", "春天", "夏天", "冬天", "刮风", "下雨", "糟糕"] },
+      { lesson: 12, title: "Lesson 12: Dining (吃饭)", terms: ["饭馆", "好像", "位子", "服务员", "桌子", "点菜", "盘", "饺子", "素", "家常", "豆腐", "放", "肉", "碗", "酸辣汤", "味精", "盐", "白菜", "新鲜", "甜", "极", "红烧", "鱼", "凉拌", "黄瓜", "米饭", "忘", "带", "饭卡", "错", "清楚", "没关系", "上海", "小笼包", "现金", "够", "饿", "渴", "些", "水果", "苹果", "梨", "西瓜", "住"] },
+      { lesson: 13, title: "Lesson 13: Asking Directions (问路)", terms: ["上", "图书馆", "借", "词典", "还", "灯", "会议", "结束", "方向", "场", "运动", "旁边", "远", "离", "活动", "中心", "中间", "书店", "地方", "里", "边", "中国城", "地图", "拿", "次", "从", "一直", "往", "南", "过", "路口", "西", "拐", "哎", "东", "北", "前", "后", "左", "右", "高小音", "张天明", "柯林", "丽莎"] },
+      { lesson: 14, title: "Lesson 14: Birthday Party (生日晚会)", terms: ["表姐", "中学", "送", "礼物", "本", "词典", "束", "花", "爱", "苹果", "梨", "西瓜", "住", "重", "接", "楼", "红", "脸", "圆", "眼睛", "鼻子", "嘴", "像", "长大", "一定", "蛋糕", "最", "先", "吹", "蜡烛", "钟头", "以为", "聪明", "用功", "暑期", "班", "长", "可爱", "去年", "属", "狗", "属相"] },
+      { lesson: 15, title: "Lesson 15: Seeing a Doctor (看病)", terms: ["医院", "看病", "肚子", "疼", "死", "夜里", "好几", "厕所", "冰箱", "发烧", "躺", "检查", "吃坏", "打针", "吃药", "片", "遍", "最好", "小时", "办法", "健康", "保险", "赶快", "休息", "懒", "再说", "乱", "扔", "房间", "收拾", "干净", "沙发", "旁边", "担心", "想家", "照顾", "一般", "容易", "得病"] },
+      { lesson: 16, title: "Lesson 16: Dating (约会)", terms: ["印象", "深", "演", "费", "力气", "就", "俩", "后天", "一言为定", "记得", "想起来", "号码", "搬", "扫除", "整理", "房间", "旅行", "电", "灯", "抓紧", "修", "钥匙", "忘", "带", "进", "门"] },
+      { lesson: 17, title: "Lesson 17: Renting an Apartment (租房子)", terms: ["吵", "连", "做饭", "报纸", "广告", "附近", "套", "公寓", "出租", "走路", "分钟", "卧室", "厨房", "卫生间", "客厅", "家具", "可能", "大概", "房租", "水电费", "另外", "准", "养", "宠物", "兴趣", "联系", "房东", "套房", "安全", "押金", "还", "美元", "人民币", "差不多", "费"] },
+      { lesson: 18, title: "Lesson 18: Sports (运动)", terms: ["胖", "怕", "简单", "跑步", "难受", "网球", "拍", "篮球", "游泳", "危险", "淹死", "愿意", "上", "大学", "为了", "提高", "水平", "足球", "国际", "比赛", "美式", "应该", "脚", "踢", "手", "抱", "压", "担心", "棒", "比", "锻炼", "身体", "林雪梅"] },
+      { lesson: 19, title: "Lesson 19: Travel (旅行)", terms: ["放假", "公司", "实习", "打工", "计划", "暑假", "打算", "父母", "首都", "政治", "文化", "名胜古迹", "有名的", "颐和园", "长城", "天安门", "孔子学院", "首都机场", "千", "万", "人口", "导游", "护照", "订", "旅馆", "单程", "往返", "航空", "查", "网上", "打折", "转机", "靠", "窗户", "走道", "素食", "餐", "西安", "兵马俑", "香港", "台北"] },
+      { lesson: 20, title: "Lesson 20: At the Airport (在机场)", terms: ["舅舅", "舅妈", "叔叔", "阿姨", "爷爷", "奶奶", "外公", "外婆", "表弟", "表妹", "堂哥", "堂姐", "机场", "行李", "托运", "箱子", "超重", "登机牌", "安检", "海关", "出口", "欢迎", "一路平安", "纽约", "波士顿", "芝加哥", "洛杉矶", "旧金山"] }
     ];
 
     /* Common Web Speech API Chinese homophone corrections for IC L1-20 names, places & terms */
@@ -799,7 +1416,6 @@
       [/紅燒魚|紅燒餘/g, "紅燒魚"]
     ];
 
-    /* Build flat lookup list of all IC L1–20 terms */
     const ALL_IC_TERMS = Array.from(
       new Set([
         ...IC_LESSONS_DATA.flatMap(l => l.terms),
@@ -808,56 +1424,30 @@
     );
 
     /* =========================================================================
-       2. LANGUAGE CONFIGURATIONS & GRAMMAR FEEDBACK ENGINES
+       3. TARGET-LANGUAGE STUDIO CONFIGURATIONS & GRAMMAR FEEDBACK ENGINES
        ========================================================================= */
     const LANGUAGE_CONFIGS = {
-      /* -----------------------------------------------------------------------
-         FRENCH CONFIGURATION
-         ----------------------------------------------------------------------- */
       french: {
         id: 'french',
         prefix: 'fr',
         containerId: 'frenchView',
         flag: '🇫🇷',
         title: 'Enregistrement oral Français',
-        subtitle: 'French Speaking & Live Transcription Studio • Lycée de Bayside',
+        subtitle: 'French Speaking & Live Transcription Studio • Bayside High School',
         accentBarHTML: `
           <div class="h-2 w-full flex">
-            <div class="flex-1 bg-[#164b9b]"></div>
-            <div class="flex-1 bg-slate-100"></div>
-            <div class="flex-1 bg-[#d9383a]"></div>
+            <div class="w-1/3 bg-[#164b9b]"></div>
+            <div class="w-1/3 bg-white border-b border-slate-100"></div>
+            <div class="w-1/3 bg-[#d9383a]"></div>
           </div>
         `,
         primaryBtnClass: 'bg-[#164b9b] hover:bg-blue-800',
         badgeAccentClass: 'bg-blue-50 text-[#164b9b] border-blue-200',
         countMode: 'words',
-        labels: {
-          step1Title: 'Étape 1 • Type de tâche et identification (Task & Student Info)',
-          soloTitle: 'Tâche individuelle (Independent Task)',
-          soloDesc: '1 élève • Monologue ou présentation orale',
-          pairTitle: 'Tâche à deux (Pair Task)',
-          pairDesc: '2 élèves • Dialogue avec alternance des tours',
-          student1Label: 'Nom complet de l’élève 1 (Student 1 Full Name)',
-          student1Placeholder: 'Ex: Camille Laurent',
-          student2Label: 'Nom complet de l’élève 2 (Student 2 Full Name)',
-          student2Placeholder: 'Ex: Lucas Moreau',
-          swapBtn: 'Inverser l’ordre (Swap Speaker Order)',
-          dialectLabel: 'Variante du français (Dialect)',
-          step2Title: 'Étape 2 • Enregistrement et transcription en direct (Recording)',
-          noiseLabel: 'Réduction du bruit ambiant (Noise Suppression)',
-          passTurnBtn: 'Passer la parole (Pass Turn)',
-          startBtn: 'Démarrer l’enregistrement (Start Recording)',
-          stopBtn: 'Arrêter (Stop)',
-          clearBtn: 'Effacer (Clear)',
-          step3Title: 'Étape 3 • Révision, grammaire et téléchargement (Review & Export)',
-          transcriptLabel: 'Transcription automatique en direct (Live Automatic Transcript)',
-          transcriptPlaceholder: 'Votre transcription en français apparaîtra ici automatiquement pendant que vous parlez...',
-          downloadBothBtn: 'Télécharger les deux fichiers (Audio MP3 + Transcription)',
-          downloadAudioBtn: 'Télécharger l’audio uniquement (MP3)',
-          downloadTextBtn: 'Télécharger le texte uniquement (TXT)',
-          readyBadge: 'Prêt / Ready',
-          recordingBadge: 'En direct / Recording',
-          finishedBadge: 'Terminé / Finished'
+        placeholders: {
+          student1: 'Ex: Camille Laurent',
+          student2: 'Ex: Lucas Moreau',
+          transcript: 'Votre transcription en français apparaîtra ici automatiquement pendant que vous parlez...'
         },
         dialects: [
           { code: 'fr-FR', label: 'Français (France) — fr-FR' },
@@ -951,9 +1541,6 @@
         }
       },
 
-      /* -----------------------------------------------------------------------
-         CHINESE CONFIGURATION
-         ----------------------------------------------------------------------- */
       chinese: {
         id: 'chinese',
         prefix: 'zh',
@@ -968,33 +1555,10 @@
         badgeAccentClass: 'bg-red-50 text-[#b91c1c] border-red-200',
         countMode: 'chars',
         hasIcBoost: true,
-        labels: {
-          step1Title: 'Step 1 • Task Type & Student Identification (任务类型与学生信息)',
-          soloTitle: 'Independent Task (个人口语任务)',
-          soloDesc: '1 Student • Individual speaking presentation',
-          pairTitle: 'Pair Task (双人对话任务)',
-          pairDesc: '2 Students • Interactive dialogue with turn-taking',
-          student1Label: 'Student 1 Full Name (学生一姓名)',
-          student1Placeholder: 'e.g., Wang Peng 王朋',
-          student2Label: 'Student 2 Full Name (学生二姓名)',
-          student2Placeholder: 'e.g., Li You 李友',
-          swapBtn: 'Swap Speaker Order (交换顺序)',
-          dialectLabel: 'Chinese Dialect / Script (中文方言与字体)',
-          step2Title: 'Step 2 • Recording & Live Transcription (录音与实时转写)',
-          noiseLabel: 'Classroom Background Noise Suppression (教室降噪)',
-          passTurnBtn: 'Pass Turn (切换说话人)',
-          startBtn: 'Start Recording (开始录音)',
-          stopBtn: 'Stop (停止)',
-          clearBtn: 'Clear (清除)',
-          step3Title: 'Step 3 • Review, Grammar Feedback & Download (复习与下载)',
-          transcriptLabel: 'Automatic Live Transcript (自动实时转写文本)',
-          transcriptPlaceholder: '说话时，您的中文转写内容将自动显示在这里 (Your Chinese transcript will appear here automatically)...',
-          downloadBothBtn: 'Download Both Files (Audio MP3 + Transcription)',
-          downloadAudioBtn: 'Download Audio Only (MP3)',
-          downloadTextBtn: 'Download Text Only (TXT)',
-          readyBadge: 'Ready / 准备就绪',
-          recordingBadge: 'Recording / 正在录音',
-          finishedBadge: 'Finished / 已完成'
+        placeholders: {
+          student1: 'e.g., Wang Peng 王朋',
+          student2: 'e.g., Li You 李友',
+          transcript: '说话时，您的中文转写内容将自动显示在这里 (Your Chinese transcript will appear here automatically)...'
         },
         dialects: [
           { code: 'zh-CN', label: 'Mandarin Simplified (普通话 简体) — zh-CN' },
@@ -1093,9 +1657,6 @@
         }
       },
 
-      /* -----------------------------------------------------------------------
-         SPANISH CONFIGURATION
-         ----------------------------------------------------------------------- */
       spanish: {
         id: 'spanish',
         prefix: 'es',
@@ -1109,6 +1670,11 @@
         primaryBtnClass: 'bg-[#b91c1c] hover:bg-red-800',
         badgeAccentClass: 'bg-amber-50 text-amber-900 border-amber-200',
         countMode: 'words',
+        placeholders: {
+          student1: 'Ej: Sofía Martínez',
+          student2: 'Ej: Mateo Rodríguez',
+          transcript: 'Tu transcripción en español aparecerá aquí automáticamente mientras hablas...'
+        },
         referenceDrawer: {
           toggleLabel: 'Connectors & Expressions Reference',
           title: 'Spanish Connectors & High-Frequency Expressions',
@@ -1123,39 +1689,10 @@
             }
           ]
         },
-        labels: {
-          step1Title: 'Paso 1 • Tipo de tarea e identificación (Task & Student Info)',
-          soloTitle: 'Tarea individual (Independent Task)',
-          soloDesc: '1 estudiante • Presentación o monólogo oral',
-          pairTitle: 'Tarea en pareja (Pair Task)',
-          pairDesc: '2 estudiantes • Diálogo interactivo con turnos',
-          student1Label: 'Nombre completo del estudiante 1 (Student 1 Full Name)',
-          student1Placeholder: 'Ej: Sofía Martínez',
-          student2Label: 'Nombre completo del estudiante 2 (Student 2 Full Name)',
-          student2Placeholder: 'Ej: Mateo Rodríguez',
-          swapBtn: 'Invertir orden (Swap Speaker Order)',
-          dialectLabel: 'Variante del español (Dialect)',
-          step2Title: 'Paso 2 • Grabación y transcripción en vivo (Recording)',
-          noiseLabel: 'Supresión de ruido del aula (Noise Suppression)',
-          passTurnBtn: 'Pasar turno (Pass Turn)',
-          startBtn: 'Iniciar grabación (Start Recording)',
-          stopBtn: 'Detener (Stop)',
-          clearBtn: 'Borrar (Clear)',
-          step3Title: 'Paso 3 • Revisión, gramática y descarga (Review & Export)',
-          transcriptLabel: 'Transcripción automática en vivo (Live Automatic Transcript)',
-          transcriptPlaceholder: 'Tu transcripción en español aparecerá aquí automáticamente mientras hablas...',
-          downloadBothBtn: 'Descargar ambos archivos (Audio MP3 + Transcription)',
-          downloadAudioBtn: 'Descargar solo el audio (MP3)',
-          downloadTextBtn: 'Descargar solo el texto (TXT)',
-          readyBadge: 'Listo / Ready',
-          recordingBadge: 'En vivo / Recording',
-          finishedBadge: 'Terminado / Finished'
-        },
         dialects: [
           { code: 'es-ES', label: 'Español (España) — es-ES' },
           { code: 'es-MX', label: 'Español (México) — es-MX' },
-          { code: 'es-US', label: 'Español (Estados Unidos / Latinoamérica) — es-US' },
-          { code: 'es-AR', label: 'Español (Argentina) — es-AR' }
+          { code: 'es-US', label: 'Español (Estados Unidos / Latinoamérica) — es-US' }
         ],
         analyzeGrammar(rawText, cleanSpeech, stats) {
           const strengths = [];
@@ -1233,9 +1770,6 @@
         }
       },
 
-      /* -----------------------------------------------------------------------
-         JAPANESE CONFIGURATION
-         ----------------------------------------------------------------------- */
       japanese: {
         id: 'japanese',
         prefix: 'ja',
@@ -1249,47 +1783,24 @@
         primaryBtnClass: 'bg-[#1e3a8a] hover:bg-blue-900',
         badgeAccentClass: 'bg-indigo-50 text-[#1e3a8a] border-indigo-200',
         countMode: 'chars',
+        placeholders: {
+          student1: '例: 田中 健太 (Kenta Tanaka)',
+          student2: '例: 佐藤 美咲 (Misaki Sato)',
+          transcript: '話すと、日本語の文字起こしがここに自動的に表示されます (Your Japanese transcript will appear here)...'
+        },
         referenceDrawer: {
           toggleLabel: 'Core Particles & Connectors Reference',
           title: 'Japanese Core Particles & Connectors Guide (助詞と接続詞)',
           sections: [
             {
               heading: 'Core Japanese Particles (基本の助詞)',
-              items: ['は (topic marker)', 'が (subject marker)', 'を (direct object)', 'に (time / destination)', 'で (location of action / means)', 'へ (direction)']
+              items: ['は (topic marker)', 'が (subject marker)', 'を (direct object)', 'に (time / destination)', 'で (location of action / means)', 'の (possessive / modifier)']
             },
             {
               heading: 'Connectors & Sentence Patterns (接続詞と文型)',
               items: ['から (because)', 'ので (so / since)', 'でも (but / however)', 'そして (and then)', 'それから (after that)', 'たとえば (for example)', '〜たいです (want to ...)', '〜と思います (I think that ...)']
             }
           ]
-        },
-        labels: {
-          step1Title: 'ステップ 1 • タスクの種類と生徒情報 (Task & Student Info)',
-          soloTitle: '個人タスク (Independent Task)',
-          soloDesc: '生徒1名 • スピーチ・プレゼンテーション',
-          pairTitle: 'ペアタスク (Pair Task)',
-          pairDesc: '生徒2名 • 交代制の対話・ロールプレイ',
-          student1Label: '生徒1の氏名 (Student 1 Full Name)',
-          student1Placeholder: '例: 田中 健太 (Kenta Tanaka)',
-          student2Label: '生徒2の氏名 (Student 2 Full Name)',
-          student2Placeholder: '例: 佐藤 美咲 (Misaki Sato)',
-          swapBtn: '順番を入れ替える (Swap Speaker Order)',
-          dialectLabel: '言語設定 (Language)',
-          step2Title: 'ステップ 2 • 録音とリアルタイム文字起こし (Recording)',
-          noiseLabel: '教室の雑音抑制 (Noise Suppression)',
-          passTurnBtn: '交代する (Pass Turn)',
-          startBtn: '録音開始 (Start Recording)',
-          stopBtn: '停止 (Stop)',
-          clearBtn: 'クリア (Clear)',
-          step3Title: 'ステップ 3 • 確認・文法フィードバック・ダウンロード (Review & Export)',
-          transcriptLabel: '自動リアルタイム文字起こし (Live Automatic Transcript)',
-          transcriptPlaceholder: '話すと、日本語の文字起こしがここに自動的に表示されます (Your Japanese transcript will appear here)...',
-          downloadBothBtn: '両方のファイルをダウンロード (Audio MP3 + Transcription)',
-          downloadAudioBtn: '音声のみダウンロード (MP3)',
-          downloadTextBtn: 'テキストのみダウンロード (TXT)',
-          readyBadge: '準備完了 / Ready',
-          recordingBadge: '録音中 / Recording',
-          finishedBadge: '完了 / Finished'
         },
         dialects: [
           { code: 'ja-JP', label: '日本語 (Japanese) — ja-JP' }
@@ -1321,7 +1832,12 @@
             });
           }
 
-          // 3. Connectors & discourse markers
+          // 3. Past negative forms check
+          if (/(?:ませんでした|なかったです|じゃありませんでした|ではありませんでした)/.test(cleanSpeech)) {
+            strengths.push("Accurate polite past-negative ending used (〜ませんでした / 〜なかったです).");
+          }
+
+          // 4. Connectors & discourse markers
           const jaConnectors = ['から', 'ので', 'でも', 'しかし', 'そして', 'それから', 'たとえば', '例えば', 'まず'];
           const foundJaConn = jaConnectors.filter(c => cleanSpeech.includes(c));
           if (foundJaConn.length > 0) {
@@ -1333,7 +1849,7 @@
             });
           }
 
-          // 4. Expressing preferences, desires, or opinions
+          // 5. Expressing preferences, desires, or opinions
           if (/(?:たいです|と思います|とおもいます|が好きです|がすきです|ができます)/.test(cleanSpeech)) {
             strengths.push("Expressive grammar patterns used for desires, preferences, or opinions (〜たいです / 〜と思います / 〜が好きです).");
           } else {
@@ -1343,7 +1859,7 @@
             });
           }
 
-          // 5. Spoken Japanese character count & Pair mode turns
+          // 6. Spoken Japanese character count & Pair mode turns
           if (stats.count >= 35) {
             strengths.push(`Well-developed Japanese speech length (${stats.count} characters).`);
           } else if (stats.count > 0 && stats.count < 15) {
@@ -1368,9 +1884,6 @@
         }
       },
 
-      /* -----------------------------------------------------------------------
-         KOREAN CONFIGURATION
-         ----------------------------------------------------------------------- */
       korean: {
         id: 'korean',
         prefix: 'ko',
@@ -1384,6 +1897,11 @@
         primaryBtnClass: 'bg-[#1d4ed8] hover:bg-blue-800',
         badgeAccentClass: 'bg-blue-50 text-[#1d4ed8] border-blue-200',
         countMode: 'chars',
+        placeholders: {
+          student1: '예: 김민준 (Minjun Kim)',
+          student2: '예: 이서연 (Seoyeon Lee)',
+          transcript: '말씀하시면 한국어 받아쓰기 내용이 여기에 자동으로 표시됩니다 (Your Korean transcript will appear here)...'
+        },
         referenceDrawer: {
           toggleLabel: 'Core Particles & Connectors Reference',
           title: 'Korean Core Particles & Connectors Guide (조사 및 연결어)',
@@ -1397,34 +1915,6 @@
               items: ['왜냐하면 (because)', '그래서 (so / therefore)', '~아서/~어서 (because / so)', '하지만 (however)', '그런데 (by the way / but)', '그리고 (and)', '먼저 (first)', '그 다음에 (next)', '~고 싶어요 (want to ...)', '~을/를 좋아해요 (like ...)']
             }
           ]
-        },
-        labels: {
-          step1Title: '1단계 • 과제 유형 및 학생 정보 (Task & Student Info)',
-          soloTitle: '개별 말하기 과제 (Independent Task)',
-          soloDesc: '학생 1명 • 개인 발표 및 말하기',
-          pairTitle: '짝 활동 말하기 과제 (Pair Task)',
-          pairDesc: '학생 2명 • 순서 교대 대화 녹음',
-          student1Label: '학생 1 이름 (Student 1 Full Name)',
-          student1Placeholder: '예: 김민준 (Minjun Kim)',
-          student2Label: '학생 2 이름 (Student 2 Full Name)',
-          student2Placeholder: '예: 이서연 (Seoyeon Lee)',
-          swapBtn: '발화 순서 바꾸기 (Swap Speaker Order)',
-          dialectLabel: '언어 설정 (Language)',
-          step2Title: '2단계 • 녹음 및 실시간 받아쓰기 (Recording)',
-          noiseLabel: '교실 배경 소음 억제 (Noise Suppression)',
-          passTurnBtn: '순서 넘기기 (Pass Turn)',
-          startBtn: '녹음 시작 (Start Recording)',
-          stopBtn: '중지 (Stop)',
-          clearBtn: '지우기 (Clear)',
-          step3Title: '3단계 • 검토, 문법 피드백 및 다운로드 (Review & Export)',
-          transcriptLabel: '자동 실시간 받아쓰기 (Live Automatic Transcript)',
-          transcriptPlaceholder: '말씀하시면 한국어 받아쓰기 내용이 여기에 자동으로 표시됩니다 (Your Korean transcript will appear here)...',
-          downloadBothBtn: '두 파일 모두 다운로드 (Audio MP3 + Transcription)',
-          downloadAudioBtn: '오디오만 다운로드 (MP3)',
-          downloadTextBtn: '텍스트만 다운로드 (TXT)',
-          readyBadge: '준비됨 / Ready',
-          recordingBadge: '녹음 중 / Recording',
-          finishedBadge: '완료됨 / Finished'
         },
         dialects: [
           { code: 'ko-KR', label: '한국어 (Korean) — ko-KR' }
@@ -1444,7 +1934,12 @@
             });
           }
 
-          // 2. Core Korean particles
+          // 2. Past tense polite forms check
+          if (/(?:았어요|었어요|했어요|았습니다|었습니다|했습니다)/.test(cleanSpeech)) {
+            strengths.push("Accurate polite past-tense conjugation used (-았어요 / -었어요 / -했어요).");
+          }
+
+          // 3. Core Korean particles
           const koParticles = ['은', '는', '이', '가', '을', '를', '에', '에서'];
           const foundKoParticles = koParticles.filter(p => new RegExp(`[가-힣]${p}(?:\\s|$|[.,!?])`).test(cleanSpeech));
           if (foundKoParticles.length >= 2) {
@@ -1456,7 +1951,7 @@
             });
           }
 
-          // 3. Connectors & linking expressions
+          // 4. Connectors & linking expressions
           const koConnectors = ['그래서', '왜냐하면', '하지만', '그런데', '그리고', '먼저', '그 다음에', '예를 들면'];
           const foundKoConn = koConnectors.filter(c => cleanSpeech.includes(c));
           if (foundKoConn.length > 0) {
@@ -1468,7 +1963,7 @@
             });
           }
 
-          // 4. Expressing desires, preferences, or abilities
+          // 5. Expressing desires, preferences, or abilities
           if (/(?:고\s*싶어요|좋아해요|싫어해요|수\s*있어요)/.test(cleanSpeech)) {
             strengths.push("Expressive patterns used for desires, preferences, or abilities (-고 싶어요 / 좋아해요 / -을 수 있어요).");
           } else {
@@ -1478,7 +1973,7 @@
             });
           }
 
-          // 5. Spoken Korean character count & Pair mode turns
+          // 6. Spoken Korean character count & Pair mode turns
           if (stats.count >= 30) {
             strengths.push(`Strong spoken Korean length (${stats.count} Korean characters).`);
           } else if (stats.count > 0 && stats.count < 12) {
@@ -1521,20 +2016,22 @@
     }
 
     /* =========================================================================
-       3. REUSABLE LANGUAGE RECORDER CONTROLLER CLASS
+       4. REUSABLE LANGUAGE RECORDER CONTROLLER CLASS
        ========================================================================= */
     class LanguageRecorderController {
       constructor(config) {
         this.cfg = config;
-        this.p = config.prefix; // Unique DOM prefix: fr, zh, es, ja, ko
+        this.p = config.prefix;
 
         // Recording & Audio State
         this.isRecording = false;
-        this.taskMode = 'solo'; // 'solo' | 'pair'
-        this.activeSpeaker = 1; // 1 | 2
+        this.taskMode = 'solo';
+        this.activeSpeaker = 1;
         this.speakerTurns = 1;
         this.noiseSuppression = true;
         this.icBoostEnabled = true;
+        this.statusState = 'ready'; // 'ready' | 'recording' | 'finished'
+        this.lastBannerState = { key: 'bannerInitial', vars: {} };
 
         this.timerInterval = null;
         this.secondsElapsed = 0;
@@ -1565,7 +2062,6 @@
         this.drawIdleVisualizer();
       }
 
-      /* Shortcut DOM lookup by prefixed ID */
       el(suffix) {
         return document.getElementById(`${this.p}-${suffix}`);
       }
@@ -1573,13 +2069,11 @@
       /* Render complete studio UI into its dedicated section */
       renderUI() {
         const container = document.getElementById(this.cfg.containerId);
-        const L = this.cfg.labels;
 
         const dialectOptions = this.cfg.dialects
           .map(d => `<option value="${d.code}">${d.label}</option>`)
           .join('');
 
-        // Optional Chinese IC L1-20 Boost Bar & Drawer
         const icBoostHTML = this.cfg.hasIcBoost ? `
           <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2">
@@ -1599,7 +2093,7 @@
                 📖 View List (Lessons 1–20)
               </button>
             </div>
-            <span class="text-xs text-slate-500">Enhances Integrated Chinese Vol. 1 &amp; 2 names, places &amp; grammar</span>
+            <span class="text-xs text-slate-500">Integrated Chinese Vol. 1 &amp; 2 (L1–L20) Vocabulary &amp; Proper Noun Boost</span>
           </div>
 
           <div id="${this.p}-icDrawer" class="hidden mt-3 p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-3">
@@ -1618,7 +2112,6 @@
           </div>
         ` : '';
 
-        // Optional Reference Drawer for Spanish, Japanese, Korean
         const refDrawerHTML = this.cfg.referenceDrawer ? `
           <div class="pt-3 border-t border-slate-100">
             <button
@@ -1660,11 +2153,9 @@
                     ${this.cfg.flag}
                   </div>
                   <div>
-                    <div class="flex items-center gap-2">
-                      <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                        ${this.cfg.title}
-                      </h1>
-                    </div>
+                    <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                      ${this.cfg.title}
+                    </h1>
                     <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
                       ${this.cfg.subtitle}
                     </p>
@@ -1678,7 +2169,7 @@
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-700"
                   >
                     <span id="${this.p}-statusDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
-                    <span id="${this.p}-statusBadgeText">${L.readyBadge}</span>
+                    <span id="${this.p}-statusBadgeText">${t('readyBadge')}</span>
                   </span>
                   <div id="${this.p}-timer" class="font-mono text-lg sm:text-xl font-extrabold text-slate-900 tracking-wider">
                     00:00
@@ -1689,11 +2180,9 @@
 
             <!-- STEP 1: Task Type & Student Identification -->
             <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm space-y-5">
-              <div class="flex items-center justify-between">
-                <h2 class="text-base sm:text-lg font-extrabold text-slate-900">
-                  ${L.step1Title}
-                </h2>
-              </div>
+              <h2 id="${this.p}-step1Title" class="text-base sm:text-lg font-extrabold text-slate-900">
+                ${t('step1Title')}
+              </h2>
 
               <!-- Interactive Radio Cards for Independent vs Pair Task -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -1709,8 +2198,8 @@
                     class="mt-1 accent-slate-900 w-4 h-4"
                   />
                   <div>
-                    <div class="font-bold text-slate-900 text-sm sm:text-base">${L.soloTitle}</div>
-                    <div class="text-xs text-slate-500 mt-0.5">${L.soloDesc}</div>
+                    <div id="${this.p}-soloTitle" class="font-bold text-slate-900 text-sm sm:text-base">${t('soloTitle')}</div>
+                    <div id="${this.p}-soloDesc" class="text-xs text-slate-500 mt-0.5">${t('soloDesc')}</div>
                   </div>
                 </label>
 
@@ -1725,8 +2214,8 @@
                     class="mt-1 accent-slate-900 w-4 h-4"
                   />
                   <div>
-                    <div class="font-bold text-slate-900 text-sm sm:text-base">${L.pairTitle}</div>
-                    <div class="text-xs text-slate-500 mt-0.5">${L.pairDesc}</div>
+                    <div id="${this.p}-pairTitle" class="font-bold text-slate-900 text-sm sm:text-base">${t('pairTitle')}</div>
+                    <div id="${this.p}-pairDesc" class="text-xs text-slate-500 mt-0.5">${t('pairDesc')}</div>
                   </div>
                 </label>
               </div>
@@ -1735,31 +2224,31 @@
               <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                 <div id="${this.p}-student1Wrap" class="md:col-span-5">
                   <label for="${this.p}-student1Input" class="block text-xs font-bold text-slate-700 mb-1.5">
-                    ${L.student1Label} <span class="text-rose-600">*</span>
+                    <span id="${this.p}-student1Label">${t('student1Label')}</span> <span class="text-rose-600">*</span>
                   </label>
                   <input
                     type="text"
                     id="${this.p}-student1Input"
-                    placeholder="${L.student1Placeholder}"
+                    placeholder="${this.cfg.placeholders.student1}"
                     class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                   />
                 </div>
 
                 <div id="${this.p}-student2Wrap" class="hidden md:col-span-4">
                   <label for="${this.p}-student2Input" class="block text-xs font-bold text-slate-700 mb-1.5">
-                    ${L.student2Label} <span class="text-rose-600">*</span>
+                    <span id="${this.p}-student2Label">${t('student2Label')}</span> <span class="text-rose-600">*</span>
                   </label>
                   <input
                     type="text"
                     id="${this.p}-student2Input"
-                    placeholder="${L.student2Placeholder}"
+                    placeholder="${this.cfg.placeholders.student2}"
                     class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                   />
                 </div>
 
                 <div id="${this.p}-dialectWrap" class="md:col-span-7">
-                  <label for="${this.p}-dialectSelect" class="block text-xs font-bold text-slate-700 mb-1.5">
-                    ${L.dialectLabel}
+                  <label for="${this.p}-dialectSelect" id="${this.p}-dialectLabel" class="block text-xs font-bold text-slate-700 mb-1.5">
+                    ${t('dialectLabel')}
                   </label>
                   <select
                     id="${this.p}-dialectSelect"
@@ -1778,7 +2267,7 @@
                   class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs inline-flex items-center gap-1.5 transition"
                 >
                   <span>⇄</span>
-                  <span>${L.swapBtn}</span>
+                  <span id="${this.p}-swapBtnText">${t('swapBtn')}</span>
                 </button>
               </div>
 
@@ -1789,8 +2278,8 @@
             <!-- STEP 2: Recording & Live Transcription -->
             <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm space-y-5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <h2 class="text-base sm:text-lg font-extrabold text-slate-900">
-                  ${L.step2Title}
+                <h2 id="${this.p}-step2Title" class="text-base sm:text-lg font-extrabold text-slate-900">
+                  ${t('step2Title')}
                 </h2>
 
                 <!-- Classroom Background Noise Suppression Toggle Pill -->
@@ -1800,7 +2289,7 @@
                   class="self-start sm:self-auto px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 inline-flex items-center gap-2 transition"
                 >
                   <span id="${this.p}-noiseDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <span id="${this.p}-noiseText">${L.noiseLabel}: ON</span>
+                  <span id="${this.p}-noiseText">${t('noiseLabel')}: ${t('noiseOn')}</span>
                 </button>
               </div>
 
@@ -1820,7 +2309,7 @@
                     >
                       <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                       <span id="${this.p}-spk1NameLabel">Student 1</span>
-                      <span id="${this.p}-spk1State" class="px-1.5 py-0.5 rounded bg-emerald-800/70 text-[10px] uppercase">Speaking Now</span>
+                      <span id="${this.p}-spk1State" class="px-1.5 py-0.5 rounded bg-emerald-800/70 text-[10px] uppercase">${t('speakingNow')}</span>
                     </div>
 
                     <!-- Speaker 2 Badge -->
@@ -1830,7 +2319,7 @@
                     >
                       <span class="w-2 h-2 rounded-full bg-slate-400"></span>
                       <span id="${this.p}-spk2NameLabel">Student 2</span>
-                      <span id="${this.p}-spk2State" class="px-1.5 py-0.5 rounded bg-slate-300/80 text-[10px] uppercase">Waiting</span>
+                      <span id="${this.p}-spk2State" class="px-1.5 py-0.5 rounded bg-slate-300/80 text-[10px] uppercase">${t('waitingTurn')}</span>
                     </div>
                   </div>
 
@@ -1840,7 +2329,7 @@
                     class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs sm:text-sm shadow-sm inline-flex items-center justify-center gap-2 transition"
                   >
                     <span>🔄</span>
-                    <span>${L.passTurnBtn}</span>
+                    <span id="${this.p}-passTurnBtnText">${t('passTurnBtn')}</span>
                     <kbd class="px-1.5 py-0.5 rounded bg-amber-600/30 text-[10px] font-mono">Tab / Alt+S</kbd>
                   </button>
                 </div>
@@ -1854,7 +2343,7 @@
                   class="px-5 py-3 rounded-xl ${this.cfg.primaryBtnClass} text-white font-bold text-sm shadow-sm hover:shadow inline-flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span>🎙️</span>
-                  <span>${L.startBtn}</span>
+                  <span id="${this.p}-startBtnText">${t('startBtn')}</span>
                 </button>
 
                 <button
@@ -1864,7 +2353,7 @@
                   class="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-sm inline-flex items-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <span>⏹️</span>
-                  <span>${L.stopBtn}</span>
+                  <span id="${this.p}-stopBtnText">${t('stopBtn')}</span>
                 </button>
 
                 <button
@@ -1873,7 +2362,7 @@
                   class="px-4 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-sm inline-flex items-center gap-2 transition"
                 >
                   <span>🗑️</span>
-                  <span>${L.clearBtn}</span>
+                  <span id="${this.p}-clearBtnText">${t('clearBtn')}</span>
                 </button>
               </div>
 
@@ -1883,34 +2372,34 @@
                 class="rounded-xl px-4 py-3 text-xs sm:text-sm font-medium bg-blue-50 text-blue-900 border border-blue-200 flex items-center gap-2.5"
               >
                 <span id="${this.p}-bannerIcon">ℹ️</span>
-                <span id="${this.p}-bannerText">Enter your name above and click Start Recording when you are ready to speak.</span>
+                <span id="${this.p}-bannerText">${t('bannerInitial')}</span>
               </div>
             </div>
 
             <!-- STEP 3: Review, Grammar Feedback & Dual Download -->
             <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm space-y-5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <h2 class="text-base sm:text-lg font-extrabold text-slate-900">
-                  ${L.step3Title}
+                <h2 id="${this.p}-step3Title" class="text-base sm:text-lg font-extrabold text-slate-900">
+                  ${t('step3Title')}
                 </h2>
                 <span
                   id="${this.p}-countBadge"
                   class="self-start sm:self-auto px-3 py-1 rounded-full text-xs font-bold ${this.cfg.badgeAccentClass} border"
                 >
-                  0 ${this.cfg.countMode === 'words' ? 'words' : 'characters'}
+                  0 ${this.cfg.countMode === 'words' ? t('wordPlural') : t('charPlural')}
                 </span>
               </div>
 
               <!-- Read-Only Live Automatic Transcript Textarea -->
               <div>
-                <label for="${this.p}-transcriptBox" class="block text-xs font-bold text-slate-700 mb-1.5">
-                  ${L.transcriptLabel}
+                <label for="${this.p}-transcriptBox" id="${this.p}-transcriptLabel" class="block text-xs font-bold text-slate-700 mb-1.5">
+                  ${t('transcriptLabel')}
                 </label>
                 <textarea
                   id="${this.p}-transcriptBox"
                   rows="5"
                   readonly
-                  placeholder="${L.transcriptPlaceholder}"
+                  placeholder="${this.cfg.placeholders.transcript}"
                   class="w-full rounded-xl border border-slate-300 bg-slate-50/70 p-4 text-sm sm:text-base text-slate-900 leading-relaxed focus:outline-none resize-y"
                 ></textarea>
               </div>
@@ -1919,10 +2408,10 @@
               <div class="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-bold text-slate-700 uppercase tracking-wide">
-                    🎧 Audio Playback (MP3)
+                    🎧 <span id="${this.p}-audioPlaybackLabel">${t('audioPlaybackLabel')}</span>
                   </span>
                   <span id="${this.p}-audioMeta" class="text-xs text-slate-500">
-                    No recording yet
+                    ${t('noRecordingYet')}
                   </span>
                 </div>
                 <audio id="${this.p}-audioPlayer" controls class="w-full h-10"></audio>
@@ -1935,8 +2424,8 @@
                   <div class="flex items-start gap-3">
                     <span class="text-2xl">💡</span>
                     <div>
-                      <h3 class="text-sm sm:text-base font-extrabold text-slate-900">
-                        Instant English Grammar &amp; Speaking Feedback
+                      <h3 id="${this.p}-feedbackHeading" class="text-sm sm:text-base font-extrabold text-slate-900">
+                        ${t('feedbackHeading')}
                       </h3>
                       <p id="${this.p}-feedbackSummary" class="text-xs sm:text-sm text-slate-700 mt-1 leading-relaxed"></p>
                     </div>
@@ -1946,7 +2435,7 @@
                 <!-- Positive Strength Badges (Emerald Pills) -->
                 <div id="${this.p}-strengthsWrap" class="hidden space-y-2">
                   <div class="text-xs font-extrabold uppercase tracking-wider text-emerald-800">
-                    ✅ What You Did Well
+                    ✅ <span id="${this.p}-strengthsHeading">${t('strengthsHeading')}</span>
                   </div>
                   <div id="${this.p}-strengthsList" class="flex flex-wrap gap-2"></div>
                 </div>
@@ -1954,7 +2443,7 @@
                 <!-- Actionable Grammar / Structure Suggestion Cards -->
                 <div id="${this.p}-suggestionsWrap" class="hidden space-y-2.5">
                   <div class="text-xs font-extrabold uppercase tracking-wider text-amber-800">
-                    🎯 Targeted Grammar &amp; Fluency Suggestions
+                    🎯 <span id="${this.p}-suggestionsHeading">${t('suggestionsHeading')}</span>
                   </div>
                   <div id="${this.p}-suggestionsList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                 </div>
@@ -1962,19 +2451,20 @@
                 <!-- Reattempt Recording Callout Box -->
                 <div class="rounded-2xl bg-amber-50/90 border border-amber-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <div class="text-sm font-extrabold text-amber-950">
-                      Want to try again after reviewing your feedback?
+                    <div id="${this.p}-reattemptBoxTitle" class="text-sm font-extrabold text-amber-950">
+                      ${t('reattemptBoxTitle')}
                     </div>
-                    <p class="text-xs text-amber-800 mt-0.5">
-                      You can erase this attempt and record a fresh take before downloading your files.
+                    <p id="${this.p}-reattemptBoxDesc" class="text-xs text-amber-800 mt-0.5">
+                      ${t('reattemptBoxDesc')}
                     </p>
                   </div>
                   <button
                     type="button"
                     id="${this.p}-reattemptBtn"
-                    class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-sm shrink-0 transition"
+                    class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-sm shrink-0 inline-flex items-center gap-1.5 transition"
                   >
-                    🔄 Reattempt Recording
+                    <span>🔄</span>
+                    <span id="${this.p}-reattemptBtnText">${t('reattemptBtn')}</span>
                   </button>
                 </div>
               </div>
@@ -1989,7 +2479,7 @@
                     class="px-5 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-sm hover:shadow inline-flex items-center justify-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <span>📦</span>
-                    <span>${L.downloadBothBtn}</span>
+                    <span id="${this.p}-downloadBothBtnText">${t('downloadBothBtn')}</span>
                   </button>
 
                   <button
@@ -1999,7 +2489,7 @@
                     class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <span>🎵</span>
-                    <span>${L.downloadAudioBtn}</span>
+                    <span id="${this.p}-downloadAudioBtnText">${t('downloadAudioBtn')}</span>
                   </button>
 
                   <button
@@ -2009,7 +2499,7 @@
                     class="px-4 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <span>📄</span>
-                    <span>${L.downloadTextBtn}</span>
+                    <span id="${this.p}-downloadTextBtnText">${t('downloadTextBtn')}</span>
                   </button>
                 </div>
 
@@ -2023,23 +2513,62 @@
                 </div>
               </div>
             </div>
-
-            <!-- Privacy Notice & Copyright Footer -->
-            <footer class="pt-2 pb-4 text-center space-y-1">
-              <p class="text-xs text-slate-400">
-                Privacy Notice: Audio recording, speech transcription, and grammar analysis occur locally in your browser.
-              </p>
-              <p class="text-xs sm:text-sm font-medium text-slate-500">
-                Tous droits réservés Monsieur Nan du lycée de Bayside
-              </p>
-            </footer>
           </div>
         `;
       }
 
+      /* Refresh all UI strings in this studio when global UI language changes */
+      refreshLanguage() {
+        this.el('step1Title').textContent = t('step1Title');
+        this.el('soloTitle').textContent = t('soloTitle');
+        this.el('soloDesc').textContent = t('soloDesc');
+        this.el('pairTitle').textContent = t('pairTitle');
+        this.el('pairDesc').textContent = t('pairDesc');
+        this.el('student1Label').textContent = t('student1Label');
+        this.el('student2Label').textContent = t('student2Label');
+        this.el('swapBtnText').textContent = t('swapBtn');
+        this.el('dialectLabel').textContent = t('dialectLabel');
+        this.el('step2Title').textContent = t('step2Title');
+        this.el('noiseText').textContent = `${t('noiseLabel')}: ${this.noiseSuppression ? t('noiseOn') : t('noiseOff')}`;
+        this.el('passTurnBtnText').textContent = t('passTurnBtn');
+        this.el('startBtnText').textContent = t('startBtn');
+        this.el('stopBtnText').textContent = t('stopBtn');
+        this.el('clearBtnText').textContent = t('clearBtn');
+        this.el('step3Title').textContent = t('step3Title');
+        this.el('transcriptLabel').textContent = t('transcriptLabel');
+        this.el('audioPlaybackLabel').textContent = t('audioPlaybackLabel');
+        if (!this.audioBlob && !this.isRecording) {
+          this.el('audioMeta').textContent = t('noRecordingYet');
+        }
+        this.el('feedbackHeading').textContent = t('feedbackHeading');
+        this.el('strengthsHeading').textContent = t('strengthsHeading');
+        this.el('suggestionsHeading').textContent = t('suggestionsHeading');
+        this.el('reattemptBoxTitle').textContent = t('reattemptBoxTitle');
+        this.el('reattemptBoxDesc').textContent = t('reattemptBoxDesc');
+        this.el('reattemptBtnText').textContent = t('reattemptBtn');
+        this.el('downloadBothBtnText').textContent = t('downloadBothBtn');
+        this.el('downloadAudioBtnText').textContent = t('downloadAudioBtn');
+        this.el('downloadTextBtnText').textContent = t('downloadTextBtn');
+
+        // Refresh status badge & speaker badges
+        if (this.statusState === 'recording') {
+          this.setStatusBadge('recording', t('recordingBadge'));
+        } else if (this.statusState === 'finished') {
+          this.setStatusBadge('finished', t('finishedBadge'));
+        } else {
+          this.setStatusBadge('ready', t('readyBadge'));
+        }
+        this.updateSpeakerBadges();
+        this.renderTranscript();
+
+        // Refresh current status banner message in new UI language
+        if (this.lastBannerState) {
+          this.setBannerKey(this.lastBannerState.type || 'info', this.lastBannerState.key, this.lastBannerState.vars);
+        }
+      }
+
       /* Bind all interactive DOM events */
       bindEvents() {
-        // Task mode radio switch (Solo vs Pair)
         const radios = document.querySelectorAll(`input[name="${this.p}-taskMode"]`);
         radios.forEach(radio => {
           radio.addEventListener('change', (e) => {
@@ -2047,11 +2576,9 @@
           });
         });
 
-        // Update Pair speaker badge names live as students type
         this.el('student1Input').addEventListener('input', () => this.updateSpeakerBadges());
         this.el('student2Input').addEventListener('input', () => this.updateSpeakerBadges());
 
-        // Swap speaker order in Pair Mode
         this.el('swapBtn').addEventListener('click', () => {
           const s1 = this.el('student1Input');
           const s2 = this.el('student2Input');
@@ -2059,10 +2586,9 @@
           s1.value = s2.value;
           s2.value = temp;
           this.updateSpeakerBadges();
-          this.setBanner('info', 'Speaker order swapped.');
+          this.setBannerKey('info', 'bannerSwapped');
         });
 
-        // Noise suppression toggle
         this.el('noiseBtn').addEventListener('click', () => {
           this.noiseSuppression = !this.noiseSuppression;
           const btn = this.el('noiseBtn');
@@ -2071,15 +2597,14 @@
           if (this.noiseSuppression) {
             btn.className = 'self-start sm:self-auto px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 inline-flex items-center gap-2 transition';
             dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
-            txt.textContent = `${this.cfg.labels.noiseLabel}: ON`;
+            txt.textContent = `${t('noiseLabel')}: ${t('noiseOn')}`;
           } else {
             btn.className = 'self-start sm:self-auto px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200 inline-flex items-center gap-2 transition';
             dot.className = 'w-2 h-2 rounded-full bg-slate-400';
-            txt.textContent = `${this.cfg.labels.noiseLabel}: OFF`;
+            txt.textContent = `${t('noiseLabel')}: ${t('noiseOff')}`;
           }
         });
 
-        // Chinese IC L1-20 Boost & Drawer
         if (this.cfg.hasIcBoost) {
           this.el('icBoostToggle').addEventListener('click', () => {
             this.icBoostEnabled = !this.icBoostEnabled;
@@ -2109,7 +2634,6 @@
           lessonSelect.addEventListener('change', (e) => renderLessonTerms(e.target.value));
         }
 
-        // Reference drawer toggle for Spanish, Japanese, Korean
         if (this.cfg.referenceDrawer) {
           this.el('refToggleBtn').addEventListener('click', () => {
             const drawer = this.el('refDrawer');
@@ -2119,7 +2643,6 @@
           });
         }
 
-        // Pass Turn button & keyboard shortcuts (Tab or Alt+S) when recording in Pair mode
         this.el('passTurnBtn').addEventListener('click', () => this.passTurn());
 
         document.addEventListener('keydown', (e) => {
@@ -2133,23 +2656,19 @@
           }
         });
 
-        // Primary Start, Stop, Clear buttons
         this.el('startBtn').addEventListener('click', () => this.startRecording());
         this.el('stopBtn').addEventListener('click', () => this.stopRecording());
         this.el('clearBtn').addEventListener('click', () => this.resetRecording());
 
-        // Reattempt button opens custom modal
         this.el('reattemptBtn').addEventListener('click', () => {
           openReattemptModal(() => this.resetRecording());
         });
 
-        // Download buttons
         this.el('downloadBothBtn').addEventListener('click', () => this.downloadBoth());
         this.el('downloadAudioBtn').addEventListener('click', () => this.downloadAudio());
         this.el('downloadTextBtn').addEventListener('click', () => this.downloadText());
       }
 
-      /* Switch between Solo and Pair task modes */
       setTaskMode(mode) {
         this.taskMode = mode;
         const soloCard = this.el('soloCard');
@@ -2181,7 +2700,6 @@
         this.updateSpeakerBadges();
       }
 
-      /* Update speaker status badges in Pair Mode */
       updateSpeakerBadges() {
         const name1 = this.el('student1Input').value.trim() || 'Student 1';
         const name2 = this.el('student2Input').value.trim() || 'Student 2';
@@ -2196,27 +2714,25 @@
         if (this.activeSpeaker === 1) {
           b1.className = 'px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition';
           st1.className = 'px-1.5 py-0.5 rounded bg-emerald-800/70 text-[10px] uppercase';
-          st1.textContent = 'Speaking Now';
+          st1.textContent = t('speakingNow');
 
           b2.className = 'px-3.5 py-2 rounded-xl bg-slate-200 text-slate-600 text-xs font-bold flex items-center gap-2 transition';
           st2.className = 'px-1.5 py-0.5 rounded bg-slate-300/80 text-[10px] uppercase';
-          st2.textContent = 'Waiting';
+          st2.textContent = t('waitingTurn');
         } else {
           b2.className = 'px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition';
           st2.className = 'px-1.5 py-0.5 rounded bg-emerald-800/70 text-[10px] uppercase';
-          st2.textContent = 'Speaking Now';
+          st2.textContent = t('speakingNow');
 
           b1.className = 'px-3.5 py-2 rounded-xl bg-slate-200 text-slate-600 text-xs font-bold flex items-center gap-2 transition';
           st1.className = 'px-1.5 py-0.5 rounded bg-slate-300/80 text-[10px] uppercase';
-          st1.textContent = 'Waiting';
+          st1.textContent = t('waitingTurn');
         }
       }
 
-      /* Pass Turn in Pair Mode: commits interim speech, inserts "\n\n[Speaker Name]: ", switches speaker */
       passTurn() {
         if (this.taskMode !== 'pair') return;
 
-        // Commit any current interim text before switching
         if (this.interimTranscript.trim()) {
           let chunk = this.interimTranscript.trim();
           if (this.cfg.hasIcBoost && this.icBoostEnabled) {
@@ -2236,10 +2752,9 @@
         this.committedTranscript += `\n\n[${nextSpeakerName}]: `;
         this.updateSpeakerBadges();
         this.renderTranscript();
-        this.setBanner('recording', `Turn passed to ${nextSpeakerName}. Continue speaking!`);
+        this.setBannerKey('recording', 'bannerTurnPassed', { name: nextSpeakerName });
       }
 
-      /* Validate student name input(s) with gentle shake animation */
       validateStudentInputs() {
         const s1 = this.el('student1Input');
         const s2 = this.el('student2Input');
@@ -2247,7 +2762,7 @@
 
         if (!s1.value.trim()) {
           s1.classList.remove('animate-shake');
-          void s1.offsetWidth; // trigger reflow
+          void s1.offsetWidth;
           s1.classList.add('animate-shake', 'border-rose-500', 'ring-2', 'ring-rose-200');
           s1.focus();
           valid = false;
@@ -2266,17 +2781,15 @@
         }
 
         if (!valid) {
-          this.setBanner('warning', 'Please enter the required student name(s) before starting the recording.');
+          this.setBannerKey('warning', 'bannerNameRequired');
         }
         return valid;
       }
 
-      /* Start Microphone Capture, PCM Recorder, Visualizer, Timer & SpeechRecognition */
       async startRecording() {
         if (this.isRecording) return;
         if (!this.validateStudentInputs()) return;
 
-        // Clean up previous blob URL if re-recording
         if (this.audioUrl) {
           URL.revokeObjectURL(this.audioUrl);
           this.audioUrl = null;
@@ -2284,7 +2797,7 @@
         this.audioBlob = null;
         this.el('audioPlayer').removeAttribute('src');
         this.el('audioPlayer').load();
-        this.el('audioMeta').textContent = 'Recording in progress...';
+        this.el('audioMeta').textContent = t('recordingInProgressMeta');
         this.el('feedbackContainer').classList.add('hidden');
         this.el('downloadConfirm').classList.add('hidden');
         this.setDownloadButtonsEnabled(false);
@@ -2309,12 +2822,10 @@
 
           this.sourceNode = this.audioContext.createMediaStreamSource(this.mediaStream);
 
-          // AnalyserNode for live frequency bar visualizer
           this.analyserNode = this.audioContext.createAnalyser();
           this.analyserNode.fftSize = 128;
           this.analyserNode.smoothingTimeConstant = 0.82;
 
-          // ScriptProcessorNode for raw PCM capture (4096 buffer, 1 channel)
           this.pcmChunks = [];
           this.processorNode = this.audioContext.createScriptProcessor(4096, 1, 1);
           this.processorNode.onaudioprocess = (event) => {
@@ -2323,7 +2834,6 @@
             this.pcmChunks.push(new Float32Array(channelData));
           };
 
-          // Zero-gain node prevents microphone loopback echo while ensuring onaudioprocess fires
           this.zeroGainNode = this.audioContext.createGain();
           this.zeroGainNode.gain.value = 0;
 
@@ -2332,7 +2842,6 @@
           this.processorNode.connect(this.zeroGainNode);
           this.zeroGainNode.connect(this.audioContext.destination);
 
-          // Backup MediaRecorder stream for decodeAudioData fallback if needed
           this.mediaRecorderChunks = [];
           if (typeof MediaRecorder !== 'undefined') {
             try {
@@ -2346,7 +2855,6 @@
             }
           }
 
-          // Initialize transcript header for Pair Mode
           this.isRecording = true;
           this.activeSpeaker = 1;
           this.speakerTurns = 1;
@@ -2360,10 +2868,8 @@
           }
           this.renderTranscript();
 
-          // Start Speech Recognition
           this.startSpeechRecognition();
 
-          // Start Timer & UI Controls
           this.secondsElapsed = 0;
           this.updateTimerDisplay();
           this.timerInterval = setInterval(() => {
@@ -2373,25 +2879,23 @@
 
           this.el('startBtn').disabled = true;
           this.el('stopBtn').disabled = false;
-          this.setStatusBadge('recording', this.cfg.labels.recordingBadge);
-          this.setBanner('recording', 'Microphone active! Speak clearly into your microphone — live transcription and MP3 capture are running.');
+          this.setStatusBadge('recording', t('recordingBadge'));
+          this.setBannerKey('recording', 'bannerRecordingActive');
 
-          // Start Live Frequency Visualizer
           this.resizeCanvas();
           this.drawLiveVisualizer();
 
         } catch (err) {
           console.error('Microphone access error:', err);
           this.isRecording = false;
-          this.setBanner('error', 'Microphone access denied or unavailable. Please allow microphone permissions in your browser settings and try again.');
+          this.setBannerKey('error', 'bannerMicDenied');
         }
       }
 
-      /* Configure & start Web Speech API recognition */
       startSpeechRecognition() {
         const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognitionAPI) {
-          this.setBanner('warning', 'Live speech-to-text is not supported in this browser, but your MP3 audio is recording normally.');
+          this.setBannerKey('warning', 'bannerNoSpeechSupport');
           return;
         }
 
@@ -2401,7 +2905,6 @@
         recognition.interimResults = true;
         recognition.maxAlternatives = 1;
 
-        // Attach JSGF SpeechGrammarList hints for Chinese Integrated Chinese L1-20 vocabulary
         if (this.cfg.hasIcBoost && this.icBoostEnabled) {
           const SpeechGrammarListAPI = window.SpeechGrammarList || window.webkitSpeechGrammarList;
           if (SpeechGrammarListAPI) {
@@ -2410,9 +2913,7 @@
               const list = new SpeechGrammarListAPI();
               list.addFromString(grammar, 1);
               recognition.grammars = list;
-            } catch (_) {
-              // Ignore if browser ignores JSGF grammar hints
-            }
+            } catch (_) {}
           }
         }
 
@@ -2440,31 +2941,25 @@
 
         recognition.onerror = (event) => {
           if (event.error === 'no-speech' || event.error === 'aborted') {
-            return; // Normal during pauses
+            return;
           }
           console.warn('SpeechRecognition notice:', event.error);
         };
 
         recognition.onend = () => {
-          // Automatically restart speech recognition if still actively recording
           if (this.isRecording) {
             try {
               recognition.start();
-            } catch (_) {
-              // Ignore rapid restart error
-            }
+            } catch (_) {}
           }
         };
 
         this.recognition = recognition;
         try {
           recognition.start();
-        } catch (_) {
-          // Safe guard
-        }
+        } catch (_) {}
       }
 
-      /* Apply Integrated Chinese L1-20 homophone corrections */
       applyIcVocabCorrections(text) {
         let updated = text;
         for (const [pattern, replacement] of IC_HOMOPHONE_CORRECTIONS) {
@@ -2473,25 +2968,21 @@
         return updated;
       }
 
-      /* Stop recording, finalize transcript, encode MP3 (with WAV fallback), and run grammar check */
       async stopRecording(silentStop = false) {
         if (!this.isRecording) return;
         this.isRecording = false;
 
-        // Stop timer
         if (this.timerInterval) {
           clearInterval(this.timerInterval);
           this.timerInterval = null;
         }
 
-        // Stop visualizer loop
         if (this.animFrameId) {
           cancelAnimationFrame(this.animFrameId);
           this.animFrameId = null;
         }
         this.drawIdleVisualizer();
 
-        // Stop SpeechRecognition & commit remaining interim text
         if (this.recognition) {
           try {
             this.recognition.onend = null;
@@ -2514,14 +3005,12 @@
         }
         this.renderTranscript();
 
-        // Stop MediaRecorder if active
         if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
           try {
             this.mediaRecorder.stop();
           } catch (_) {}
         }
 
-        // Disconnect Web Audio nodes & stop microphone tracks
         try {
           if (this.processorNode) this.processorNode.disconnect();
           if (this.analyserNode) this.analyserNode.disconnect();
@@ -2545,25 +3034,20 @@
         this.el('stopBtn').disabled = true;
 
         if (silentStop) {
-          this.setStatusBadge('ready', this.cfg.labels.readyBadge);
+          this.setStatusBadge('ready', t('readyBadge'));
           return;
         }
 
-        this.setStatusBadge('finished', this.cfg.labels.finishedBadge);
-        this.setBanner('info', 'Encoding your MP3 audio and analyzing your speaking grammar...');
+        this.setStatusBadge('finished', t('finishedBadge'));
+        this.setBannerKey('info', 'bannerEncoding');
 
-        // Encode audio to MP3 (with decodeAudioData + WAV fallback)
         await this.finalizeAudioEncoding();
-
-        // Run Automatic English Grammar & Speaking Feedback Loop
         this.runGrammarFeedback();
       }
 
-      /* Merge PCM chunks, resample to 44100 Hz if needed, encode 128 kbps MP3 via lamejs (or WAV fallback) */
       async finalizeAudioEncoding() {
         let mergedPcm = this.mergeFloat32Arrays(this.pcmChunks);
 
-        // AudioContext.decodeAudioData fallback if ScriptProcessorNode yielded empty buffer
         if ((!mergedPcm || mergedPcm.length === 0) && this.mediaRecorderChunks.length > 0) {
           try {
             const rawBlob = new Blob(this.mediaRecorderChunks);
@@ -2580,19 +3064,17 @@
         }
 
         if (!mergedPcm || mergedPcm.length === 0) {
-          this.el('audioMeta').textContent = 'No audio captured';
-          this.setBanner('warning', 'Recording stopped, but no microphone audio samples were captured.');
+          this.el('audioMeta').textContent = t('noRecordingYet');
+          this.setBannerKey('warning', 'bannerNoAudioCaptured');
           return;
         }
 
-        // Resample to 44100 Hz if hardware sample rate differs so MP3 playback pitch/speed is exact
         const targetRate = 44100;
         const resampledPcm = this.resampleLinear(mergedPcm, this.inputSampleRate, targetRate);
 
         try {
           if (typeof window.lamejs !== 'undefined' && window.lamejs.Mp3Encoder) {
-            const mp3Blob = this.encodeMp3(resampledPcm, targetRate, 128);
-            this.audioBlob = mp3Blob;
+            this.audioBlob = this.encodeMp3(resampledPcm, targetRate, 128);
             this.audioExt = 'mp3';
           } else {
             throw new Error('lamejs unavailable');
@@ -2611,10 +3093,9 @@
         const sizeKB = Math.max(1, Math.round(this.audioBlob.size / 1024));
         this.el('audioMeta').textContent = `${this.audioExt.toUpperCase()} • ${this.formatTime(this.secondsElapsed)} • ${sizeKB} KB`;
         this.setDownloadButtonsEnabled(true);
-        this.setBanner('success', `Recording complete! Your ${this.audioExt.toUpperCase()} audio and grammar feedback are ready below.`);
+        this.setBannerKey('success', 'bannerComplete', { ext: this.audioExt.toUpperCase() });
       }
 
-      /* Merge array of Float32Arrays */
       mergeFloat32Arrays(chunks) {
         const totalLength = chunks.reduce((acc, arr) => acc + arr.length, 0);
         const result = new Float32Array(totalLength);
@@ -2626,7 +3107,6 @@
         return result;
       }
 
-      /* Linear interpolation resampler to 44100 Hz */
       resampleLinear(samples, srcRate, dstRate) {
         if (srcRate === dstRate) return samples;
         const ratio = srcRate / dstRate;
@@ -2643,7 +3123,6 @@
         return output;
       }
 
-      /* Encode Float32 PCM samples to 128 kbps Mono MP3 using lamejs */
       encodeMp3(float32Samples, sampleRate, bitRate) {
         const encoder = new window.lamejs.Mp3Encoder(1, sampleRate, bitRate);
         const int16Samples = new Int16Array(float32Samples.length);
@@ -2669,7 +3148,6 @@
         return new Blob(mp3Data, { type: 'audio/mp3' });
       }
 
-      /* Pure-Audio 16-bit PCM WAV Fallback Encoder */
       encodeWav(float32Samples, sampleRate) {
         const buffer = new ArrayBuffer(44 + float32Samples.length * 2);
         const view = new DataView(buffer);
@@ -2685,8 +3163,8 @@
         writeString(8, 'WAVE');
         writeString(12, 'fmt ');
         view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true); // PCM
-        view.setUint16(22, 1, true); // Mono
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
         view.setUint32(24, sampleRate, true);
         view.setUint32(28, sampleRate * 2, true);
         view.setUint16(32, 2, true);
@@ -2703,23 +3181,26 @@
         return new Blob([buffer], { type: 'audio/wav' });
       }
 
-      /* Render transcript & update live word/character count */
       renderTranscript() {
-        const fullText = this.committedTranscript + (this.interimTranscript ? (this.committedTranscript && !this.committedTranscript.endsWith(' ') && !this.committedTranscript.endsWith('\n') && this.cfg.countMode === 'words' ? ' ' : '') + this.interimTranscript : '');
+        const needsSpace = this.committedTranscript &&
+          !this.committedTranscript.endsWith(' ') &&
+          !this.committedTranscript.endsWith('\n') &&
+          this.cfg.countMode === 'words';
+        const fullText = this.committedTranscript + (this.interimTranscript ? (needsSpace ? ' ' : '') + this.interimTranscript : '');
         this.el('transcriptBox').value = fullText;
         this.el('transcriptBox').scrollTop = this.el('transcriptBox').scrollHeight;
 
         const count = this.computeSpeechCount(fullText);
-        const unit = this.cfg.countMode === 'words' ? (count === 1 ? 'word' : 'words') : (count === 1 ? 'character' : 'characters');
+        const unit = this.cfg.countMode === 'words'
+          ? (count === 1 ? t('wordSingular') : t('wordPlural'))
+          : (count === 1 ? t('charSingular') : t('charPlural'));
         this.el('countBadge').textContent = `${count} ${unit}`;
       }
 
-      /* Strip speaker labels like "[Camille Laurent]: " for pure speech analysis & counting */
       stripSpeakerTags(text) {
         return text.replace(/\[[^\]]+\]:\s*/g, ' ').trim();
       }
 
-      /* Compute word count (French/Spanish) or character count excluding spaces/punctuation/tags (Chinese/Japanese/Korean) */
       computeSpeechCount(text) {
         const clean = this.stripSpeakerTags(text);
         if (!clean) return 0;
@@ -2728,13 +3209,11 @@
           const words = clean.split(/[\s,.;:!?¡¿«»"“”()]+/).filter(Boolean);
           return words.length;
         } else {
-          // Remove whitespace and common Latin/CJK punctuation
           const charsOnly = clean.replace(/[\s\u3000.,!?;:'"“”‘’()（）【】《》〈〉、。！？；：…—\-~～·]/g, '');
           return charsOnly.length;
         }
       }
 
-      /* Run language-specific grammar analyzer and render feedback cards */
       runGrammarFeedback() {
         const rawText = this.el('transcriptBox').value.trim();
         const cleanSpeech = this.stripSpeakerTags(rawText);
@@ -2748,7 +3227,6 @@
 
         this.el('feedbackSummary').textContent = report.summaryBanner;
 
-        // Render positive strength badges
         const strengthsWrap = this.el('strengthsWrap');
         const strengthsList = this.el('strengthsList');
         if (report.strengths.length > 0) {
@@ -2765,7 +3243,6 @@
           strengthsWrap.classList.add('hidden');
         }
 
-        // Render actionable suggestion cards
         const suggestionsWrap = this.el('suggestionsWrap');
         const suggestionsList = this.el('suggestionsList');
         if (report.suggestions.length > 0) {
@@ -2790,7 +3267,6 @@
         this.el('feedbackContainer').classList.remove('hidden');
       }
 
-      /* Clear / Reset all recording state and transcript */
       async resetRecording() {
         if (this.isRecording) {
           await this.stopRecording(true);
@@ -2817,17 +3293,16 @@
         const player = this.el('audioPlayer');
         player.removeAttribute('src');
         player.load();
-        this.el('audioMeta').textContent = 'No recording yet';
+        this.el('audioMeta').textContent = t('noRecordingYet');
 
         this.el('feedbackContainer').classList.add('hidden');
         this.el('downloadConfirm').classList.add('hidden');
         this.setDownloadButtonsEnabled(false);
-        this.setStatusBadge('ready', this.cfg.labels.readyBadge);
-        this.setBanner('info', 'Studio cleared and ready for a fresh recording.');
+        this.setStatusBadge('ready', t('readyBadge'));
+        this.setBannerKey('info', 'bannerCleared');
         this.drawIdleVisualizer();
       }
 
-      /* Build filename slug from student name(s) */
       getStudentSlug() {
         const s1 = this.el('student1Input').value.trim() || 'Student1';
         const s2 = this.el('student2Input').value.trim();
@@ -2839,7 +3314,6 @@
           .replace(/^_+|_+$/g, '') || 'student';
       }
 
-      /* Build formatted .txt report content */
       buildTextReport() {
         const s1 = this.el('student1Input').value.trim() || 'Student 1';
         const s2 = this.el('student2Input').value.trim() || 'Student 2';
@@ -2866,12 +3340,12 @@
           transcriptBody,
           '',
           '====================================================================',
+          'Support - Contacter moi ! KNan@schools.nyc.gov',
           'Tous droits réservés Monsieur Nan du lycée de Bayside',
           '===================================================================='
         ].join('\n');
       }
 
-      /* Trigger file download helper */
       triggerBrowserDownload(blob, filename) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -2883,7 +3357,6 @@
         setTimeout(() => URL.revokeObjectURL(url), 1500);
       }
 
-      /* Download Audio Only */
       downloadAudio() {
         if (!this.audioBlob) return;
         const slug = this.getStudentSlug();
@@ -2892,7 +3365,6 @@
         this.showDownloadConfirmation(`Downloaded ${filename}`);
       }
 
-      /* Download Text Only */
       downloadText() {
         const slug = this.getStudentSlug();
         const filename = `transcription_${slug}.txt`;
@@ -2901,7 +3373,6 @@
         this.showDownloadConfirmation(`Downloaded ${filename}`);
       }
 
-      /* Download Both Audio + Text in one click */
       downloadBoth() {
         if (!this.audioBlob) return;
         const slug = this.getStudentSlug();
@@ -2930,8 +3401,8 @@
         this.el('downloadTextBtn').disabled = !enabled;
       }
 
-      /* Update top status badge */
       setStatusBadge(state, label) {
+        this.statusState = state;
         const badge = this.el('statusBadge');
         const dot = this.el('statusDot');
         const text = this.el('statusBadgeText');
@@ -2949,12 +3420,12 @@
         }
       }
 
-      /* Update contextual status banner */
-      setBanner(type, message) {
+      setBannerKey(type, key, vars = {}) {
+        this.lastBannerState = { type, key, vars };
         const banner = this.el('statusBanner');
         const icon = this.el('bannerIcon');
         const text = this.el('bannerText');
-        text.textContent = message;
+        text.textContent = t(key, vars);
 
         const styles = {
           info: ['bg-blue-50 text-blue-900 border-blue-200', 'ℹ️'],
@@ -2979,7 +3450,6 @@
         return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
       }
 
-      /* Resize HTML5 Canvas crisply for current container width & devicePixelRatio */
       resizeCanvas() {
         const canvas = this.el('canvas');
         if (!canvas) return;
@@ -2996,7 +3466,6 @@
         }
       }
 
-      /* Clean resting bars when idle */
       drawIdleVisualizer() {
         const canvas = this.el('canvas');
         if (!canvas) return;
@@ -3024,7 +3493,6 @@
         }
       }
 
-      /* Real-time frequency bars driven by Web Audio AnalyserNode */
       drawLiveVisualizer() {
         if (!this.isRecording || !this.analyserNode) return;
 
@@ -3071,47 +3539,139 @@
     }
 
     /* =========================================================================
-       4. GLOBAL VIEW NAVIGATION, HOME SHOWCASE & MODAL CONTROLLERS
+       5. GLOBAL INTERFACE LANGUAGE SWITCHER & VIEW NAVIGATION
        ========================================================================= */
     const recorders = {};
     let currentView = 'home';
-    let homePreviewMode = 'solo'; // 'solo' | 'pair'
+    let homePreviewMode = 'solo';
     let homeShowcaseFrame = null;
     let pendingReattemptCallback = null;
 
-    /* Initialize all 5 language studio controllers */
+    /* Switch entire interface & instructions between EN, FR, ZH, ES, JA, KO */
+    function setUiLanguage(langCode) {
+      if (!UI_TRANSLATIONS[langCode]) return;
+      currentUiLang = langCode;
+
+      try {
+        localStorage.setItem('bayside_studio_ui_lang', langCode);
+      } catch (_) {}
+
+      // Update active pill styling in the global UI language bar
+      document.querySelectorAll('.ui-lang-btn').forEach(btn => {
+        const code = btn.getAttribute('data-uilang');
+        if (code === langCode) {
+          btn.className = 'ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition bg-[#164b9b] text-white shadow-2xs';
+        } else {
+          btn.className = 'ui-lang-btn px-2.5 py-1 rounded-xl text-xs font-bold transition text-slate-700 hover:bg-white';
+        }
+      });
+
+      // Update Header, Home Hub, Global Footer, and Modal text
+      const textBindings = {
+        headerSubtitle: 'headerSubtitle',
+        uiLangLabelText: null,
+        navHomeLabel: 'navHome',
+        homeHeroBadge: 'homeHeroBadge',
+        homeHeroTitle: 'homeHeroTitle',
+        homeHeroDesc: 'homeHeroDesc',
+        homeCtaChoose: 'homeCtaChoose',
+        homeShowcaseTitle: 'homeShowcaseTitle',
+        homePreview1Voice: 'homePreview1Voice',
+        homePreview2Voices: 'homePreview2Voices',
+        homeBadge1Title: 'homeBadge1Title',
+        homeBadge1Desc: 'homeBadge1Desc',
+        homeBadge2Title: 'homeBadge2Title',
+        homeBadge2Desc: 'homeBadge2Desc',
+        homeBadge3Title: 'homeBadge3Title',
+        homeBadge3Desc: 'homeBadge3Desc',
+        homeWorkflowHeading: 'homeWorkflowHeading',
+        homeWorkflowSubheading: 'homeWorkflowSubheading',
+        homeStep1Title: 'homeStep1Title',
+        homeStep1Desc: 'homeStep1Desc',
+        homeStep2Title: 'homeStep2Title',
+        homeStep2Desc: 'homeStep2Desc',
+        homeStep3Title: 'homeStep3Title',
+        homeStep3Desc: 'homeStep3Desc',
+        homeGridHeading: 'homeGridHeading',
+        homeGridSubheading: 'homeGridSubheading',
+        homeCardFrSub: 'homeCardFrSub',
+        homeCardFrDesc: 'homeCardFrDesc',
+        homeCardFrBtn: 'homeCardFrBtn',
+        homeCardZhSub: 'homeCardZhSub',
+        homeCardZhDesc: 'homeCardZhDesc',
+        homeCardZhBtn: 'homeCardZhBtn',
+        homeCardEsSub: 'homeCardEsSub',
+        homeCardEsDesc: 'homeCardEsDesc',
+        homeCardEsBtn: 'homeCardEsBtn',
+        homeCardJaSub: 'homeCardJaSub',
+        homeCardJaDesc: 'homeCardJaDesc',
+        homeCardJaBtn: 'homeCardJaBtn',
+        homeCardKoSub: 'homeCardKoSub',
+        homeCardKoDesc: 'homeCardKoDesc',
+        homeCardKoBtn: 'homeCardKoBtn',
+        homePrivacyTitle: 'homePrivacyTitle',
+        homePrivacyDesc: 'homePrivacyDesc',
+        homePrivacyFootnote: 'homePrivacyFootnote',
+        globalPrivacyFooter: 'globalPrivacyFooter',
+        reattemptModalTitle: 'modalTitle',
+        reattemptModalBody: 'modalBody',
+        cancelReattemptBtn: 'modalKeep',
+        confirmReattemptBtn: 'modalConfirm'
+      };
+
+      for (const [elId, dictKey] of Object.entries(textBindings)) {
+        if (!dictKey) continue;
+        const el = document.getElementById(elId);
+        if (el) el.textContent = t(dictKey);
+      }
+
+      const uiLbl = document.querySelector('#uiLangLabel span:last-child');
+      if (uiLbl) uiLbl.textContent = t('uiLangLabel');
+
+      // Update Home Showcase caption for current preview mode
+      setHomePreviewMode(homePreviewMode);
+
+      // Update all 5 recording studios live
+      for (const rec of Object.values(recorders)) {
+        rec.refreshLanguage();
+      }
+    }
+
     function initAllStudios() {
       for (const [key, config] of Object.entries(LANGUAGE_CONFIGS)) {
         recorders[key] = new LanguageRecorderController(config);
       }
       initHomeShowcase();
+
+      // Restore saved UI language if available
+      let savedLang = 'en';
+      try {
+        const stored = localStorage.getItem('bayside_studio_ui_lang');
+        if (stored && UI_TRANSLATIONS[stored]) savedLang = stored;
+      } catch (_) {}
+      setUiLanguage(savedLang);
     }
 
-    /* Switch active view safely: stops any active recording, updates nav styling, scrolls top, resizes canvas */
     async function switchView(targetView) {
       if (currentView === targetView) return;
 
-      // Safely stop any active recording across all recorders
       for (const rec of Object.values(recorders)) {
         if (rec.isRecording) {
           await rec.stopRecording(false);
         }
       }
 
-      // Hide all views
       const allViews = ['home', 'french', 'chinese', 'spanish', 'japanese', 'korean'];
       allViews.forEach(v => {
         const el = document.getElementById(`${v}View`);
         if (el) el.classList.add('hidden');
       });
 
-      // Show target view
       const targetEl = document.getElementById(`${targetView}View`);
       if (targetEl) {
         targetEl.classList.remove('hidden');
       }
 
-      // Update active navigation pill styling
       document.querySelectorAll('.nav-pill').forEach(btn => {
         const navKey = btn.getAttribute('data-nav');
         if (navKey === targetView) {
@@ -3122,11 +3682,8 @@
       });
 
       currentView = targetView;
-
-      // Smoothly scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Resize target view's canvas so it always renders crisply
       requestAnimationFrame(() => {
         if (targetView === 'home') {
           resizeHomeShowcaseCanvas();
@@ -3136,7 +3693,6 @@
       });
     }
 
-    /* Home Hub Interactive Studio Showcase Animation */
     function setHomePreviewMode(mode) {
       homePreviewMode = mode;
       const btn1 = document.getElementById('homePreview1Voice');
@@ -3146,12 +3702,12 @@
       if (mode === 'solo') {
         btn1.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-600 text-white transition';
         btn2.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition';
-        caption.textContent = 'Solo Presentation Mode • Single Speaker Stream';
+        caption.textContent = t('homeCaptionSolo');
         caption.className = 'font-medium text-sky-300';
       } else {
         btn2.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-600 text-white transition';
         btn1.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition';
-        caption.textContent = 'Pair Dialogue Mode • Alternating Speaker Turns';
+        caption.textContent = t('homeCaptionPair');
         caption.className = 'font-medium text-emerald-300';
       }
     }
@@ -3186,7 +3742,7 @@
             const barCount = Math.max(24, Math.floor(width / 11));
             const gap = 4;
             const barWidth = Math.max(3, (width - gap * (barCount + 1)) / barCount);
-            const activeTurn = Math.floor(phase / 45) % 2; // Alternates speaker every ~1.5s in Pair mode
+            const activeTurn = Math.floor(phase / 45) % 2;
 
             for (let i = 0; i < barCount; i++) {
               const envelope = Math.sin((i / barCount) * Math.PI);
@@ -3223,7 +3779,6 @@
       renderLoop();
     }
 
-    /* Custom Reattempt Confirmation Modal Controls */
     function openReattemptModal(onConfirm) {
       pendingReattemptCallback = onConfirm;
       const modal = document.getElementById('reattemptModal');
@@ -3245,7 +3800,6 @@
       closeReattemptModal();
     });
 
-    /* Handle window resize across all canvases */
     window.addEventListener('resize', () => {
       if (currentView === 'home') {
         resizeHomeShowcaseCanvas();
@@ -3254,7 +3808,6 @@
       }
     });
 
-    /* Initialize application on DOM load */
     window.addEventListener('DOMContentLoaded', initAllStudios);
   </script>
 </body>
