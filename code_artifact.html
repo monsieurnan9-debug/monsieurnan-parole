@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>课堂出口票：川菜与音乐风格</title>
+
+  <!-- Google Fonts: Inter + Noto Sans SC for clean Simplified Chinese & English typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Pure-JS MP3 Encoder (lamejs 1.2.1 with cdnjs + jsDelivr fallback) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.all.min.js"></script>
+  <script>
+    if (!window.lamejs) {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.all.min.js"><\/script>');
+    }
+  </script>
+
+  <style>
+    /* Base typography pairing Inter with Simplified Chinese Noto Sans SC */
+    body {
+      font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      background-color: #f4f7fb;
+      color: #1e293b;
+    }
+
+    /* Gentle horizontal shake animation for missing required student name */
+    @keyframes gentleShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake-input {
+      animation: gentleShake 0.35s ease-in-out;
+    }
+
+    /* Pulsing crimson dot for active recording indicator */
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+    .recording-dot {
+      animation: pulseDot 1.2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between py-6 px-4 sm:px-6 lg:px-8">
+
+  <!-- Main Centered Card Container -->
+  <main class="w-full max-w-[780px] mx-auto bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
+
+    <!-- Crimson and Gold Top Accent Bar -->
+    <div class="h-1.5 w-full flex">
+      <div class="w-1/3 bg-[#b91c1c]"></div>
+      <div class="w-1/3 bg-[#d97706]"></div>
+      <div class="w-1/3 bg-[#b91c1c]"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="px-6 pt-6 pb-5 sm:px-8 border-b border-slate-100 bg-gradient-to-b from-amber-50/40 via-slate-50/50 to-white">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-[#b91c1c] text-white flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
+            <!-- Microphone Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h1 class="text-xl sm:text-2xl font-bold text-[#991b1b] tracking-tight">
+                课堂出口票：川菜与音乐风格
+              </h1>
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-100 border border-amber-300/80 text-amber-900 text-xs font-bold tracking-wide">
+                饮食文化与音乐
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 mt-0.5">
+              请在 40 秒内用简体中文介绍川菜特色，并将其与一种音乐风格作比较。
+            </p>
+          </div>
+        </div>
+
+        <!-- Live Recording Status Pill, 40s Timer & Real-Time Checklist Progress -->
+        <div id="recordingBadge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium transition-colors" title="目标：8–40秒内完成口语表达，并达成至少 50% (2/4 项) 要求">
+          <span id="recordingDot" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+          <span id="recordingLabel" class="text-xs tracking-wider font-semibold">准备就绪</span>
+          <span class="text-slate-300">|</span>
+          <span id="timer" class="font-mono font-semibold text-slate-800">00:00 / 00:40</span>
+          <span class="text-slate-300">|</span>
+          <span id="liveChecklistBadge" class="text-xs font-bold font-mono text-[#991b1b]">进度 : 0%</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main 3-Step Workflow Content -->
+    <div class="p-6 sm:p-8 space-y-8">
+
+      <!-- ========================================================= -->
+      <!-- 步骤 1：题目要求与学生信息                                  -->
+      <!-- ========================================================= -->
+      <section aria-labelledby="step1-heading" class="space-y-4">
+        <div class="flex items-center gap-2.5">
+          <span class="w-7 h-7 rounded-full bg-[#b91c1c] text-white text-xs font-bold flex items-center justify-center shadow-sm">
+            1
+          </span>
+          <h2 id="step1-heading" class="text-base sm:text-lg font-semibold text-slate-800">
+            步骤 1：题目要求与学生信息
+          </h2>
+        </div>
+
+        <div class="pl-0 sm:pl-9 space-y-5">
+
+          <!-- Prompt, 4 Requirements, Vocabulary Bank & Reference Sentence Frames Card -->
+          <div class="rounded-2xl border-2 border-red-200/90 bg-gradient-to-br from-red-50/75 via-white to-amber-50/60 p-4 sm:p-5 space-y-4 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-red-100 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-[#b91c1c] text-white text-xs font-bold tracking-wider">
+                  Speaking Exit Ticket
+                </span>
+                <span class="text-xs sm:text-sm font-bold text-slate-800">
+                  Sichuan Cuisine &amp; Music Genre • 8–40 Seconds
+                </span>
+              </div>
+              <button
+                type="button"
+                id="toggleModelBtn"
+                aria-expanded="true"
+                class="px-2.5 py-1 rounded-lg border border-red-200 bg-white hover:bg-red-50 text-[#b91c1c] text-xs font-semibold transition cursor-pointer shrink-0"
+              >
+                隐藏参考句型
+              </button>
+            </div>
+
+            <!-- Speaking Prompt -->
+            <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+              <strong>Speaking Prompt (Within 40 seconds):</strong> Talk about <strong>Sichuan cuisine (川菜)</strong> — explain why its flavors fit the local climate and how it makes you feel — and compare Sichuan cuisine to a <strong>music genre</strong>.
+            </p>
+
+            <!-- 4 Requirement Cards (2x2 Grid) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2.5 text-xs text-slate-800 flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-[#b91c1c] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+                <div>
+                  <p class="font-bold text-slate-900">川菜与气候词汇 (至少2个)</p>
+                  <p class="text-[11px] text-slate-600 mt-0.5">
+                    <span class="font-semibold text-[#991b1b]">麻辣、盆地湿气重、刺激食欲、排汗感到放松</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2.5 text-xs text-slate-800 flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-[#b91c1c] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+                <div>
+                  <p class="font-bold text-slate-900">音乐风格与感受词汇 (至少2个)</p>
+                  <p class="text-[11px] text-slate-600 mt-0.5">
+                    <span class="font-semibold text-[#991b1b]">摇滚乐、电子音乐、节奏强烈、让人兴奋、拉满能量</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2.5 text-xs text-slate-800 flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-[#d97706] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+                <div>
+                  <p class="font-bold text-slate-900">对比句型 (至少1个)</p>
+                  <p class="text-[11px] text-slate-600 mt-0.5">
+                    <span class="font-semibold text-amber-900">就像……一样、跟……很像、把……比作……、如同……</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2.5 text-xs text-slate-800 flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-[#d97706] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">4</span>
+                <div>
+                  <p class="font-bold text-slate-900">时长控制 (40秒内完成)</p>
+                  <p class="text-[11px] text-slate-600 mt-0.5">
+                    <span class="font-semibold text-amber-900">8–40 秒内清晰表达</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Simplified Chinese Vocabulary Bank -->
+            <div class="space-y-2 pt-0.5">
+              <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-600">
+                📚 核心词汇库 Vocabulary Bank（点击词汇可高亮并加入下方提纲笔记）：
+              </span>
+              <div class="flex flex-wrap gap-1.5" id="vocabPillBank">
+                <!-- Group 1: Sichuan Cuisine & Climate -->
+                <button type="button" data-word="麻辣" data-group="sichuan" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 border border-red-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-[#991b1b]">麻辣</span>
+                  <span class="text-[11px] text-slate-500">málà — numbing &amp; spicy</span>
+                </button>
+                <button type="button" data-word="盆地湿气重" data-group="sichuan" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 border border-red-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-[#991b1b]">盆地湿气重</span>
+                  <span class="text-[11px] text-slate-500">péndì shīqì zhòng — humid basin climate</span>
+                </button>
+                <button type="button" data-word="刺激食欲" data-group="sichuan" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 border border-red-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-[#991b1b]">刺激食欲</span>
+                  <span class="text-[11px] text-slate-500">cìjī shíyù — stimulates appetite</span>
+                </button>
+                <button type="button" data-word="排汗感到放松" data-group="sichuan" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 border border-red-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-[#991b1b]">排汗感到放松</span>
+                  <span class="text-[11px] text-slate-500">páihàn gǎndào fàngsōng — sweating feels relaxing</span>
+                </button>
+
+                <!-- Group 2: Music Genre & Energy -->
+                <button type="button" data-word="摇滚乐" data-group="music" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-amber-900">摇滚乐</span>
+                  <span class="text-[11px] text-slate-500">yáogǔnyuè — rock music</span>
+                </button>
+                <button type="button" data-word="电子音乐" data-group="music" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-amber-900">电子音乐</span>
+                  <span class="text-[11px] text-slate-500">diànzǐ yīnyuè — electronic music</span>
+                </button>
+                <button type="button" data-word="节奏强烈" data-group="music" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-amber-900">节奏强烈</span>
+                  <span class="text-[11px] text-slate-500">jiézòu qiángliè — intense rhythm</span>
+                </button>
+                <button type="button" data-word="让人兴奋" data-group="music" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-amber-900">让人兴奋</span>
+                  <span class="text-[11px] text-slate-500">ràng rén xīngfèn — makes people excited</span>
+                </button>
+                <button type="button" data-word="拉满能量" data-group="music" class="vocab-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-xs transition cursor-pointer">
+                  <span class="font-bold text-amber-900">拉满能量</span>
+                  <span class="text-[11px] text-slate-500">lāmǎn néngliàng — boosts energy to the max</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Toggleable Reference Sentence Frames (参考句型框架) -->
+            <div id="modelSentencesBox" class="rounded-xl border-2 border-dashed border-amber-300 bg-white/95 px-3.5 py-3 text-xs sm:text-sm text-slate-700 leading-relaxed space-y-2.5">
+              <span class="block text-[11px] font-bold uppercase tracking-wider text-[#b91c1c]">
+                💬 参考句型框架 (Reference Sentence Frames)：
+              </span>
+
+              <div class="space-y-0.5">
+                <p class="font-medium text-slate-900">
+                  「川菜最大的特点就是<strong>麻辣</strong>。<span class="text-xs font-normal text-slate-500">(Chuāncài zuìdà de tèdiǎn jiùshì málà.)</span>」
+                </p>
+              </div>
+
+              <div class="space-y-0.5 pt-2 border-t border-amber-100">
+                <p class="font-medium text-slate-900">
+                  「因为四川<strong>盆地湿气重</strong>，吃辣不仅能<strong>刺激食欲</strong>，还能让人<strong>排汗感到放松</strong>。<span class="text-xs font-normal text-slate-500">(Yīnwèi Sìchuān péndì shīqì zhòng, chī là bùjǐn néng cìjī shíyù, hái néng ràng rén páihàn gǎndào fàngsōng.)</span>」
+                </p>
+              </div>
+
+              <div class="space-y-0.5 pt-2 border-t border-amber-100">
+                <p class="font-medium text-slate-900">
+                  「对我来说，川菜<strong>就像摇滚乐 / 电子音乐一样</strong>，<strong>节奏强烈</strong>，<strong>让人兴奋</strong>，瞬间<strong>拉满能量</strong>！<span class="text-xs font-normal text-slate-500">(Duì wǒ lái shuō, Chuāncài jiù xiàng yáogǔnyuè / diànzǐ yīnyuè yīyàng, jiézòu qiángliè, ràng rén xīngfèn, shùnjiān lāmǎn néngliàng!)</span>」
+                </p>
+              </div>
+            </div>
+
+            <!-- 50% Unlock Rule Notice -->
+            <p class="text-xs font-semibold text-emerald-800">
+              🔓 完成至少 <strong>50%（2 / 4 项要求）</strong> 即可解锁下载 MP3 音频与 TXT 文字稿。
+            </p>
+          </div>
+
+          <!-- Collapsible Optional Scratchpad: 我的提纲 / Planning Notes -->
+          <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <label for="planningNotes" class="text-xs sm:text-sm font-semibold text-slate-700 flex items-center gap-1.5">
+                <span>✏️ 我的提纲 / Planning Notes</span>
+                <span class="text-[11px] font-normal text-slate-500">(optional — not exported as spoken transcript)</span>
+              </label>
+              <button
+                type="button"
+                id="toggleNotesBtn"
+                aria-expanded="true"
+                class="text-xs font-medium text-[#b91c1c] hover:underline cursor-pointer shrink-0"
+              >
+                收起提纲
+              </button>
+            </div>
+            <div id="planningNotesBody">
+              <textarea
+                id="planningNotes"
+                rows="2"
+                placeholder="在这里记录关键词（例如：麻辣、盆地湿气重、刺激食欲、排汗感到放松 • 就像摇滚乐一样、节奏强烈、拉满能量）..."
+                class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/25 focus:border-[#b91c1c] transition"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Interactive Mode Selector (Solo Default vs. Pair Turn-Taking) -->
+          <div role="radiogroup" aria-label="选择录音模式" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Mode 1: Solo Exit Ticket (Default) -->
+            <button
+              type="button"
+              id="modeIndependentBtn"
+              role="radio"
+              aria-checked="true"
+              class="text-left p-4 rounded-xl border-2 border-[#b91c1c] bg-red-50/55 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/30 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold text-sm sm:text-base text-[#991b1b]">
+                  👤 个人模式 — 课堂出口票
+                </span>
+                <span id="modeIndependentCheck" class="w-5 h-5 rounded-full bg-[#b91c1c] text-white flex items-center justify-center text-xs font-bold">
+                  ✓
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 mt-1">
+                1 位学生 — 在 8–40 秒内用简体中文介绍川菜特色并与音乐风格作比较。
+              </p>
+            </button>
+
+            <!-- Mode 2: Pair Turn-Taking Mode -->
+            <button
+              type="button"
+              id="modePairBtn"
+              role="radio"
+              aria-checked="false"
+              class="text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/30 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold text-sm sm:text-base text-slate-800">
+                  👥 双人模式 — 对话比较
+                </span>
+                <span id="modePairCheck" class="w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold">
+                  ✓
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 mt-1">
+                2 位学生 — 轮流发言讨论川菜与音乐风格的共同点（总时长 8–40 秒）。
+              </p>
+            </button>
+          </div>
+
+          <!-- Independent Mode Input (1 Student) -->
+          <div id="independentInputs">
+            <label for="studentName" class="block text-sm font-medium text-slate-700 mb-1.5">
+              学生姓名 / Student Name <span class="text-[#b91c1c] font-bold">*</span>
+            </label>
+            <input
+              type="text"
+              id="studentName"
+              autocomplete="name"
+              placeholder="例如：张伟 / Wei Zhang"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/25 focus:border-[#b91c1c] transition"
+            />
+          </div>
+
+          <!-- Pair Mode Inputs (2 Students + Swap Order Button) -->
+          <div id="pairInputs" class="hidden space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="student1Name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                  学生 1（先发言） <span class="text-[#b91c1c] font-bold">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="student1Name"
+                  placeholder="例如：张伟"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/25 focus:border-[#b91c1c] transition"
+                />
+              </div>
+
+              <div>
+                <label for="student2Name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                  学生 2（搭档） <span class="text-[#b91c1c] font-bold">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="student2Name"
+                  placeholder="例如：李娜"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/25 focus:border-[#b91c1c] transition"
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-start sm:justify-center">
+              <button
+                type="button"
+                id="swapSpeakersBtn"
+                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed"
+              >
+                <span>⇄ 交换发言顺序</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Speech Recognition Language Selector (Defaults to zh-CN Simplified Chinese) -->
+          <div>
+            <label for="language" class="block text-sm font-medium text-slate-700 mb-1.5">
+              语音识别语言 / Speech Recognition Language
+            </label>
+            <select
+              id="language"
+              class="w-full sm:w-72 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/25 focus:border-[#b91c1c] transition"
+            >
+              <option value="zh-CN" selected>简体中文（中国大陆）</option>
+              <option value="zh-SG">简体中文（新加坡）</option>
+              <option value="zh-TW">中文（台湾）</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <hr class="border-slate-100" />
+
+      <!-- ========================================================= -->
+      <!-- 步骤 2：录音与实时语音转文字                                -->
+      <!-- ========================================================= -->
+      <section aria-labelledby="step2-heading" class="space-y-4">
+        <div class="flex items-center gap-2.5">
+          <span class="w-7 h-7 rounded-full bg-[#b91c1c] text-white text-xs font-bold flex items-center justify-center shadow-sm">
+            2
+          </span>
+          <h2 id="step2-heading" class="text-base sm:text-lg font-semibold text-slate-800">
+            步骤 2：录音与实时语音转文字
+          </h2>
+        </div>
+
+        <div class="pl-0 sm:pl-9 space-y-4">
+          <!-- Dark Slate Live Microphone Waveform Canvas Visualizer -->
+          <div class="bg-slate-900 rounded-xl p-3.5 border border-slate-800 shadow-inner">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 mb-2 px-1">
+              <div class="flex items-center gap-2.5">
+                <span class="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z" />
+                  </svg>
+                  实时麦克风声波
+                </span>
+                <!-- Classroom Background Noise Suppression Toggle Pill -->
+                <button
+                  type="button"
+                  id="noiseSuppressToggle"
+                  aria-pressed="true"
+                  title="开启或关闭教室环境背景降噪"
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[11px] font-medium hover:bg-emerald-500/25 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <span id="noiseSuppressIcon">🔇</span>
+                  <span id="noiseSuppressLabel">环境降噪：开启</span>
+                </button>
+              </div>
+              <span id="micHint" class="text-slate-400">等待开启麦克风</span>
+            </div>
+            <div class="w-full h-16 relative">
+              <canvas id="visualizer" class="w-full h-full block rounded-lg"></canvas>
+            </div>
+          </div>
+
+          <!-- Pair Mode Turn-Taking Panel (Shown ONLY when Pair mode is selected) -->
+          <div
+            id="pairTurnPanel"
+            class="hidden rounded-xl border-2 border-amber-200 bg-gradient-to-br from-amber-50/85 to-red-50/50 p-4 space-y-3.5 shadow-sm"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-950">
+                双人对话轮流发言面板
+              </span>
+              <span class="text-xs text-amber-900/80">
+                快捷键：<kbd class="px-1.5 py-0.5 rounded bg-white border border-amber-200 font-mono text-[11px]">Tab</kbd> 或 <kbd class="px-1.5 py-0.5 rounded bg-white border border-amber-200 font-mono text-[11px]">Alt+S</kbd>
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div
+                id="speaker1Badge"
+                class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#b91c1c] text-white text-sm font-semibold shadow-sm transition-all"
+              >
+                <span id="speaker1BadgeText" class="truncate">🎙️ 当前发言：学生 1</span>
+              </div>
+              <div
+                id="speaker2Badge"
+                class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all"
+              >
+                <span id="speaker2BadgeText" class="truncate">⏳ 等待发言：学生 2</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              id="passTurnBtn"
+              disabled
+              class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-bold text-sm sm:text-base shadow-md shadow-amber-500/20 transition cursor-pointer disabled:opacity-45 disabled:shadow-none disabled:cursor-not-allowed"
+            >
+              <span id="passTurnBtnLabel">🔄 切换发言人：学生 2</span>
+            </button>
+          </div>
+
+          <!-- Recording Controls -->
+          <div class="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              id="startBtn"
+              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#b91c1c] hover:bg-red-800 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed"
+            >
+              <span>● 开始录音</span>
+            </button>
+
+            <button
+              type="button"
+              id="stopBtn"
+              disabled
+              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-900 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <span>■ 停止录音</span>
+            </button>
+
+            <button
+              type="button"
+              id="clearBtn"
+              class="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 active:scale-[0.99] text-slate-700 font-medium text-sm transition cursor-pointer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span id="clearBtnLabel">清除重来</span>
+            </button>
+          </div>
+
+          <!-- Live Status Banner in Simplified Chinese -->
+          <div
+            id="statusBanner"
+            role="status"
+            aria-live="polite"
+            class="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/80 text-slate-700 text-sm transition-colors"
+          >
+            <svg id="statusIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#b91c1c] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="statusText">准备就绪。请输入您的姓名，点击「● 开始录音」，并在 40 秒内用简体中文介绍川菜与音乐风格的比较！</span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="border-slate-100" />
+
+      <!-- ========================================================= -->
+      <!-- 步骤 3：核对、反馈与文件下载                                -->
+      <!-- ========================================================= -->
+      <section aria-labelledby="step3-heading" class="space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-full bg-[#b91c1c] text-white text-xs font-bold flex items-center justify-center shadow-sm">
+              3
+            </span>
+            <h2 id="step3-heading" class="text-base sm:text-lg font-semibold text-slate-800">
+              步骤 3：核对、反馈与文件下载
+            </h2>
+          </div>
+          <span id="wordCount" class="text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full">
+            0 字
+          </span>
+        </div>
+
+        <div class="pl-0 sm:pl-9 space-y-4">
+          <!-- Read-Only Locked Simplified Chinese Transcript Textarea -->
+          <div>
+            <label for="transcript" class="block text-sm font-medium text-slate-700 mb-1.5">
+              中文语音转文字记录（只读 — 录音时自动生成）
+            </label>
+            <textarea
+              id="transcript"
+              rows="5"
+              readonly
+              aria-readonly="true"
+              placeholder="开始录音后，您的简体中文口语内容将实时转写显示在这里..."
+              class="w-full p-3.5 rounded-xl border border-slate-300 bg-slate-50/90 text-slate-800 placeholder-slate-400 text-sm leading-relaxed cursor-default select-text focus:outline-none"
+            ></textarea>
+            <p class="text-xs text-slate-500 mt-1.5">
+              🔒 为保证口语评估的真实性，语音转文字记录已锁定为只读，无法手动编辑。如需补充词汇或调整时长，请点击下方的 <strong>重新录制 (Reattempt Recording)</strong>。
+            </p>
+          </div>
+
+          <!-- HTML5 Audio Playback for Encoded MP3 -->
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+            <span class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+              录音回放 (MP3 音频)
+            </span>
+            <audio id="playback" controls class="w-full h-10 rounded-lg"></audio>
+          </div>
+
+          <!-- Neutral, AI-Free Teacher Feedback Panel ("Speaking Check & Feedback") -->
+          <div
+            id="grammarFeedbackSection"
+            class="hidden rounded-2xl border-2 border-amber-200 bg-gradient-to-br from-amber-50/70 via-white to-red-50/50 p-4 sm:p-5 space-y-4 shadow-sm"
+            aria-live="polite"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-100 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-[#b91c1c] text-white flex items-center justify-center text-sm shadow-sm">
+                  🎯
+                </span>
+                <div>
+                  <h3 class="text-sm sm:text-base font-bold text-slate-900">
+                    Speaking Check &amp; Feedback • 口语达标检测
+                  </h3>
+                  <p class="text-xs text-slate-500">
+                    Checks Sichuan &amp; climate vocab (2+), music &amp; energy vocab (2+), comparison frame (1+), and 8–40s duration.
+                  </p>
+                </div>
+              </div>
+              <span id="criteriaScorePill" class="px-3 py-1 rounded-full bg-amber-100 text-amber-950 text-xs font-bold">
+                0% • 0 / 4 requirements met
+              </span>
+            </div>
+
+            <!-- Encouraging Summary Banner -->
+            <p id="feedbackEncouragement" class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-white/95 rounded-xl p-3 border border-amber-100"></p>
+
+            <!-- 4-Card Visual Checklist -->
+            <div class="space-y-1.5">
+              <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                1. 四项口语要求检查清单（完成至少 50% 即 2/4 项即可解锁下载）：
+              </span>
+              <div id="criteriaFourGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+            </div>
+
+            <!-- Detected Vocabulary Badges -->
+            <div id="feedbackStrengths" class="flex flex-wrap gap-2"></div>
+
+            <!-- Neutral Actionable Tips List -->
+            <div id="feedbackSuggestionsList" class="space-y-2.5"></div>
+
+            <!-- Reattempt Callout & Button -->
+            <div id="reattemptCalloutBox" class="rounded-xl bg-amber-50/90 border border-amber-200 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-0.5">
+                <p id="reattemptCalloutTitle" class="text-xs sm:text-sm font-bold text-amber-950">
+                  想挑战 100% (4/4 项) 或微调表达吗？
+                </p>
+                <p id="reattemptCalloutDesc" class="text-xs text-amber-900/90">
+                  参考句型：「因为四川盆地湿气重，吃辣不仅能刺激食欲，还能让人排汗感到放松。川菜就像摇滚乐一样，节奏强烈，拉满能量！」
+                </p>
+              </div>
+              <button
+                type="button"
+                id="reattemptBtn"
+                class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-bold text-xs sm:text-sm shadow-sm transition cursor-pointer"
+              >
+                <span>🔄 重新录制 (Reattempt Recording)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Strict 50% Download Gate (Unlocked ONLY when >= 2/4 requirements are met) -->
+          <div class="pt-1 space-y-3">
+            <!-- Amber Lock Notice when < 50% (fewer than 2/4 requirements met) -->
+            <div
+              id="downloadLockNotice"
+              class="hidden rounded-xl bg-amber-50 border border-amber-300 px-4 py-3 text-xs sm:text-sm font-medium text-amber-950 flex items-start gap-2.5"
+            >
+              <span class="text-base leading-none mt-0.5">🔒</span>
+              <span id="downloadLockText">
+                下载已锁定：当前仅完成 0%（0/4 项要求）。请达成至少 50%（2/4 项要求）以解锁 MP3 音频与 TXT 文字稿下载。
+              </span>
+            </div>
+
+            <!-- Primary Dual-File Download Button -->
+            <button
+              type="button"
+              id="downloadBothBtn"
+              disabled
+              class="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-md shadow-emerald-600/15 transition cursor-pointer disabled:opacity-45 disabled:shadow-none disabled:cursor-not-allowed"
+            >
+              <span>📥 同时下载 2 个文件（MP3 音频 + TXT 文字稿）</span>
+            </button>
+
+            <!-- Visual Confirmation Badge after Dual Download -->
+            <div
+              id="downloadConfirmBadge"
+              class="hidden rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-xs sm:text-sm font-medium text-emerald-900 text-center"
+            >
+              ✅ 已成功生成并下载 2 个文件（MP3 音频 + TXT 文字稿）！请将两个文件上传至课堂作业平台提交。
+            </div>
+
+            <!-- Secondary Individual File Download Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
+              <button
+                type="button"
+                id="audioDownload"
+                disabled
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span>🎵 单独下载 MP3 音频</span>
+              </button>
+              <button
+                type="button"
+                id="textDownload"
+                disabled
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span>📄 单独下载 TXT 文字稿</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Privacy Notice & Attribution Footer -->
+    <footer class="px-6 py-4 sm:px-8 bg-slate-50 border-t border-slate-200/70 space-y-2.5">
+      <div class="flex items-start gap-2.5 text-xs text-slate-500 leading-relaxed">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        <p>
+          <strong>隐私说明：</strong>您的音频仅保存在当前浏览器标签页本地，直到您点击下载。浏览器的语音识别功能可能会将音频发送至外部语音服务以生成实时文字记录，请遵照学校信息技术规范使用本工具。
+        </p>
+      </div>
+      <p class="pt-2 border-t border-slate-200/70 text-[11px] font-medium text-slate-500 text-right">
+        tous droits reserves Monsieur Nan du lycée de Bayside
+      </p>
+    </footer>
+  </main>
+
+  <!-- Custom Confirmation Modal for Clear / Reattempt (Zero browser alert/confirm) -->
+  <div id="confirmModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg shrink-0">
+          🔄
+        </div>
+        <div>
+          <h3 id="modalTitle" class="text-base font-bold text-slate-900">
+            确定要清除并重新录制吗？
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">
+            当前的录音音频与语音转文字记录将被清空，以便开始新的 40 秒口语练习。
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button
+          type="button"
+          id="cancelModalBtn"
+          class="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-medium transition cursor-pointer"
+        >
+          取消
+        </button>
+        <button
+          type="button"
+          id="confirmModalBtn"
+          class="px-4 py-2 rounded-xl bg-[#b91c1c] hover:bg-red-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer"
+        >
+          确认清除重来
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    // Application state variables (Solo mode is default)
+    let mode = "independent"; // "independent" | "pair"
+    let activeSpeaker = 1; // 1 | 2
+    let noiseSuppression = true;
+    let recorder = null;
+    let stream = null;
+    let chunks = [];
+    let recognition = null;
+    let finalText = "";
+    let mp3Blob = null;
+    let audioUrl = "";
+    let audioExt = "mp3";
+    let startTimeMs = 0;
+    let elapsedSeconds = 0;
+    let timerInterval = null;
+    let audioCtx = null;
+    let analyser = null;
+    let animFrameId = null;
+    let lastEvaluation = null;
+
+    const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    // ---------------------------------------------------------
+    // 1. Traditional-to-Simplified Normalizer for Reliable Speech Detection
+    // ---------------------------------------------------------
+    const TRAD_TO_SIMP_MAP = {
+      "濕": "湿", "氣": "气", "慾": "欲", "鬆": "松",
+      "搖": "摇", "滾": "滚", "樂": "乐", "電": "电",
+      "音": "音", "節": "节", "奏": "奏", "強": "强",
+      "烈": "烈", "讓": "让", "興": "兴", "奮": "奋",
+      "滿": "满", "能": "能", "量": "量", "樣": "样",
+      "說": "说", "對": "对", "特": "特", "點": "点",
+      "不僅": "不仅", "還能": "还能", "瞬間": "瞬间",
+      "彷彿": "仿佛", "川菜": "川菜", "感覺": "感觉",
+      "覺得": "觉得", "比較": "比较", "喜歡": "喜欢",
+      "為什麼": "为什么", "因為": "因为", "這": "这",
+      "個": "个", "時": "时", "間": "间", "話": "话"
+    };
+
+    function normalizeToSimplified(text) {
+      if (!text) return "";
+      let out = text;
+      for (const [trad, simp] of Object.entries(TRAD_TO_SIMP_MAP)) {
+        out = out.split(trad).join(simp);
+      }
+      return out;
+    }
+
+    // ---------------------------------------------------------
+    // 2. Sentence Frames Toggle, Scratchpad Toggle & Vocab Pill Bank
+    // ---------------------------------------------------------
+    $("toggleModelBtn").addEventListener("click", () => {
+      const box = $("modelSentencesBox");
+      const isHidden = box.classList.toggle("hidden");
+      $("toggleModelBtn").textContent = isHidden ? "显示参考句型" : "隐藏参考句型";
+      $("toggleModelBtn").setAttribute("aria-expanded", String(!isHidden));
+    });
+
+    $("toggleNotesBtn").addEventListener("click", () => {
+      const body = $("planningNotesBody");
+      const isHidden = body.classList.toggle("hidden");
+      $("toggleNotesBtn").textContent = isHidden ? "展开提纲" : "收起提纲";
+      $("toggleNotesBtn").setAttribute("aria-expanded", String(!isHidden));
+    });
+
+    // Clicking any vocabulary pill highlights it and inserts the Simplified Chinese word into Planning Notes
+    document.querySelectorAll(".vocab-pill").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const word = btn.getAttribute("data-word") || "";
+        if (!word) return;
+
+        // Visual highlight feedback on the clicked pill
+        btn.classList.add("ring-2", "ring-[#b91c1c]/40", "scale-[1.02]");
+        setTimeout(() => btn.classList.remove("scale-[1.02]"), 180);
+
+        const notesBody = $("planningNotesBody");
+        if (notesBody.classList.contains("hidden")) {
+          notesBody.classList.remove("hidden");
+          $("toggleNotesBtn").textContent = "收起提纲";
+          $("toggleNotesBtn").setAttribute("aria-expanded", "true");
+        }
+        const notesEl = $("planningNotes");
+        const cur = notesEl.value.trim();
+        if (!cur) {
+          notesEl.value = word;
+        } else if (!cur.includes(word)) {
+          notesEl.value = cur + "、" + word;
+        }
+        notesEl.focus();
+      });
+    });
+
+    // ---------------------------------------------------------
+    // 3. Solo (Default) vs. Pair Mode Switching & Turn Controls
+    // ---------------------------------------------------------
+    function setMode(newMode) {
+      if (recorder && recorder.state === "recording") return;
+      mode = newMode;
+      const isSolo = mode === "independent";
+
+      $("modeIndependentBtn").setAttribute("aria-checked", String(isSolo));
+      $("modePairBtn").setAttribute("aria-checked", String(!isSolo));
+
+      $("modeIndependentBtn").className = isSolo
+        ? "text-left p-4 rounded-xl border-2 border-[#b91c1c] bg-red-50/55 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/30 disabled:opacity-60 disabled:cursor-not-allowed"
+        : "text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/30 disabled:opacity-60 disabled:cursor-not-allowed";
+
+      $("modePairBtn").className = !isSolo
+        ? "text-left p-4 rounded-xl border-2 border-[#b91c1c] bg-red-50/55 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/30 disabled:opacity-60 disabled:cursor-not-allowed"
+        : "text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#b91c1c]/30 disabled:opacity-60 disabled:cursor-not-allowed";
+
+      $("modeIndependentCheck").className = isSolo
+        ? "w-5 h-5 rounded-full bg-[#b91c1c] text-white flex items-center justify-center text-xs font-bold"
+        : "w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold";
+
+      $("modePairCheck").className = !isSolo
+        ? "w-5 h-5 rounded-full bg-[#b91c1c] text-white flex items-center justify-center text-xs font-bold"
+        : "w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold";
+
+      $("independentInputs").classList.toggle("hidden", !isSolo);
+      $("pairInputs").classList.toggle("hidden", isSolo);
+      $("pairTurnPanel").classList.toggle("hidden", isSolo);
+      updateSpeakerBadges();
+    }
+
+    $("modeIndependentBtn").addEventListener("click", () => setMode("independent"));
+    $("modePairBtn").addEventListener("click", () => setMode("pair"));
+
+    function getSpeakerNames() {
+      const s1 = ($("student1Name").value || "").trim() || "学生 1";
+      const s2 = ($("student2Name").value || "").trim() || "学生 2";
+      return { s1, s2 };
+    }
+
+    function updateSpeakerBadges() {
+      const { s1, s2 } = getSpeakerNames();
+      const s1Active = activeSpeaker === 1;
+
+      $("speaker1Badge").className = s1Active
+        ? "flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#b91c1c] text-white text-sm font-semibold shadow-sm transition-all"
+        : "flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all";
+
+      $("speaker2Badge").className = !s1Active
+        ? "flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#b91c1c] text-white text-sm font-semibold shadow-sm transition-all"
+        : "flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all";
+
+      $("speaker1BadgeText").textContent = (s1Active ? "🎙️ 当前发言：" : "⏳ 等待发言：") + s1;
+      $("speaker2BadgeText").textContent = (!s1Active ? "🎙️ 当前发言：" : "⏳ 等待发言：") + s2;
+      $("passTurnBtnLabel").textContent = "🔄 切换发言人：" + (s1Active ? s2 : s1);
+    }
+
+    ["studentName", "student1Name", "student2Name"].forEach((id) => {
+      $(id).addEventListener("input", (e) => {
+        e.target.classList.remove("border-[#b91c1c]");
+        if (id !== "studentName") updateSpeakerBadges();
+      });
+    });
+
+    $("swapSpeakersBtn").addEventListener("click", () => {
+      const tmp = $("student1Name").value;
+      $("student1Name").value = $("student2Name").value;
+      $("student2Name").value = tmp;
+      updateSpeakerBadges();
+    });
+
+    function passTurn() {
+      if (mode !== "pair" || !recorder || recorder.state !== "recording") return;
+      const { s1, s2 } = getSpeakerNames();
+      activeSpeaker = activeSpeaker === 1 ? 2 : 1;
+      const speakerLabel = activeSpeaker === 1 ? s1 : s2;
+      finalText = finalText.trim() + (finalText.trim() ? "\n\n" : "") + `[${speakerLabel}] : `;
+      $("transcript").value = finalText;
+      updateSpeakerBadges();
+    }
+
+    $("passTurnBtn").addEventListener("click", passTurn);
+
+    document.addEventListener("keydown", (e) => {
+      if (mode === "pair" && recorder && recorder.state === "recording") {
+        if (e.key === "Tab" || (e.altKey && e.key.toLowerCase() === "s")) {
+          e.preventDefault();
+          passTurn();
+        }
+      }
+    });
+
+    // ---------------------------------------------------------
+    // 4. Noise Suppression Toggle & Live Audio Waveform Canvas Visualizer
+    // ---------------------------------------------------------
+    $("noiseSuppressToggle").addEventListener("click", () => {
+      if (recorder && recorder.state === "recording") return;
+      noiseSuppression = !noiseSuppression;
+      $("noiseSuppressToggle").setAttribute("aria-pressed", String(noiseSuppression));
+      $("noiseSuppressIcon").textContent = noiseSuppression ? "🔇" : "🎙️";
+      $("noiseSuppressLabel").textContent = noiseSuppression ? "环境降噪：开启" : "环境降噪：关闭";
+      $("noiseSuppressToggle").className = noiseSuppression
+        ? "inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[11px] font-medium hover:bg-emerald-500/25 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+        : "inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-700/70 border border-slate-600 text-slate-300 text-[11px] font-medium hover:bg-slate-700 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed";
+    });
+
+    function drawBar(ctx, x, y, w, h, r) {
+      if (typeof ctx.roundRect === "function") {
+        ctx.roundRect(x, y, w, h, r);
+      } else {
+        ctx.rect(x, y, w, h);
+      }
+    }
+
+    function drawIdleVisualizer() {
+      const canvas = $("visualizer");
+      const ctx = canvas.getContext("2d");
+      canvas.width = canvas.offsetWidth || 640;
+      canvas.height = canvas.offsetHeight || 64;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const bars = 44;
+      const barWidth = Math.max(3, (canvas.width / bars) - 3);
+      for (let i = 0; i < bars; i++) {
+        const x = i * (barWidth + 3);
+        const h = 6;
+        const y = (canvas.height - h) / 2;
+        ctx.fillStyle = "#334155";
+        ctx.beginPath();
+        drawBar(ctx, x, y, barWidth, h, 3);
+        ctx.fill();
+      }
+    }
+
+    function startVisualizer(mediaStream) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContextClass();
+      const source = audioCtx.createMediaStreamSource(mediaStream);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128;
+      source.connect(analyser);
+
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      const canvas = $("visualizer");
+      const ctx = canvas.getContext("2d");
+
+      function renderFrame() {
+        animFrameId = requestAnimationFrame(renderFrame);
+        analyser.getByteFrequencyData(dataArray);
+        canvas.width = canvas.offsetWidth || 640;
+        canvas.height = canvas.offsetHeight || 64;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const bars = 44;
+        const barWidth = Math.max(3, (canvas.width / bars) - 3);
+        for (let i = 0; i < bars; i++) {
+          const val = dataArray[i % bufferLength] || 0;
+          const percent = val / 255;
+          const h = Math.max(6, percent * (canvas.height - 8));
+          const x = i * (barWidth + 3);
+          const y = (canvas.height - h) / 2;
+          ctx.fillStyle = percent > 0.55 ? "#f59e0b" : percent > 0.2 ? "#fb7185" : "#475569";
+          ctx.beginPath();
+          drawBar(ctx, x, y, barWidth, h, 3);
+          ctx.fill();
+        }
+      }
+      renderFrame();
+    }
+
+    function stopVisualizer() {
+      if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+      }
+      if (audioCtx) {
+        audioCtx.close().catch(() => {});
+        audioCtx = null;
+      }
+      drawIdleVisualizer();
+    }
+
+    window.addEventListener("resize", () => {
+      if (!animFrameId) drawIdleVisualizer();
+    });
+    drawIdleVisualizer();
+
+    // ---------------------------------------------------------
+    // 5. Status Banner, Live Timer & Character Count Helpers
+    // ---------------------------------------------------------
+    function setStatus(text, tone = "info") {
+      $("statusText").textContent = text;
+      const banner = $("statusBanner");
+      if (tone === "recording") {
+        banner.className = "flex items-start gap-2.5 p-3.5 rounded-xl bg-rose-50/90 border border-rose-200 text-rose-950 text-sm transition-colors";
+      } else if (tone === "success") {
+        banner.className = "flex items-start gap-2.5 p-3.5 rounded-xl bg-emerald-50/90 border border-emerald-200 text-emerald-950 text-sm transition-colors";
+      } else if (tone === "error") {
+        banner.className = "flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50/90 border border-amber-300 text-amber-950 text-sm transition-colors";
+      } else {
+        banner.className = "flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/80 text-slate-700 text-sm transition-colors";
+      }
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    }
+
+    function updateTimerDisplay(statusState = "idle") {
+      const timerEl = $("timer");
+      timerEl.textContent = `${formatTime(elapsedSeconds)} / 00:40`;
+
+      const badge = $("recordingBadge");
+      const dot = $("recordingDot");
+      const label = $("recordingLabel");
+      const liveEv = evaluateSichuanSpeaking($("transcript").value, elapsedSeconds);
+      const pct = liveEv.completionPct;
+      const overTime = elapsedSeconds > 40;
+      const hasSpeech = liveEv.hasSpeech;
+
+      $("liveChecklistBadge").textContent = `进度 : ${pct}%`;
+
+      if (overTime) {
+        // Amber/warning styling if exceeding 40 seconds
+        badge.className = "flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-amber-100 border border-amber-400 text-amber-950 text-sm font-medium transition-colors";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-amber-600" + (statusState === "recording" ? " recording-dot" : "");
+        label.textContent = statusState === "recording" ? "录音中" : "已完成";
+        timerEl.className = "font-mono font-bold text-amber-800";
+        $("liveChecklistBadge").className = "text-xs font-bold font-mono text-amber-900";
+      } else if (statusState === "recording") {
+        badge.className = "flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-[#b91c1c] text-sm font-medium transition-colors";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-[#b91c1c] recording-dot";
+        label.textContent = "录音中";
+        timerEl.className = "font-mono font-semibold text-slate-800";
+        $("liveChecklistBadge").className = liveEv.canDownload
+          ? "text-xs font-bold font-mono text-emerald-700"
+          : "text-xs font-bold font-mono text-[#991b1b]";
+      } else if (statusState === "completed") {
+        label.textContent = "已完成";
+        if (hasSpeech && elapsedSeconds <= 40) {
+          badge.className = "flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-sm font-medium transition-colors";
+          dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+          timerEl.className = "font-mono font-bold text-emerald-700";
+          $("liveChecklistBadge").className = liveEv.canDownload
+            ? "text-xs font-bold font-mono text-emerald-700"
+            : "text-xs font-bold font-mono text-amber-800";
+        } else {
+          badge.className = "flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium transition-colors";
+          dot.className = "w-2.5 h-2.5 rounded-full bg-slate-400";
+          timerEl.className = "font-mono font-semibold text-slate-800";
+          $("liveChecklistBadge").className = "text-xs font-bold font-mono text-[#991b1b]";
+        }
+      } else {
+        badge.className = "flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium transition-colors";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-slate-400";
+        label.textContent = "准备就绪";
+        timerEl.className = "font-mono font-semibold text-slate-800";
+        $("liveChecklistBadge").className = "text-xs font-bold font-mono text-[#991b1b]";
+      }
+    }
+
+    function updateWordCount() {
+      const cleaned = ($("transcript").value || "")
+        .replace(/\[[^\]]+\]\s*:\s*/g, "")
+        .replace(/\s+/g, "")
+        .trim();
+      $("wordCount").textContent = `${cleaned.length} 字`;
+    }
+
+    function validateNames() {
+      if (mode === "independent") {
+        const input = $("studentName");
+        if (!input.value.trim()) {
+          input.classList.remove("shake-input");
+          void input.offsetWidth;
+          input.classList.add("shake-input", "border-[#b91c1c]");
+          input.focus();
+          setStatus("请先输入您的姓名（Student Name），再点击「● 开始录音」。", "error");
+          return false;
+        }
+        input.classList.remove("border-[#b91c1c]");
+        return true;
+      } else {
+        const in1 = $("student1Name");
+        const in2 = $("student2Name");
+        let ok = true;
+        if (!in1.value.trim()) {
+          in1.classList.remove("shake-input");
+          void in1.offsetWidth;
+          in1.classList.add("shake-input", "border-[#b91c1c]");
+          in1.focus();
+          ok = false;
+        } else {
+          in1.classList.remove("border-[#b91c1c]");
+        }
+        if (!in2.value.trim()) {
+          in2.classList.remove("shake-input");
+          void in2.offsetWidth;
+          in2.classList.add("shake-input", "border-[#b91c1c]");
+          if (ok) in2.focus();
+          ok = false;
+        } else {
+          in2.classList.remove("border-[#b91c1c]");
+        }
+        if (!ok) {
+          setStatus("请先输入两位学生的姓名，再点击「● 开始录音」。", "error");
+        }
+        return ok;
+      }
+    }
+
+    function slugify(str) {
+      return (str || "student")
+        .trim()
+        .replace(/\s+/g, "_")
+        .replace(/[^a-zA-Z0-9\u4e00-\u9fff_-]+/g, "_")
+        .replace(/^_+|_+$/g, "") || "student";
+    }
+
+    function getFileBaseName() {
+      if (mode === "independent") {
+        return slugify($("studentName").value) + "_sichuan-cuisine-music";
+      }
+      const { s1, s2 } = getSpeakerNames();
+      return slugify(s1) + "_" + slugify(s2) + "_sichuan-cuisine-music";
+    }
+
+    // ---------------------------------------------------------
+    // 6. Client-Side MP3 Audio Encoding via lamejs
+    // ---------------------------------------------------------
+    async function convertToMp3(rawBlob, fallbackExt) {
+      try {
+        if (!window.lamejs || !window.lamejs.Mp3Encoder) {
+          return { blob: rawBlob, ext: fallbackExt };
+        }
+        const arrayBuf = await rawBlob.arrayBuffer();
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        const decodeCtx = new Ctx();
+        const audioBuf = await decodeCtx.decodeAudioData(arrayBuf);
+        await decodeCtx.close();
+
+        const sampleRate = audioBuf.sampleRate;
+        const channelData = audioBuf.getChannelData(0);
+        const samples = new Int16Array(channelData.length);
+        for (let i = 0; i < channelData.length; i++) {
+          const s = Math.max(-1, Math.min(1, channelData[i]));
+          samples[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+        }
+
+        const encoder = new window.lamejs.Mp3Encoder(1, sampleRate, 128);
+        const mp3Chunks = [];
+        const step = 1152;
+        for (let i = 0; i < samples.length; i += step) {
+          const slice = samples.subarray(i, i + step);
+          const buf = encoder.encodeBuffer(slice);
+          if (buf.length > 0) mp3Chunks.push(buf);
+        }
+        const tail = encoder.flush();
+        if (tail.length > 0) mp3Chunks.push(tail);
+
+        return {
+          blob: new Blob(mp3Chunks, { type: "audio/mp3" }),
+          ext: "mp3"
+        };
+      } catch (err) {
+        console.warn("MP3 fallback used:", err);
+        return { blob: rawBlob, ext: fallbackExt };
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 7. Speaking Check & Teacher Feedback Engine (AI-Free)
+    // ---------------------------------------------------------
+    const SICHUAN_VOCAB_CATALOG = [
+      {
+        shortLabel: "麻辣",
+        regex: /麻辣|麻啦|马辣/i
+      },
+      {
+        shortLabel: "盆地湿气重",
+        regex: /盆地.{0,4}湿气.{0,3}(?:重|很重|非常重)|湿气.{0,3}(?:很)?重/i
+      },
+      {
+        shortLabel: "刺激食欲",
+        regex: /刺激.{0,3}(?:食欲|食育|时雨)|(?:增加|提升).{0,2}食欲/i
+      },
+      {
+        shortLabel: "排汗感到放松",
+        regex: /排汗.{0,5}(?:感到|觉得|让人)?放松|(?:流汗|出汗|排汗).{0,5}放松/i
+      }
+    ];
+
+    const MUSIC_VOCAB_CATALOG = [
+      {
+        shortLabel: "摇滚乐",
+        regex: /摇滚乐|摇滚|遥滚乐/i
+      },
+      {
+        shortLabel: "电子音乐",
+        regex: /电子音乐|电音/i
+      },
+      {
+        shortLabel: "节奏强烈",
+        regex: /节奏.{0,3}(?:强烈|很强)|强烈的?节奏/i
+      },
+      {
+        shortLabel: "让人兴奋",
+        regex: /(?:让人|令人|使人|让人感到).{0,3}兴奋|(?:非常|很|超)兴奋/i
+      },
+      {
+        shortLabel: "拉满能量",
+        regex: /(?:拉满|充满|补满).{0,3}能量|能量(?:拉满|满满|爆棚)/i
+      }
+    ];
+
+    function evaluateSichuanSpeaking(transcriptText, durationSec) {
+      // Remove speaker tags and normalize any traditional characters to simplified for reliable matching
+      const rawStripped = (transcriptText || "").replace(/\[[^\]]+\]\s*:\s*/g, " ").trim();
+      const cleanedText = normalizeToSimplified(rawStripped);
+
+      // Requirement 1: 川菜与气候词汇 (至少2个)
+      const foundSichuan = SICHUAN_VOCAB_CATALOG.filter((item) => item.regex.test(cleanedText));
+      const crit1Pass = foundSichuan.length >= 2;
+
+      // Requirement 2: 音乐风格与感受词汇 (至少2个)
+      const foundMusic = MUSIC_VOCAB_CATALOG.filter((item) => item.regex.test(cleanedText));
+      const crit2Pass = foundMusic.length >= 2;
+
+      // Requirement 3: 对比句型 (至少1个: 就像……一样、跟……很像、把……比作……、如同……、好比、仿佛)
+      const comparisonRegex = /(?:就像[^。！？!?，,\n]{1,18}一样|就像|跟[^。！？!?，,\n]{1,18}(?:很像|一样)|把[^。！？!?，,\n]{1,14}比作|如同|好比|仿佛|宛如)/i;
+      const compMatch = cleanedText.match(comparisonRegex);
+      const crit3Pass = Boolean(compMatch);
+
+      // Requirement 4: 时长控制 (40秒内完成: 8–40 秒内清晰表达)
+      const hasSpeech = cleanedText.replace(/\s+/g, "").length > 0;
+      const crit4Pass = hasSpeech && durationSec >= 8 && durationSec <= 40;
+
+      const totalScore = [crit1Pass, crit2Pass, crit3Pass, crit4Pass].filter(Boolean).length;
+      const completionPct = Math.round((totalScore / 4) * 100);
+      const canDownload = completionPct >= 50; // Strict 50% threshold (at least 2/4 requirements)
+
+      // Neutral, encouraging bilingual teacher summary (no mention of AI)
+      let encouragement = "";
+      if (!hasSpeech) {
+        encouragement = "No Simplified Chinese speech was detected in the transcript (0% • 0/4 requirements met). Check your microphone, speak clearly in Chinese, and click 重新录制 (Reattempt Recording).";
+      } else if (totalScore === 4) {
+        encouragement = `太棒了！Great job — you met 100% (4/4) of the exit ticket requirements in ${durationSec}s (within the 8–40s target). Listen to your MP3 playback to check pronunciation, then download your 2 files below.`;
+      } else if (canDownload) {
+        encouragement = `做得很好！Good work — you met ${completionPct}% (${totalScore}/4) of the requirements (${durationSec}s), so your MP3 and TXT downloads are unlocked. Review the tips below if you want to aim for 100% (4/4).`;
+      } else {
+        encouragement = `很好的开始！You met ${completionPct}% (${totalScore}/4) of the requirements (${durationSec}s). Completing at least 50% (2/4 requirements) unlocks the MP3 and TXT downloads — review the tips below and try again.`;
+      }
+
+      // Neutral actionable tips in English & Simplified Chinese
+      const suggestions = [];
+
+      if (!crit1Pass) {
+        const missing = SICHUAN_VOCAB_CATALOG
+          .filter((item) => !item.regex.test(cleanedText))
+          .map((item) => `<strong>${item.shortLabel}</strong>`)
+          .join("、");
+        suggestions.push({
+          title: `Add Sichuan cuisine & climate vocabulary (${foundSichuan.length}/2 detected)`,
+          detail: `Include at least 2 terms such as ${missing}（例句：因为四川<strong>盆地湿气重</strong>，<strong>麻辣</strong>口味能<strong>刺激食欲</strong>，让人<strong>排汗感到放松</strong>。）`
+        });
+      }
+
+      if (!crit2Pass) {
+        const missing = MUSIC_VOCAB_CATALOG
+          .filter((item) => !item.regex.test(cleanedText))
+          .map((item) => `<strong>${item.shortLabel}</strong>`)
+          .join("、");
+        suggestions.push({
+          title: `Add music genre & energy vocabulary (${foundMusic.length}/2 detected)`,
+          detail: `Include at least 2 terms such as ${missing}（例句：川菜就像<strong>摇滚乐</strong>或<strong>电子音乐</strong>一样，<strong>节奏强烈</strong>，<strong>让人兴奋</strong>，瞬间<strong>拉满能量</strong>！）`
+        });
+      }
+
+      if (!crit3Pass) {
+        suggestions.push({
+          title: "Use a comparison sentence frame (0/1 detected)",
+          detail: "Connect Sichuan cuisine to a music genre using <strong>就像……一样</strong>, <strong>跟……很像</strong>, <strong>把……比作……</strong>, or <strong>如同……</strong>（例句：对我来说，川菜<strong>就像摇滚乐一样</strong>充满活力！）"
+        });
+      }
+
+      if (!crit4Pass) {
+        if (!hasSpeech) {
+          suggestions.push({
+            title: "Speak clearly in Simplified Chinese (8–40 seconds)",
+            detail: "Ensure your microphone captures clear Chinese speech in the transcript box for 8 to 40 seconds."
+          });
+        } else if (durationSec < 8) {
+          suggestions.push({
+            title: `Extend your response to 8–40 seconds (${durationSec}s recorded)`,
+            detail: "Speak a bit longer (at least 8 seconds) to explain both why Sichuan flavors fit the humid basin climate and how they compare to a music genre."
+          });
+        } else if (durationSec > 40) {
+          suggestions.push({
+            title: `Keep your response within 40 seconds (${durationSec}s recorded — ${durationSec - 40}s over)`,
+            detail: "Keep your ideas concise so you finish within the <strong>40-second limit (8–40s)</strong> before clicking 停止录音."
+          });
+        }
+      }
+
+      return {
+        totalScore,
+        completionPct,
+        canDownload,
+        crit1Pass,
+        foundSichuan,
+        crit2Pass,
+        foundMusic,
+        crit3Pass,
+        comparisonSnippet: compMatch ? compMatch[0].trim() : null,
+        crit4Pass,
+        hasSpeech,
+        durationSec,
+        encouragement,
+        suggestions
+      };
+    }
+
+    function renderFeedbackUI(ev) {
+      lastEvaluation = ev;
+      const section = $("grammarFeedbackSection");
+      section.classList.remove("hidden");
+
+      $("criteriaScorePill").textContent = `${ev.completionPct}% • ${ev.totalScore} / 4 requirements met`;
+      $("criteriaScorePill").className =
+        ev.totalScore === 4
+          ? "px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold"
+          : ev.canDownload
+            ? "px-3 py-1 rounded-full bg-amber-100 text-amber-950 text-xs font-bold"
+            : "px-3 py-1 rounded-full bg-rose-100 text-rose-950 text-xs font-bold";
+
+      $("feedbackEncouragement").textContent = ev.encouragement;
+
+      // 4-Card Visual Checklist
+      const timeSub = !ev.hasSpeech
+        ? "未检测到中文语音"
+        : ev.durationSec < 8
+          ? `时长偏短（${ev.durationSec}s，目标 8–40s）`
+          : ev.durationSec <= 40
+            ? `符合 8–40 秒要求（${ev.durationSec}s / 40s）`
+            : `超出 40 秒上限（${ev.durationSec}s / 40s）`;
+
+      const cards = [
+        {
+          pass: ev.crit1Pass,
+          title: "1. 川菜与气候词汇 (至少2个)",
+          status: `${ev.foundSichuan.length}/2 个`,
+          sub: ev.foundSichuan.length
+            ? ev.foundSichuan.map((i) => i.shortLabel).join("、")
+            : "麻辣、盆地湿气重、刺激食欲、排汗感到放松"
+        },
+        {
+          pass: ev.crit2Pass,
+          title: "2. 音乐风格与感受词汇 (至少2个)",
+          status: `${ev.foundMusic.length}/2 个`,
+          sub: ev.foundMusic.length
+            ? ev.foundMusic.map((i) => i.shortLabel).join("、")
+            : "摇滚乐、电子音乐、节奏强烈、让人兴奋、拉满能量"
+        },
+        {
+          pass: ev.crit3Pass,
+          title: "3. 对比句型 (至少1个)",
+          status: ev.crit3Pass ? "已使用" : "未检测到",
+          sub: ev.comparisonSnippet ? `「${ev.comparisonSnippet}」` : "就像……一样、跟……很像、把……比作……、如同……"
+        },
+        {
+          pass: ev.crit4Pass,
+          title: "4. 时长控制 (40秒内完成)",
+          status: `${ev.durationSec}s / 40s`,
+          sub: timeSub
+        }
+      ];
+
+      const grid = $("criteriaFourGrid");
+      grid.innerHTML = "";
+      cards.forEach((c) => {
+        const div = document.createElement("div");
+        div.className = c.pass
+          ? "rounded-xl border border-emerald-300 bg-emerald-50/80 px-3 py-2.5 text-xs"
+          : "rounded-xl border border-amber-300 bg-amber-50/70 px-3 py-2.5 text-xs";
+        div.innerHTML = `
+          <div class="flex items-center justify-between gap-2 font-bold ${c.pass ? "text-emerald-900" : "text-amber-950"}">
+            <span>${c.pass ? "✅" : "⚠️"} ${c.title}</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] shrink-0 ${c.pass ? "bg-emerald-200/80 text-emerald-950" : "bg-amber-200/80 text-amber-950"}">${c.status}</span>
+          </div>
+          <p class="text-[11px] mt-1 truncate ${c.pass ? "text-emerald-800" : "text-amber-900"}">${c.sub}</p>
+        `;
+        grid.appendChild(div);
+      });
+
+      // Detected Vocabulary Badges
+      const normalizedTranscript = normalizeToSimplified(
+        ($("transcript").value || "").replace(/\[[^\]]+\]\s*:\s*/g, " ")
+      );
+      const chipsWrap = $("feedbackStrengths");
+      chipsWrap.innerHTML = "";
+      const allChips = [
+        ...SICHUAN_VOCAB_CATALOG.map((item) => ({
+          label: item.shortLabel,
+          ok: item.regex.test(normalizedTranscript)
+        })),
+        ...MUSIC_VOCAB_CATALOG.map((item) => ({
+          label: item.shortLabel,
+          ok: item.regex.test(normalizedTranscript)
+        })),
+        { label: "对比句型（就像……一样 / 把……比作……）", ok: ev.crit3Pass }
+      ];
+
+      allChips.forEach((chip) => {
+        const span = document.createElement("span");
+        span.className = chip.ok
+          ? "inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100/90 border border-emerald-300 text-emerald-900 text-[11px] font-semibold"
+          : "inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-medium";
+        span.textContent = (chip.ok ? "✓ " : "") + chip.label;
+        chipsWrap.appendChild(span);
+      });
+
+      // Neutral Actionable Suggestions List
+      const list = $("feedbackSuggestionsList");
+      list.innerHTML = "";
+      ev.suggestions.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "rounded-xl bg-white border border-amber-100 px-3.5 py-2.5 text-xs text-slate-700 leading-relaxed";
+        card.innerHTML = `<p class="font-bold text-slate-900 mb-0.5">💡 ${item.title}</p><p>${item.detail}</p>`;
+        list.appendChild(card);
+      });
+
+      // Reattempt Callout Text depending on 50% Download Gate
+      if (!ev.canDownload) {
+        $("reattemptCalloutTitle").textContent = `🔒 下载已锁定（${ev.completionPct}% • ${ev.totalScore}/4 项）— 完成至少 50% (2/4 项) 即可解锁下载！`;
+        $("reattemptCalloutDesc").innerHTML =
+          "点击 <strong>重新录制 (Reattempt Recording)</strong>，结合参考句型加入川菜气候词汇、音乐词汇或对比句型，并在 8–40 秒内完成。";
+      } else if (ev.totalScore < 4) {
+        $("reattemptCalloutTitle").textContent = `✅ 已解锁下载（${ev.completionPct}% • ${ev.totalScore}/4 项）— 想挑战 100% (4/4 项) 吗？`;
+        $("reattemptCalloutDesc").innerHTML =
+          "您现在可以直接下载 MP3 音频与 TXT 文字稿，或点击 <strong>重新录制 (Reattempt Recording)</strong> 补齐剩余要求。";
+      } else {
+        $("reattemptCalloutTitle").textContent = "🎉 已达成 100% (4/4 项要求) — 可以立即下载文件！";
+        $("reattemptCalloutDesc").innerHTML =
+          "请先试听 MP3 录音回放检查发音，确认无误后点击下方按钮同时下载 MP3 音频与 TXT 文字稿。";
+      }
+    }
+
+    // ---------------------------------------------------------
+    // 8. Recording Start / Stop & Real-Time Speech-to-Text
+    // ---------------------------------------------------------
+    function unlockControlsAfterRecording() {
+      $("startBtn").disabled = false;
+      $("stopBtn").disabled = true;
+      $("passTurnBtn").disabled = true;
+      $("modeIndependentBtn").disabled = false;
+      $("modePairBtn").disabled = false;
+      $("swapSpeakersBtn").disabled = false;
+      $("noiseSuppressToggle").disabled = false;
+    }
+
+    $("startBtn").addEventListener("click", async () => {
+      if (!validateNames()) return;
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setStatus("当前浏览器不支持麦克风录音，请使用最新版 Chrome 或 Edge 浏览器。", "error");
+        return;
+      }
+
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: noiseSuppression,
+            autoGainControl: true
+          }
+        });
+
+        chunks = [];
+        finalText = "";
+        mp3Blob = null;
+        lastEvaluation = null;
+        if (audioUrl) {
+          URL.revokeObjectURL(audioUrl);
+          audioUrl = "";
+        }
+
+        $("playback").removeAttribute("src");
+        $("grammarFeedbackSection").classList.add("hidden");
+        $("downloadLockNotice").classList.add("hidden");
+        $("downloadConfirmBadge").classList.add("hidden");
+        $("downloadBothBtn").disabled = true;
+        $("audioDownload").disabled = true;
+        $("textDownload").disabled = true;
+
+        if (mode === "pair") {
+          activeSpeaker = 1;
+          updateSpeakerBadges();
+          const { s1 } = getSpeakerNames();
+          finalText = `[${s1}] : `;
+          $("passTurnBtn").disabled = false;
+        }
+        $("transcript").value = finalText;
+        updateWordCount();
+
+        // Lock mode/name controls during active recording
+        $("modeIndependentBtn").disabled = true;
+        $("modePairBtn").disabled = true;
+        $("swapSpeakersBtn").disabled = true;
+        $("noiseSuppressToggle").disabled = true;
+
+        const mimeType =
+          typeof MediaRecorder !== "undefined" && typeof MediaRecorder.isTypeSupported === "function"
+            ? ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((t) => MediaRecorder.isTypeSupported(t))
+            : undefined;
+        recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+        const nativeExt = (recorder.mimeType || "").includes("mp4") ? "m4a" : "webm";
+
+        recorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) chunks.push(e.data);
+        };
+
+        recorder.onstop = async () => {
+          clearInterval(timerInterval);
+          elapsedSeconds = Math.max(1, Math.round((Date.now() - startTimeMs) / 1000));
+          updateTimerDisplay("completed");
+          stopVisualizer();
+
+          if (stream) {
+            stream.getTracks().forEach((t) => t.stop());
+            stream = null;
+          }
+          $("micHint").textContent = "麦克风已停止";
+
+          setStatus("正在生成 MP3 音频并检查口语达标情况，请稍候...", "info");
+
+          const rawBlob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
+          const converted = await convertToMp3(rawBlob, nativeExt);
+          mp3Blob = converted.blob;
+          audioExt = converted.ext;
+
+          audioUrl = URL.createObjectURL(mp3Blob);
+          $("playback").src = audioUrl;
+
+          unlockControlsAfterRecording();
+
+          const evaluation = evaluateSichuanSpeaking($("transcript").value, elapsedSeconds);
+          renderFeedbackUI(evaluation);
+
+          // Strict 50% Download Gate: unlock ONLY when >= 2/4 requirements are met
+          const canDownload = evaluation.canDownload;
+          $("downloadBothBtn").disabled = !canDownload;
+          $("audioDownload").disabled = !canDownload;
+          $("textDownload").disabled = !canDownload;
+
+          if (canDownload) {
+            $("downloadLockNotice").classList.add("hidden");
+            setStatus(
+              `已完成录音！达标进度 ${evaluation.completionPct}%（${evaluation.totalScore}/4 项要求）。请查看下方反馈并下载 MP3 音频与 TXT 文字稿。`,
+              "success"
+            );
+          } else {
+            $("downloadLockText").innerHTML =
+              `下载已锁定：您当前仅完成 <strong>${evaluation.completionPct}%（${evaluation.totalScore}/4 项要求）</strong>。请达成至少 <strong>50%（2/4 项要求）</strong> 以解锁 MP3 音频与 TXT 文字稿下载，点击 <strong>重新录制 (Reattempt Recording)</strong> 再试一次。`;
+            $("downloadLockNotice").classList.remove("hidden");
+            setStatus(
+              `下载已锁定（当前完成 ${evaluation.completionPct}% • ${evaluation.totalScore}/4 项要求）。请点击「重新录制」补充内容。`,
+              "error"
+            );
+          }
+        };
+
+        recorder.start(500);
+        startVisualizer(stream);
+        $("micHint").textContent = "麦克风收音中";
+
+        startTimeMs = Date.now();
+        elapsedSeconds = 0;
+        updateTimerDisplay("recording");
+
+        let warnedAt35s = false;
+        let warnedOver40s = false;
+
+        timerInterval = setInterval(() => {
+          elapsedSeconds = Math.floor((Date.now() - startTimeMs) / 1000);
+          updateTimerDisplay("recording");
+
+          if (elapsedSeconds >= 35 && elapsedSeconds <= 40 && !warnedAt35s) {
+            warnedAt35s = true;
+            setStatus("⏱️ 还剩 5 秒，准备收尾！请完成对比句子并点击「■ 停止录音」。", "recording");
+          } else if (elapsedSeconds > 40 && !warnedOver40s) {
+            warnedOver40s = true;
+            setStatus(
+              `⚠️ 注意：已超过 40 秒时长限制（当前 ${elapsedSeconds} 秒）！请立即点击「■ 停止录音」，或重新录制以控制在 8–40 秒内。`,
+              "error"
+            );
+          }
+        }, 250);
+
+        $("startBtn").disabled = true;
+        $("stopBtn").disabled = false;
+
+        if (Speech) {
+          recognition = new Speech();
+          recognition.lang = $("language").value;
+          recognition.continuous = true;
+          recognition.interimResults = true;
+
+          recognition.onresult = (e) => {
+            const useSimplified = $("language").value !== "zh-TW";
+            let interim = "";
+            for (let i = e.resultIndex; i < e.results.length; i++) {
+              const rawSeg = e.results[i][0].transcript;
+              const seg = useSimplified ? normalizeToSimplified(rawSeg) : rawSeg;
+              if (e.results[i].isFinal) {
+                finalText += seg;
+              } else {
+                interim += seg;
+              }
+            }
+            $("transcript").value = (finalText + interim).trim();
+            updateWordCount();
+            updateTimerDisplay("recording");
+          };
+
+          recognition.onerror = (e) => {
+            if (e.error !== "no-speech") {
+              setStatus("录音进行中（语音识别提示：" + e.error + "）。", "recording");
+            }
+          };
+
+          recognition.onend = () => {
+            if (recorder && recorder.state === "recording") {
+              try {
+                recognition.start();
+              } catch (err) {}
+            }
+          };
+
+          try {
+            recognition.start();
+            setStatus("🎙️ 录音中……请在 40 秒内用简体中文介绍川菜特色，并将其与一种音乐风格作比较！", "recording");
+          } catch (err) {
+            setStatus("🎙️ 录音中……", "recording");
+          }
+        } else {
+          setStatus("🎙️ 录音中（当前浏览器不支持实时语音转文字）。", "recording");
+        }
+      } catch (err) {
+        if (stream) {
+          stream.getTracks().forEach((t) => t.stop());
+          stream = null;
+        }
+        stopVisualizer();
+        unlockControlsAfterRecording();
+        setStatus("麦克风访问失败：" + err.message, "error");
+      }
+    });
+
+    $("stopBtn").addEventListener("click", () => {
+      $("stopBtn").disabled = true;
+      if (recognition) {
+        try {
+          recognition.onend = null;
+          recognition.stop();
+        } catch (err) {}
+      }
+      if (recorder && recorder.state !== "inactive") {
+        recorder.stop();
+      } else {
+        unlockControlsAfterRecording();
+      }
+    });
+
+    // ---------------------------------------------------------
+    // 9. Reset / Reattempt Confirmation Modal
+    // ---------------------------------------------------------
+    function resetSession() {
+      if (recorder && recorder.state === "recording") {
+        $("stopBtn").click();
+      }
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+        audioUrl = "";
+      }
+      mp3Blob = null;
+      chunks = [];
+      finalText = "";
+      elapsedSeconds = 0;
+      activeSpeaker = 1;
+      lastEvaluation = null;
+      updateSpeakerBadges();
+      updateTimerDisplay("idle");
+
+      $("transcript").value = "";
+      updateWordCount();
+      $("playback").removeAttribute("src");
+      $("grammarFeedbackSection").classList.add("hidden");
+      $("downloadLockNotice").classList.add("hidden");
+      $("downloadConfirmBadge").classList.add("hidden");
+      $("downloadBothBtn").disabled = true;
+      $("audioDownload").disabled = true;
+      $("textDownload").disabled = true;
+
+      setStatus("已重置。请点击「● 开始录音」，在 40 秒内用简体中文介绍川菜与音乐风格的比较！", "info");
+    }
+
+    function openConfirmModal() {
+      $("confirmModal").classList.remove("hidden");
+    }
+    function closeConfirmModal() {
+      $("confirmModal").classList.add("hidden");
+    }
+
+    $("clearBtn").addEventListener("click", () => {
+      if ($("transcript").value.trim() || mp3Blob) {
+        openConfirmModal();
+      } else {
+        resetSession();
+      }
+    });
+
+    $("reattemptBtn").addEventListener("click", openConfirmModal);
+    $("cancelModalBtn").addEventListener("click", closeConfirmModal);
+    $("confirmModalBtn").addEventListener("click", () => {
+      closeConfirmModal();
+      resetSession();
+    });
+
+    // ---------------------------------------------------------
+    // 10. Gated Dual File Download (.mp3 + .txt)
+    // ---------------------------------------------------------
+    function triggerDownload(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2500);
+    }
+
+    function buildReportText() {
+      const studentLabel =
+        mode === "independent"
+          ? ($("studentName").value || "").trim() || "未填写"
+          : `${getSpeakerNames().s1} & ${getSpeakerNames().s2}（双人对话）`;
+      const notes = ($("planningNotes").value || "").trim();
+      const transcript = ($("transcript").value || "").trim() || "（未捕获到语音转文字内容）";
+      const ev = lastEvaluation || evaluateSichuanSpeaking(transcript, elapsedSeconds);
+      const dateStr = new Date().toLocaleString("zh-CN");
+
+      const reportLines = [
+        "================================================================",
+        "课堂出口票：川菜与音乐风格 (SPEAKING EXIT TICKET)",
+        "================================================================",
+        `学生姓名：${studentLabel}`,
+        `录音模式：${mode === "independent" ? "个人模式 — 课堂出口票" : "双人模式 — 对话比较"}`,
+        `提交时间：${dateStr}`,
+        `录音时长：${formatTime(ev.durationSec)} (${ev.durationSec}秒 / 目标：8–40秒)`,
+        `达标进度：${ev.completionPct}% (${ev.totalScore} / 4 项要求)`,
+        "",
+        "--- 四项口语要求检查清单 ---",
+        `[${ev.crit1Pass ? "✓" : " "}] 1. 川菜与气候词汇 (至少2个)：${ev.foundSichuan.map((i) => i.shortLabel).join("、") || "无"}`,
+        `[${ev.crit2Pass ? "✓" : " "}] 2. 音乐风格与感受词汇 (至少2个)：${ev.foundMusic.map((i) => i.shortLabel).join("、") || "无"}`,
+        `[${ev.crit3Pass ? "✓" : " "}] 3. 对比句型 (至少1个)：${ev.comparisonSnippet || "未检测到"}`,
+        `[${ev.crit4Pass ? "✓" : " "}] 4. 时长控制 (8–40秒内清晰表达)：${ev.durationSec}秒`
+      ];
+
+      if (notes) {
+        reportLines.push(
+          "",
+          "--- 我的提纲 / PLANNING NOTES（可选草稿，非口语转写） ---",
+          notes
+        );
+      }
+
+      reportLines.push(
+        "",
+        "--- 简体中文口语转文字记录 (AUTHENTIC SPOKEN TRANSCRIPT) ---",
+        transcript,
+        ""
+      );
+      return reportLines.join("\n");
+    }
+
+    function downloadAudioOnly() {
+      if (!mp3Blob || !lastEvaluation || !lastEvaluation.canDownload) return;
+      triggerDownload(mp3Blob, `${getFileBaseName()}.${audioExt}`);
+    }
+
+    function downloadTextOnly() {
+      if (!lastEvaluation || !lastEvaluation.canDownload) return;
+      const txtBlob = new Blob([buildReportText()], { type: "text/plain;charset=utf-8" });
+      triggerDownload(txtBlob, `${getFileBaseName()}.txt`);
+    }
+
+    $("downloadBothBtn").addEventListener("click", () => {
+      if (!lastEvaluation || !lastEvaluation.canDownload) return;
+      downloadAudioOnly();
+      setTimeout(() => {
+        downloadTextOnly();
+        $("downloadConfirmBadge").classList.remove("hidden");
+      }, 350);
+    });
+
+    $("audioDownload").addEventListener("click", downloadAudioOnly);
+    $("textDownload").addEventListener("click", downloadTextOnly);
+  </script>
+</body>
+</html>
+<!-- tous droits reserves Monsieur Nan du lycée de Bayside -->
