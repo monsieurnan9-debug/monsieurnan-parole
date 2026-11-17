@@ -1,1623 +1,945 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Billet de sortie : Mes habitudes alimentaires</title>
+  <title>Studio Oral • Billet de Sortie | Lycée de Bayside</title>
 
-  <!-- Google Font: Inter for clean, legible typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS via CDN -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Pure-JS MP3 Encoder (lame.all.min.js bundle with jsDelivr fallback) for reliable .mp3 audio output -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.all.min.js"></script>
+  <!-- Google Fonts: Inter & Noto Sans SC for crisp French & Chinese typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+
   <script>
-    if (!window.lamejs) {
-      document.write('<script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.all.min.js"><\/script>');
-    }
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans SC', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            bayside: {
+              bg: '#f4f7fb',
+              blue: '#164b9b',
+              blueDark: '#103978',
+              crimson: '#d9383a',
+              slate: '#0f172a',
+            }
+          },
+          boxShadow: {
+            'card': '0 10px 30px -10px rgba(15, 23, 42, 0.06), 0 4px 12px -4px rgba(15, 23, 42, 0.03)',
+            'card-hover': '0 20px 40px -12px rgba(22, 75, 155, 0.12), 0 8px 20px -6px rgba(15, 23, 42, 0.05)',
+            'glass': '0 14px 32px -8px rgba(15, 23, 42, 0.14), 0 4px 10px -2px rgba(15, 23, 42, 0.06)',
+            'cta': '0 12px 26px -6px rgba(22, 75, 155, 0.42)',
+          }
+        }
+      }
+    };
   </script>
 
   <style>
-    /* Base typography and smooth transitions */
+    /* Base page styling & font smoothing */
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background-color: #f4f7fb;
-      color: #1e293b;
+      font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      color: #0f172a;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Subtle shake animation for missing required student name */
-    @keyframes gentleShake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-6px); }
-      40%, 80% { transform: translateX(6px); }
-    }
-    .shake-input {
-      animation: gentleShake 0.35s ease-in-out;
+    /* Subtle floating animations for studio glass badges */
+    @keyframes floatSlow {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-7px);
+      }
     }
 
-    /* Pulsing red dot for active recording badge */
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.85); }
+    @keyframes floatDelayed {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
     }
-    .recording-dot {
-      animation: pulseDot 1.2s infinite ease-in-out;
+
+    @keyframes floatReverse {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(6px);
+      }
+    }
+
+    .animate-float-slow {
+      animation: floatSlow 5.5s ease-in-out infinite;
+    }
+
+    .animate-float-delayed {
+      animation: floatDelayed 6.4s ease-in-out 1.2s infinite;
+    }
+
+    .animate-float-reverse {
+      animation: floatReverse 5.8s ease-in-out 0.6s infinite;
+    }
+
+    /* Smooth text transition when switching languages */
+    .lang-fade {
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .lang-updating {
+      opacity: 0.25;
+      transform: translateY(2px);
+    }
+
+    /* Subtle ambient grid background pattern */
+    .studio-grid-bg {
+      background-image: radial-gradient(rgba(22, 75, 155, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between py-6 px-4 sm:px-6 lg:px-8">
+<body class="min-h-screen flex flex-col selection:bg-[#164b9b] selection:text-white">
 
-  <!-- Main Centered Card Container -->
-  <main class="w-full max-w-[780px] mx-auto bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
-
-    <!-- Subtle French-inspired tricolor accent bar -->
-    <div class="h-1.5 w-full flex">
-      <div class="w-1/3 bg-[#164b9b]"></div>
-      <div class="w-1/3 bg-white"></div>
-      <div class="w-1/3 bg-[#d9383a]"></div>
-    </div>
-
-    <!-- Header Section -->
-    <header class="px-6 pt-6 pb-5 sm:px-8 border-b border-slate-100 bg-gradient-to-b from-slate-50/70 to-white">
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-xl bg-[#164b9b] text-white flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
-            <!-- Microphone SVG Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-            </svg>
-          </div>
-          <div>
-            <div class="flex flex-wrap items-center gap-2">
-              <h1 class="text-xl sm:text-2xl font-bold text-[#164b9b] tracking-tight">
-                Billet de sortie : Mes habitudes alimentaires
-              </h1>
-              <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-[#d9383a] text-xs font-bold uppercase tracking-wide">
-                La santé &amp; l'alimentation
-              </span>
-            </div>
-            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Décrivez vos habitudes alimentaires pendant au moins 30 secondes, puis téléchargez vos 2 fichiers.
-            </p>
-          </div>
-        </div>
-
-        <!-- Live Recording Badge & Timer -->
-        <div id="recordingBadge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium transition-colors" title="Objectif : parler pendant au moins 30 secondes">
-          <span id="recordingDot" class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
-          <span id="recordingLabel" class="text-xs uppercase tracking-wider font-semibold">Prêt</span>
-          <span class="text-slate-300">|</span>
-          <span id="timer" class="font-mono font-semibold text-slate-800">00:00</span>
-          <span class="text-xs text-slate-400 font-mono">/ 00:30+</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Form / Step-by-Step Content -->
-    <div class="p-6 sm:p-8 space-y-8">
-
-      <!-- ========================================================= -->
-      <!-- ÉTAPE 1 : CONSIGNE & IDENTIFICATION                        -->
-      <!-- ========================================================= -->
-      <section aria-labelledby="step1-heading" class="space-y-4">
-        <div class="flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-full bg-[#164b9b] text-white text-xs font-bold flex items-center justify-center shadow-sm">
-            1
-          </span>
-          <h2 id="step1-heading" class="text-base sm:text-lg font-semibold text-slate-800">
-            Étape 1 : Consigne &amp; Identification
-          </h2>
-        </div>
-
-        <div class="pl-0 sm:pl-9 space-y-5">
-
-          <!-- Assignment Prompt Card: Billet de sortie • Mes habitudes alimentaires -->
-          <div class="rounded-2xl border-2 border-rose-200/90 bg-gradient-to-br from-rose-50/75 via-white to-amber-50/50 p-4 sm:p-5 space-y-3.5 shadow-sm">
-            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-rose-100 pb-2.5">
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full bg-[#d9383a] text-white text-xs font-bold uppercase tracking-wider">
-                  Billet de sortie
-                </span>
-                <span class="text-xs sm:text-sm font-bold text-slate-800">
-                  Unité 4 • Mes habitudes alimentaires (Speaking • 30+ sec)
-                </span>
-              </div>
-              <button
-                type="button"
-                id="toggleModelBtn"
-                aria-expanded="true"
-                class="px-2.5 py-1 rounded-lg border border-rose-200 bg-white hover:bg-rose-50 text-[#d9383a] text-xs font-semibold transition cursor-pointer shrink-0"
-              >
-                Masquer le modèle
-              </button>
-            </div>
-
-            <!-- Prompt Explanation -->
-            <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">
-              <strong>Prompt :</strong> Describe <strong>YOUR food habits</strong>. Are you healthy? Gourmand(e)? Allergic? What good practices do you have?
-            </p>
-
-            <!-- The 4 Target Requirements on Screen -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
-                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
-                <div>
-                  <p class="font-semibold">Être + 2 expressions</p>
-                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">allergique, au régime, en bonne santé, gourmand(e)</span></p>
-                </div>
-              </div>
-
-              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
-                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
-                <div>
-                  <p class="font-semibold">3 verbes cibles</p>
-                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">cuisiner, déguster, gaspiller, partager, recycler</span></p>
-                </div>
-              </div>
-
-              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
-                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
-                <div>
-                  <p class="font-semibold">Une négation</p>
-                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">ne... pas / ne... plus / ne... jamais</span></p>
-                </div>
-              </div>
-
-              <div class="rounded-xl bg-white border border-slate-200/90 px-3 py-2 text-xs text-slate-800 flex items-start gap-2">
-                <span class="w-5 h-5 rounded-full bg-[#164b9b] text-white font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">4</span>
-                <div>
-                  <p class="font-semibold">Durée minimale</p>
-                  <p class="text-[11px] text-slate-500">Cible : <span class="font-semibold text-[#164b9b]">Parler pendant au moins 30 secondes</span></p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Dashed Model Box (matches the worksheet model) -->
-            <div id="modelSentencesBox" class="rounded-xl border-2 border-dashed border-rose-300 bg-white/95 px-3.5 py-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
-              <span class="block text-[11px] font-bold uppercase tracking-wider text-[#d9383a] mb-1">
-                💬 Amorces / Modèle de phrases :
-              </span>
-              <p class="italic">
-                « Je suis <strong>gourmand(e)</strong> / <strong>en bonne santé</strong>. Je (ne) suis (pas) <strong>allergique</strong> à / au / aux ___ .<br />
-                Je <strong>recycle</strong> ___ . Je <strong>ne gaspille jamais</strong> ___ . Je <strong>partage</strong> ___ avec ___ . J'aime <strong>cuisiner</strong> ___ . »
-              </p>
-            </div>
-
-            <!-- Success Criteria Pills -->
-            <div class="space-y-1.5">
-              <p class="text-[11px] font-bold uppercase tracking-wider text-slate-600">
-                Success criteria — check ✓ before you submit:
-              </p>
-              <div class="flex flex-wrap gap-1.5">
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#164b9b] text-[11px] font-semibold">
-                  ✓ être + 2 expressions (allergique, au régime, en bonne santé, gourmand)
-                </span>
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#164b9b] text-[11px] font-semibold">
-                  ✓ 3 verbs: cuisiner, déguster, gaspiller, partager, recycler
-                </span>
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#164b9b] text-[11px] font-semibold">
-                  ✓ 1 negative (ne... pas / plus / jamais)
-                </span>
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-[#d9383a] text-[11px] font-semibold">
-                  ✓ Speak for at least 30 seconds
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Interactive Mode Selection Cards -->
-          <div role="radiogroup" aria-label="Choisir le mode d'enregistrement" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <!-- Mode 1: Solo Exit Ticket -->
-            <button
-              type="button"
-              id="modeIndependentBtn"
-              role="radio"
-              aria-checked="true"
-              class="text-left p-4 rounded-xl border-2 border-[#164b9b] bg-blue-50/60 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              <div class="flex items-center justify-between gap-2">
-                <span class="font-bold text-sm sm:text-base text-[#164b9b]">
-                  👤 Solo — Billet de sortie
-                </span>
-                <span id="modeIndependentCheck" class="w-5 h-5 rounded-full bg-[#164b9b] text-white flex items-center justify-center text-xs font-bold">
-                  ✓
-                </span>
-              </div>
-              <p class="text-xs text-slate-600 mt-1">
-                1 élève — Présentez vos habitudes alimentaires pendant au moins 30 secondes.
-              </p>
-            </button>
-
-            <!-- Mode 2: Pair Conversation -->
-            <button
-              type="button"
-              id="modePairBtn"
-              role="radio"
-              aria-checked="false"
-              class="text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              <div class="flex items-center justify-between gap-2">
-                <span class="font-bold text-sm sm:text-base text-slate-800">
-                  👥 Binôme — Échange oral
-                </span>
-                <span id="modePairCheck" class="w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold">
-                  ✓
-                </span>
-              </div>
-              <p class="text-xs text-slate-600 mt-1">
-                2 élèves — Discutez de vos habitudes alimentaires et gestes écoresponsables à tour de rôle.
-              </p>
-            </button>
-          </div>
-
-          <!-- Independent Mode Input (1 Student) -->
-          <div id="independentInputs">
-            <label for="studentName" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Nom et prénom de l'élève <span class="text-[#d9383a] font-bold">*</span>
-            </label>
-            <input
-              type="text"
-              id="studentName"
-              autocomplete="name"
-              placeholder="Ex. Marie Dupont"
-              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
-            />
-          </div>
-
-          <!-- Pair Mode Inputs (2 Students + Swap Order Button) -->
-          <div id="pairInputs" class="hidden space-y-3">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label for="student1Name" class="block text-sm font-medium text-slate-700 mb-1.5">
-                  Élève 1 (commence en premier) <span class="text-[#d9383a] font-bold">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="student1Name"
-                  placeholder="Ex. Marie Dupont"
-                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
-                />
-              </div>
-
-              <div>
-                <label for="student2Name" class="block text-sm font-medium text-slate-700 mb-1.5">
-                  Élève 2 (partenaire) <span class="text-[#d9383a] font-bold">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="student2Name"
-                  placeholder="Ex. Lucas Martin"
-                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
-                />
-              </div>
-            </div>
-
-            <div class="flex justify-start sm:justify-center">
-              <button
-                type="button"
-                id="swapSpeakersBtn"
-                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed"
-              >
-                <span>⇄ Inverser l'ordre</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Dialect / Language Selector -->
-          <div>
-            <label for="language" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Dialecte / Langue de transcription
-            </label>
-            <select
-              id="language"
-              class="w-full sm:w-72 px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 focus:border-[#164b9b] transition"
-            >
-              <option value="fr-FR">Français (France)</option>
-              <option value="fr-CA">Français (Canada)</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      <hr class="border-slate-100" />
-
-      <!-- ========================================================= -->
-      <!-- ÉTAPE 2 : ENREGISTREMENT & TRANSCRIPTION EN DIRECT        -->
-      <!-- ========================================================= -->
-      <section aria-labelledby="step2-heading" class="space-y-4">
-        <div class="flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-full bg-[#164b9b] text-white text-xs font-bold flex items-center justify-center shadow-sm">
-            2
-          </span>
-          <h2 id="step2-heading" class="text-base sm:text-lg font-semibold text-slate-800">
-            Étape 2 : Enregistrement &amp; Transcription en direct
-          </h2>
-        </div>
-
-        <div class="pl-0 sm:pl-9 space-y-4">
-          <!-- Real-time Audio Waveform / Equalizer Visualizer -->
-          <div class="bg-slate-900 rounded-xl p-3.5 border border-slate-800 shadow-inner">
-            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 mb-2 px-1">
-              <div class="flex items-center gap-2.5">
-                <span class="flex items-center gap-1.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z" />
-                  </svg>
-                  Signal microphone en direct
-                </span>
-                <!-- Background Noise Suppression Toggle Pill -->
-                <button
-                  type="button"
-                  id="noiseSuppressToggle"
-                  aria-pressed="true"
-                  title="Activer ou désactiver la réduction des bruits de fond de la classe"
-                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[11px] font-medium hover:bg-emerald-500/25 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  <span id="noiseSuppressIcon">🔇</span>
-                  <span id="noiseSuppressLabel">Anti-bruit : Activé</span>
-                </button>
-              </div>
-              <span id="micHint" class="text-slate-400">En attente du microphone</span>
-            </div>
-            <div class="w-full h-16 relative">
-              <canvas id="visualizer" class="w-full h-full block rounded-lg"></canvas>
-            </div>
-          </div>
-
-          <!-- Pair Mode Turn-Taking Panel (Shown ONLY when Binôme is selected) -->
-          <div
-            id="pairTurnPanel"
-            class="hidden rounded-xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50/90 to-blue-50/70 p-4 space-y-3.5 shadow-sm"
-          >
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-indigo-900">
-                Échange en binôme — Tour de parole
-              </span>
-              <span class="text-xs text-indigo-700/80">
-                Raccourci : <kbd class="px-1.5 py-0.5 rounded bg-white border border-indigo-200 font-mono text-[11px]">Tab</kbd> ou <kbd class="px-1.5 py-0.5 rounded bg-white border border-indigo-200 font-mono text-[11px]">Alt+S</kbd>
-              </span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div
-                id="speaker1Badge"
-                class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#164b9b] text-white text-sm font-semibold shadow-sm transition-all"
-              >
-                <span id="speaker1BadgeText" class="truncate">🎙️ À la parole : Élève 1</span>
-              </div>
-              <div
-                id="speaker2Badge"
-                class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all"
-              >
-                <span id="speaker2BadgeText" class="truncate">⏳ En attente : Élève 2</span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              id="passTurnBtn"
-              disabled
-              class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-bold text-sm sm:text-base shadow-md shadow-amber-500/20 transition cursor-pointer disabled:opacity-45 disabled:shadow-none disabled:cursor-not-allowed"
-            >
-              <span id="passTurnBtnLabel">🔄 Passer la parole à Élève 2</span>
-            </button>
-          </div>
-
-          <!-- Primary Recording Control Buttons -->
-          <div class="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              id="startBtn"
-              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#164b9b] hover:bg-blue-900 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed"
-            >
-              <span>● Commencer</span>
-            </button>
-
-            <button
-              type="button"
-              id="stopBtn"
-              disabled
-              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#d9383a] hover:bg-red-700 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <span>■ Arrêter</span>
-            </button>
-
-            <button
-              type="button"
-              id="clearBtn"
-              class="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 active:scale-[0.99] text-slate-700 font-medium text-sm transition cursor-pointer"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-              <span id="clearBtnLabel">Effacer</span>
-            </button>
-          </div>
-
-          <!-- Dynamic Status Banner -->
-          <div
-            id="statusBanner"
-            role="status"
-            aria-live="polite"
-            class="flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50/80 border border-blue-200/80 text-slate-700 text-sm transition-colors"
-          >
-            <svg id="statusIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#1e3a8a] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span id="statusText">Prêt. Entrez votre nom, puis parlez pendant au moins 30 secondes sur vos habitudes alimentaires !</span>
-          </div>
-        </div>
-      </section>
-
-      <hr class="border-slate-100" />
-
-      <!-- ========================================================= -->
-      <!-- ÉTAPE 3 : VÉRIFICATION, FEEDBACK & TÉLÉCHARGEMENT         -->
-      <!-- ========================================================= -->
-      <section aria-labelledby="step3-heading" class="space-y-4">
-        <div class="flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2.5">
-            <span class="w-7 h-7 rounded-full bg-[#164b9b] text-white text-xs font-bold flex items-center justify-center shadow-sm">
-              3
-            </span>
-            <h2 id="step3-heading" class="text-base sm:text-lg font-semibold text-slate-800">
-              Étape 3 : Vérification &amp; Téléchargement
-            </h2>
-          </div>
-          <span id="wordCount" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
-            0 mot
-          </span>
-        </div>
-
-        <div class="pl-0 sm:pl-9 space-y-4">
-          <!-- Read-Only Transcript Textarea -->
-          <div>
-            <label for="transcript" class="block text-sm font-medium text-slate-700 mb-1.5">
-              Transcription en français <span class="text-xs font-normal text-slate-500">(lecture seule — générée automatiquement pendant que vous parlez)</span>
-            </label>
-            <textarea
-              id="transcript"
-              rows="6"
-              readonly
-              aria-readonly="true"
-              placeholder="Votre texte transcrit apparaîtra automatiquement ici pendant que vous parlez..."
-              class="w-full p-3.5 rounded-xl border border-slate-300 bg-slate-50/90 text-slate-700 placeholder-slate-400 text-sm leading-relaxed cursor-default select-text focus:outline-none"
-            ></textarea>
-            <p class="text-xs text-slate-500 mt-1.5">
-              🔒 Remarque : La transcription est verrouillée afin de conserver une trace authentique de votre production orale. Pour ajouter des éléments ou atteindre 30 secondes, utilisez <strong>Reattempt Recording</strong> ci-dessous.
-            </p>
-          </div>
-
-          <!-- Audio Playback Player -->
-          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
-            <span class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-              Réécoute de l'enregistrement (MP3)
-            </span>
-            <audio id="playback" controls class="w-full h-10 rounded-lg"></audio>
-          </div>
-
-          <!-- Food Habits Feedback Loop (in English) & Reattempt Encouragement -->
-          <div
-            id="grammarFeedbackSection"
-            class="hidden rounded-2xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50/90 via-white to-rose-50/60 p-4 sm:p-5 space-y-4 shadow-sm"
-            aria-live="polite"
-          >
-            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-100 pb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-7 h-7 rounded-lg bg-[#164b9b] text-white flex items-center justify-center text-sm shadow-sm">
-                  🎯
-                </span>
-                <div>
-                  <h3 class="text-sm sm:text-base font-bold text-indigo-950">
-                    Food Habits Feedback — Exit Ticket Check (English)
-                  </h3>
-                  <p class="text-xs text-slate-500">
-                    Checks être + 2 expressions, 3 target verbs, 1 negative (ne... pas/plus/jamais), and 30+ seconds.
-                  </p>
-                </div>
-              </div>
-              <span id="criteriaScorePill" class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-950 text-xs font-bold">
-                0 / 4 criteria
-              </span>
-            </div>
-
-            <!-- Encouraging Summary Banner -->
-            <p id="feedbackEncouragement" class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-white/90 rounded-xl p-3 border border-indigo-100"></p>
-
-            <!-- 4-Criteria Visual Scorecard Grid -->
-            <div class="space-y-1.5">
-              <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                1. Four Success Criteria Checklist:
-              </span>
-              <div id="criteriaFourGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
-            </div>
-
-            <!-- Detected Vocabulary & Structures Chips -->
-            <div id="feedbackStrengths" class="flex flex-wrap gap-2"></div>
-
-            <!-- Actionable Grammar & Vocabulary Suggestions List -->
-            <div id="feedbackSuggestionsList" class="space-y-2.5"></div>
-
-            <!-- Reattempt Callout & Action Button -->
-            <div id="reattemptCalloutBox" class="rounded-xl bg-amber-50/90 border border-amber-200 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div class="space-y-0.5">
-                <p id="reattemptCalloutTitle" class="text-xs sm:text-sm font-bold text-amber-950">
-                  Want to aim for 4/4 criteria and 30+ seconds? Try one more take!
-                </p>
-                <p id="reattemptCalloutDesc" class="text-xs text-amber-800/90">
-                  Remember to pronounce <em>ne / n'</em> clearly before the verb and expand on what you cook, share, or recycle.
-                </p>
-              </div>
-              <button
-                type="button"
-                id="reattemptBtn"
-                class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-bold text-xs sm:text-sm shadow-sm transition cursor-pointer"
-              >
-                <span>🔄 Reattempt Recording</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Download Action Area: Always Produces 2 Files (Unlocked at 2/4+ criteria) -->
-          <div class="pt-1 space-y-3">
-            <!-- Lock Notice shown when fewer than 2/4 criteria are met -->
-            <div
-              id="downloadLockNotice"
-              class="hidden rounded-xl bg-amber-50 border border-amber-300 px-4 py-3 text-xs sm:text-sm font-medium text-amber-950 flex items-start gap-2.5"
-            >
-              <span class="text-base leading-none mt-0.5">🔒</span>
-              <span id="downloadLockText">
-                Téléchargement verrouillé : atteignez au moins <strong>2 critères sur 4</strong> pour débloquer vos fichiers.
-              </span>
-            </div>
-
-            <!-- Primary Dual-File Download Button -->
-            <button
-              type="button"
-              id="downloadBothBtn"
-              disabled
-              class="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-md shadow-emerald-600/15 transition cursor-pointer disabled:opacity-45 disabled:shadow-none disabled:cursor-not-allowed"
-            >
-              <span>📥 Télécharger les 2 fichiers (Audio MP3 + Transcription)</span>
-            </button>
-
-            <!-- Visual Confirmation Badge after Dual Download -->
-            <div
-              id="downloadConfirmBadge"
-              class="hidden rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-xs sm:text-sm font-medium text-emerald-900 text-center"
-            >
-              ✅ 2 fichiers générés et téléchargés ! Pensez à déposer les 2 fichiers sur votre plateforme de classe.
-            </div>
-
-            <!-- Subtle Secondary Backup Download Buttons -->
-            <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
-              <button
-                type="button"
-                id="audioDownload"
-                disabled
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <span>🎵 Audio MP3 seul</span>
-              </button>
-              <button
-                type="button"
-                id="textDownload"
-                disabled
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-medium transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <span>📄 Transcription TXT seule</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- Privacy & Browser Notice Footer -->
-    <footer class="px-6 py-4 sm:px-8 bg-slate-50 border-t border-slate-200/70">
-      <div class="flex items-start gap-2.5 text-xs text-slate-500 leading-relaxed">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-        <p>
-          <strong>Confidentialité :</strong> L'audio reste localement dans cet onglet jusqu'à son téléchargement. La reconnaissance vocale de Google Chrome peut transmettre l'audio à un service externe. Utilisez cet outil selon les directives de votre établissement scolaire.
-        </p>
-      </div>
-    </footer>
-  </main>
-
-  <!-- Confirmation Modal for Reattempt / Clear -->
-  <div id="confirmModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg shrink-0">
-          🔄
-        </div>
-        <div>
-          <h3 id="modalTitle" class="text-base font-bold text-slate-900">
-            Recommencer l'enregistrement ?
-          </h3>
-          <p class="text-xs text-slate-500">
-            Votre audio et votre transcription actuels seront effacés pour ce nouvel essai.
-          </p>
-        </div>
-      </div>
-      <div class="flex items-center justify-end gap-2.5 pt-2">
-        <button
-          type="button"
-          id="cancelModalBtn"
-          class="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-medium transition cursor-pointer"
-        >
-          Annuler
-        </button>
-        <button
-          type="button"
-          id="confirmModalBtn"
-          class="px-4 py-2 rounded-xl bg-[#164b9b] hover:bg-blue-900 text-white text-xs sm:text-sm font-semibold shadow-sm transition cursor-pointer"
-        >
-          Oui, recommencer
-        </button>
-      </div>
-    </div>
+  <!-- Signature Top Tricolor Accent Bar (1/3 Royal Blue, 1/3 White, 1/3 Crimson Red) -->
+  <div class="sticky top-0 z-50 w-full h-1.5 flex shadow-[0_1px_3px_rgba(15,23,42,0.08)]" aria-hidden="true">
+    <div class="w-1/3 h-full bg-[#164b9b]"></div>
+    <div class="w-1/3 h-full bg-white"></div>
+    <div class="w-1/3 h-full bg-[#d9383a]"></div>
   </div>
 
+  <!-- Ambient Soft Decorative Glows -->
+  <div class="pointer-events-none fixed inset-0 overflow-hidden -z-10" aria-hidden="true">
+    <div class="absolute -top-32 -left-24 w-[28rem] h-[28rem] rounded-full bg-[#164b9b]/[0.05] blur-3xl"></div>
+    <div class="absolute top-36 -right-24 w-[26rem] h-[26rem] rounded-full bg-[#d9383a]/[0.04] blur-3xl"></div>
+  </div>
+
+  <!-- 1. CLEAN HEADER BAR -->
+  <header class="w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-md sticky top-1.5 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Left: Brand Identity -->
+      <a href="#" class="flex items-center gap-3.5 group focus:outline-none">
+        <div class="w-11 h-11 rounded-2xl bg-[#164b9b] text-white flex items-center justify-center shadow-md shadow-[#164b9b]/20 group-hover:scale-105 transition-transform duration-200">
+          <!-- Crisp Microphone SVG -->
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="12" y1="19" x2="12" y2="22" />
+            <line x1="8" y1="22" x2="16" y2="22" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-900 text-base sm:text-lg tracking-tight">
+              Studio Oral <span class="text-[#164b9b] mx-0.5">•</span> Billet de Sortie
+            </span>
+          </div>
+          <p class="text-xs sm:text-[13px] font-medium text-slate-500 tracking-wide">
+            Lycée de Bayside <span class="text-slate-300 mx-1">•</span> <span class="text-[#164b9b] font-semibold">Français</span> &amp; <span class="text-[#d9383a] font-semibold">中文</span>
+          </p>
+        </div>
+      </a>
+
+      <!-- Right: Interactive Visual Language Pill Switcher -->
+      <div class="flex items-center bg-slate-100/90 p-1 rounded-full border border-slate-200/80 shadow-inner" role="group" aria-label="Sélecteur d'affichage linguistique">
+        <button
+          type="button"
+          data-lang-btn="bilingual"
+          onclick="setDisplayLanguage('bilingual')"
+          class="lang-pill px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 bg-[#164b9b] text-white shadow-sm"
+        >
+          Bilingue
+        </button>
+        <button
+          type="button"
+          data-lang-btn="fr"
+          onclick="setDisplayLanguage('fr')"
+          class="lang-pill px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900"
+        >
+          Français
+        </button>
+        <button
+          type="button"
+          data-lang-btn="zh"
+          onclick="setDisplayLanguage('zh')"
+          class="lang-pill px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900"
+        >
+          中文
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1">
+
+    <!-- 2. ASYMMETRIC VISUAL HERO SECTION -->
+    <section class="relative pt-10 pb-14 sm:pt-14 sm:pb-20 lg:pt-16 lg:pb-24 studio-grid-bg">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+
+          <!-- Left Column: Welcoming Headlines & Visual CTAs (7 cols) -->
+          <div class="lg:col-span-7 space-y-6 text-left">
+            
+            <!-- Pill Badge -->
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-slate-200/90 shadow-sm">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span id="hero-badge" class="lang-fade text-xs sm:text-sm font-semibold text-slate-700 tracking-tight">
+                Bienvenue au studio vocal <span class="text-slate-300 mx-1">•</span> <span class="text-[#d9383a]">欢迎来到口语录音室</span>
+              </span>
+            </div>
+
+            <!-- Bold Welcoming Display Headline -->
+            <div class="space-y-2.5">
+              <h1 id="hero-title" class="lang-fade text-4xl sm:text-5xl lg:text-[3.35rem] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+                Donnez vie à votre voix en classe.
+              </h1>
+              <p id="hero-subtitle-zh" class="lang-fade text-2xl sm:text-3xl font-bold tracking-tight text-[#164b9b]">
+                用声音自信表达 <span class="text-slate-300 font-normal mx-1.5">|</span> <span class="text-[#d9383a]">课堂口语展示</span>
+              </p>
+            </div>
+
+            <!-- Warm Visual Tagline -->
+            <p id="hero-description" class="lang-fade text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
+              Un espace calme, clair et bienveillant pour enregistrer votre billet de sortie oral — en <span class="font-semibold text-slate-800">Solo</span> ou en <span class="font-semibold text-slate-800">Binôme</span>, en français comme en chinois.
+            </p>
+
+            <!-- Action Buttons (Visual-Only) -->
+            <div class="pt-2 flex flex-wrap items-center gap-3.5">
+              <button
+                type="button"
+                onclick="triggerStudioWelcomeBanner()"
+                class="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-[#164b9b] hover:bg-[#103978] text-white font-semibold text-base shadow-cta hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-[#164b9b]/25"
+              >
+                <span id="cta-primary" class="lang-fade">Entrer dans le studio</span>
+                <span class="inline-block transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
+              </button>
+
+              <a
+                href="#parcours-visuel"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-base border border-slate-200/90 shadow-sm hover:border-slate-300 transition-all duration-200"
+              >
+                <svg class="w-4 h-4 text-[#164b9b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none" />
+                </svg>
+                <span id="cta-secondary" class="lang-fade">Aperçu du studio</span>
+              </a>
+            </div>
+
+            <!-- Subtle Visual Studio Readiness Banner (Toggled cleanly on CTA click, zero browser prompts) -->
+            <div id="studio-ready-toast" class="hidden transition-all duration-300">
+              <div class="inline-flex flex-wrap items-center gap-3 px-4 py-3 rounded-2xl bg-white border border-[#164b9b]/25 shadow-card text-sm">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span id="toast-text" class="font-medium text-slate-700">
+                  Aperçu visuel activé : choisissez <strong class="text-[#164b9b]">Solo</strong> ou <strong class="text-[#d9383a]">Binôme</strong> dans le moniteur à droite.
+                </span>
+              </div>
+            </div>
+
+            <!-- Visual Classroom Highlights Strip -->
+            <div class="pt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-medium text-slate-500">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#164b9b]"></span>
+                <span id="meta-1" class="lang-fade">Lycée de Bayside • World Languages</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span id="meta-2" class="lang-fade">Aucun compte requis • Sans installation</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Ambient Studio Visual Showcase (5 cols) -->
+          <div class="lg:col-span-5 relative">
+            
+            <!-- Floating Glass Badge 1: Top-Left ("Solo & Binôme") -->
+            <div class="animate-float-slow sm:absolute sm:-top-6 sm:-left-6 z-20 mb-3 sm:mb-0 inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-glass">
+              <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#164b9b] flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <div>
+                <p id="float-badge-1" class="lang-fade text-xs sm:text-sm font-bold text-slate-800 leading-tight">
+                  Solo &amp; Binôme (1–2 élèves)
+                </p>
+                <p class="text-[11px] font-medium text-slate-500">Monologue ou dialogue • 单人/双人</p>
+              </div>
+            </div>
+
+            <!-- Main Sleek Dark-Slate Studio Console Card (#0f172a) -->
+            <div class="relative rounded-3xl bg-[#0f172a] p-5 sm:p-6 text-white shadow-2xl border border-slate-800 overflow-hidden">
+              
+              <!-- Subtle Top Accent Glow inside dark card -->
+              <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/50 to-transparent"></div>
+
+              <!-- Console Top Header -->
+              <div class="flex items-center justify-between gap-2 pb-4 border-b border-slate-800/90">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#d9383a]"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  <span class="ml-1.5 text-[11px] font-mono uppercase tracking-wider text-slate-400">STUDIO-01</span>
+                </div>
+
+                <!-- Signal Ready Pill -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span id="studio-signal-label" class="lang-fade text-[11px] font-semibold text-emerald-300 tracking-wide">
+                    Signal prêt • Anti-bruit actif
+                  </span>
+                </div>
+              </div>
+
+              <!-- Interactive Visual Wave Mode Preview Toggle (Visual Only) -->
+              <div class="mt-4 flex items-center justify-between gap-2">
+                <span class="text-xs font-medium text-slate-400">Visualisation acoustique</span>
+                <div class="inline-flex rounded-xl bg-slate-900/90 p-1 border border-slate-800 text-[11px] font-semibold">
+                  <button
+                    type="button"
+                    id="wave-btn-solo"
+                    onclick="setWaveMode('solo')"
+                    class="px-2.5 py-1 rounded-lg bg-[#164b9b] text-white transition-colors"
+                  >
+                    1 Voix (Solo)
+                  </button>
+                  <button
+                    type="button"
+                    id="wave-btn-pair"
+                    onclick="setWaveMode('pair')"
+                    class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white transition-colors"
+                  >
+                    2 Voix (Binôme)
+                  </button>
+                </div>
+              </div>
+
+              <!-- HTML5 Canvas Acoustic Waveform Container -->
+              <div class="mt-3 relative rounded-2xl bg-slate-950/80 border border-slate-800/90 p-3 overflow-hidden">
+                <!-- Subtle horizontal center reference line -->
+                <div class="absolute inset-x-4 top-1/2 h-px bg-slate-800/80 pointer-events-none"></div>
+                <canvas id="studioWaveformCanvas" class="w-full h-40 sm:h-44 block rounded-xl"></canvas>
+              </div>
+
+              <!-- Bottom Telemetry Visual Strip -->
+              <div class="mt-4 pt-3.5 border-t border-slate-800/90 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2 text-slate-300 font-medium">
+                  <span class="inline-block w-2 h-2 rounded-full bg-sky-400"></span>
+                  <span>48 kHz • Stéréo Clair</span>
+                </div>
+                <div class="font-mono text-amber-300/95 bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 rounded-lg text-[11px]">
+                  Objectif ≥ 00:30
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Floating Glass Badges Row/Offsets Below & Beside Dark Card -->
+            <div class="mt-3 sm:mt-0 flex flex-wrap sm:block gap-3">
+              
+              <!-- Floating Glass Badge 2: Middle-Left ("4 Critères de réussite") -->
+              <div class="animate-float-delayed sm:absolute sm:bottom-14 sm:-left-8 z-20 inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-glass">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p id="float-badge-2" class="lang-fade text-xs sm:text-sm font-bold text-slate-800 leading-tight">
+                    4 Critères de réussite
+                  </p>
+                  <div class="flex items-center gap-1 mt-1" aria-hidden="true">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span class="text-[10px] font-semibold text-slate-400 ml-1">Auto-bilan</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Glass Badge 3: Bottom-Right ("Export MP3 + TXT") -->
+              <div class="animate-float-reverse sm:absolute sm:-bottom-6 sm:-right-4 z-20 inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-glass">
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+                <div>
+                  <p id="float-badge-3" class="lang-fade text-xs sm:text-sm font-bold text-slate-800 leading-tight">
+                    Export MP3 + TXT
+                  </p>
+                  <div class="flex items-center gap-1.5 mt-0.5">
+                    <span class="px-1.5 py-0.2 rounded bg-[#164b9b]/10 text-[#164b9b] font-bold text-[10px]">.MP3</span>
+                    <span class="px-1.5 py-0.2 rounded bg-[#d9383a]/10 text-[#d9383a] font-bold text-[10px]">.TXT</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. VISUAL 3-STEP FLOW (MINIMALIST ICON CARDS) -->
+    <section id="parcours-visuel" class="py-12 sm:py-16 border-t border-slate-200/70 bg-white/50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10">
+          <div>
+            <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#164b9b] mb-1.5">
+              Parcours en 3 étapes <span class="text-slate-300 mx-1">•</span> <span class="text-[#d9383a]">三步口语流程</span>
+            </span>
+            <h2 id="steps-heading" class="lang-fade text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Simple, structuré et prêt pour la classe.
+            </h2>
+          </div>
+          <p id="steps-subheading" class="lang-fade text-sm text-slate-500 max-w-md">
+            Trois étapes visuelles pour guider chaque prise de parole du début à la remise.
+          </p>
+        </div>
+
+        <!-- 3 Minimalist Horizontal Icon Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Step 1 Card -->
+          <div class="group relative rounded-3xl bg-white p-6 sm:p-7 border border-slate-200/80 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200">
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-2xl bg-[#164b9b]/10 text-[#164b9b] flex items-center justify-center group-hover:bg-[#164b9b] group-hover:text-white transition-colors duration-200">
+                <!-- Custom SVG: Solo & Pair / Prompt -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="16" rx="3" />
+                  <path d="M7 9h10" />
+                  <path d="M7 13h6" />
+                  <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor" />
+                </svg>
+              </div>
+              <span class="text-xs font-extrabold tracking-widest uppercase px-3 py-1 rounded-full bg-slate-100 text-slate-500">
+                01
+              </span>
+            </div>
+            <h3 id="step1-title" class="lang-fade text-lg font-bold text-slate-900 mb-2">
+              Mode &amp; Consigne
+            </h3>
+            <p id="step1-desc" class="lang-fade text-sm text-slate-600 leading-relaxed">
+              Choisissez le mode <strong class="text-slate-800">Solo</strong> ou <strong class="text-slate-800">Binôme</strong> et préparez votre sujet d'expression orale.
+            </p>
+          </div>
+
+          <!-- Step 2 Card -->
+          <div class="group relative rounded-3xl bg-white p-6 sm:p-7 border border-slate-200/80 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200">
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-2xl bg-[#d9383a]/10 text-[#d9383a] flex items-center justify-center group-hover:bg-[#d9383a] group-hover:text-white transition-colors duration-200">
+                <!-- Custom SVG: Live Soundwave -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12h2" />
+                  <path d="M6 8v8" />
+                  <path d="M10 4v16" />
+                  <path d="M14 7v10" />
+                  <path d="M18 9v6" />
+                  <path d="M22 12h-1" />
+                </svg>
+              </div>
+              <span class="text-xs font-extrabold tracking-widest uppercase px-3 py-1 rounded-full bg-slate-100 text-slate-500">
+                02
+              </span>
+            </div>
+            <h3 id="step2-title" class="lang-fade text-lg font-bold text-slate-900 mb-2">
+              Onde Vocale en Direct
+            </h3>
+            <p id="step2-desc" class="lang-fade text-sm text-slate-600 leading-relaxed">
+              Exprimez-vous naturellement pendant <strong class="text-slate-800">30+ secondes</strong> avec un retour visuel clair et apaisant.
+            </p>
+          </div>
+
+          <!-- Step 3 Card -->
+          <div class="group relative rounded-3xl bg-white p-6 sm:p-7 border border-slate-200/80 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200">
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200">
+                <!-- Custom SVG: Rubric & Dual Export -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 11l3 3L22 4" />
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                </svg>
+              </div>
+              <span class="text-xs font-extrabold tracking-widest uppercase px-3 py-1 rounded-full bg-slate-100 text-slate-500">
+                03
+              </span>
+            </div>
+            <h3 id="step3-title" class="lang-fade text-lg font-bold text-slate-900 mb-2">
+              Auto-évaluation &amp; Fichiers
+            </h3>
+            <p id="step3-desc" class="lang-fade text-sm text-slate-600 leading-relaxed">
+              Validez vos <strong class="text-slate-800">4 critères</strong> de réussite et téléchargez vos fichiers <strong class="text-slate-800">MP3 + TXT</strong>.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BILINGUAL LANGUAGE SHOWCASE CARDS (VISUAL-FIRST) -->
+    <section class="py-12 sm:py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          
+          <!-- Card A: Section Française (#164b9b Royal Blue Accent) -->
+          <article class="relative overflow-hidden rounded-3xl bg-white p-7 sm:p-8 border border-slate-200/80 shadow-card hover:shadow-card-hover transition-all duration-300">
+            <!-- Top Accent Bar -->
+            <div class="absolute inset-x-0 top-0 h-1.5 bg-[#164b9b]"></div>
+
+            <!-- Decorative Geometric Watermark: Stylized Eiffel Silhouette + Soundwaves -->
+            <svg class="pointer-events-none absolute -right-6 -bottom-6 w-52 h-52 text-[#164b9b]/[0.06]" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <!-- Eiffel Geometric Lines -->
+              <path d="M100 18 L92 75 L74 135 L52 182" />
+              <path d="M100 18 L108 75 L126 135 L148 182" />
+              <line x1="78" y1="95" x2="122" y2="95" />
+              <line x1="66" y1="138" x2="134" y2="138" />
+              <path d="M76 182 A24 24 0 0 1 124 182" />
+              <!-- Concentric Soundwaves -->
+              <path d="M135 55 A45 45 0 0 1 135 125" stroke-dasharray="4 4" />
+              <path d="M150 40 A65 65 0 0 1 150 140" />
+            </svg>
+
+            <div class="relative z-10 flex flex-col h-full justify-between space-y-6">
+              <div>
+                <div class="flex items-center justify-between gap-3 mb-4">
+                  <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#164b9b]/10 text-[#164b9b] text-xs font-bold tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-[#164b9b]"></span>
+                    FR • Français
+                  </span>
+                  <span class="text-xs font-semibold text-slate-400">Niveaux 1 – AP</span>
+                </div>
+
+                <h3 class="text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                  Section Française
+                </h3>
+                <p id="fr-card-desc" class="lang-fade text-sm sm:text-base text-slate-600 leading-relaxed max-w-md">
+                  Développez l'aisance à l'oral, la richesse du lexique et la spontanéité des échanges en classe de français.
+                </p>
+              </div>
+
+              <!-- Decorative Visual Skill Chips -->
+              <div class="flex flex-wrap gap-2 pt-2">
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-[#164b9b]">
+                  Expression orale
+                </span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-700">
+                  Fluidité
+                </span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-700">
+                  Vocabulaire
+                </span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-700">
+                  Interaction
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card B: Section Chinoise (#d9383a Crimson Red Accent) -->
+          <article class="relative overflow-hidden rounded-3xl bg-white p-7 sm:p-8 border border-slate-200/80 shadow-card hover:shadow-card-hover transition-all duration-300">
+            <!-- Top Accent Bar -->
+            <div class="absolute inset-x-0 top-0 h-1.5 bg-[#d9383a]"></div>
+
+            <!-- Decorative Geometric Watermark: Traditional Chinese Window Lattice + Soundwaves -->
+            <svg class="pointer-events-none absolute -right-6 -bottom-6 w-52 h-52 text-[#d9383a]/[0.06]" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <!-- Traditional Geometric Lattice Frame -->
+              <rect x="45" y="45" width="110" height="110" rx="8" />
+              <rect x="63" y="63" width="74" height="74" rx="4" />
+              <line x1="100" y1="30" x2="100" y2="170" />
+              <line x1="30" y1="100" x2="170" y2="100" />
+              <circle cx="100" cy="100" r="22" />
+              <!-- Acoustic Wave Arcs -->
+              <circle cx="100" cy="100" r="68" stroke-dasharray="5 5" />
+            </svg>
+
+            <div class="relative z-10 flex flex-col h-full justify-between space-y-6">
+              <div>
+                <div class="flex items-center justify-between gap-3 mb-4">
+                  <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#d9383a]/10 text-[#d9383a] text-xs font-bold tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-[#d9383a]"></span>
+                    中文 • Mandarin
+                  </span>
+                  <span class="text-xs font-semibold text-slate-400">中文 1 – AP</span>
+                </div>
+
+                <h3 class="text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                  Section Chinoise <span class="text-[#d9383a] mx-1">•</span> <span class="text-[#d9383a]">中文部</span>
+                </h3>
+                <p id="zh-card-desc" class="lang-fade text-sm sm:text-base text-slate-600 leading-relaxed max-w-md">
+                  Travaillez la précision des tons, la fluidité des phrases et le dialogue authentique en classe de chinois.
+                </p>
+              </div>
+
+              <!-- Decorative Visual Skill Chips -->
+              <div class="flex flex-wrap gap-2 pt-2">
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-[#d9383a]">
+                  口语练习
+                </span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-700">
+                  声调与流利度
+                </span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-700">
+                  双人对话
+                </span>
+                <span class="px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-700">
+                  自信表达
+                </span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 5. FOOTER -->
+  <footer class="border-t border-slate-200/80 bg-white/85 backdrop-blur-sm py-6 mt-auto">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-500">
+      
+      <!-- Left: Classroom Privacy & Local-Tab Visual Note -->
+      <div class="flex items-center gap-2.5 text-center sm:text-left">
+        <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </span>
+        <span id="footer-privacy" class="lang-fade">
+          Confidentialité en classe : traitement local dans l'onglet, sans serveur externe.
+        </span>
+      </div>
+
+      <!-- Right: Exact Attribution -->
+      <div class="font-semibold text-slate-700 text-center sm:text-right">
+        Tous droits réservés — Monsieur Nan du lycée de Bayside
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Interactive Visual Scripts (Canvas Waveform + Language Switcher) -->
   <script>
-    const $ = (id) => document.getElementById(id);
-
-    // State variables
-    let mode = 'independent'; // 'independent' | 'pair'
-    let activeSpeaker = 1; // 1 | 2
-    let noiseSuppression = true;
-    let recorder = null;
-    let stream = null;
-    let chunks = [];
-    let recognition = null;
-    let finalText = '';
-    let mp3Blob = null;
-    let audioUrl = '';
-    let audioExt = 'mp3';
-    let startTimeMs = 0;
-    let elapsedSeconds = 0;
-    let timerInterval = null;
-    let audioCtx = null;
-    let analyser = null;
-    let animFrameId = null;
-    let lastEvaluation = null;
-
-    const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    // ---------------------------------------------------------
-    // 1. Model Toggle
-    // ---------------------------------------------------------
-    $('toggleModelBtn').addEventListener('click', () => {
-      const box = $('modelSentencesBox');
-      const isHidden = box.classList.toggle('hidden');
-      $('toggleModelBtn').textContent = isHidden ? 'Afficher le modèle' : 'Masquer le modèle';
-      $('toggleModelBtn').setAttribute('aria-expanded', String(!isHidden));
-    });
-
-    // ---------------------------------------------------------
-    // 2. Solo vs. Binôme Mode Switching & Speaker Controls
-    // ---------------------------------------------------------
-    function setMode(newMode) {
-      if (recorder && recorder.state === 'recording') return;
-      mode = newMode;
-      const isSolo = mode === 'independent';
-
-      $('modeIndependentBtn').setAttribute('aria-checked', String(isSolo));
-      $('modePairBtn').setAttribute('aria-checked', String(!isSolo));
-
-      $('modeIndependentBtn').className = isSolo
-        ? 'text-left p-4 rounded-xl border-2 border-[#164b9b] bg-blue-50/60 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed'
-        : 'text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed';
-
-      $('modePairBtn').className = !isSolo
-        ? 'text-left p-4 rounded-xl border-2 border-[#164b9b] bg-blue-50/60 shadow-sm transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed'
-        : 'text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/70 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#164b9b]/30 disabled:opacity-60 disabled:cursor-not-allowed';
-
-      $('modeIndependentCheck').className = isSolo
-        ? 'w-5 h-5 rounded-full bg-[#164b9b] text-white flex items-center justify-center text-xs font-bold'
-        : 'w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold';
-
-      $('modePairCheck').className = !isSolo
-        ? 'w-5 h-5 rounded-full bg-[#164b9b] text-white flex items-center justify-center text-xs font-bold'
-        : 'w-5 h-5 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold';
-
-      $('independentInputs').classList.toggle('hidden', !isSolo);
-      $('pairInputs').classList.toggle('hidden', isSolo);
-      $('pairTurnPanel').classList.toggle('hidden', isSolo);
-      updateSpeakerBadges();
-    }
-
-    $('modeIndependentBtn').addEventListener('click', () => setMode('independent'));
-    $('modePairBtn').addEventListener('click', () => setMode('pair'));
-
-    function getSpeakerNames() {
-      const s1 = ($('student1Name').value || '').trim() || 'Élève 1';
-      const s2 = ($('student2Name').value || '').trim() || 'Élève 2';
-      return { s1, s2 };
-    }
-
-    function updateSpeakerBadges() {
-      const { s1, s2 } = getSpeakerNames();
-      const s1Active = activeSpeaker === 1;
-
-      $('speaker1Badge').className = s1Active
-        ? 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#164b9b] text-white text-sm font-semibold shadow-sm transition-all'
-        : 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all';
-
-      $('speaker2Badge').className = !s1Active
-        ? 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#164b9b] text-white text-sm font-semibold shadow-sm transition-all'
-        : 'flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 border border-slate-200 text-slate-600 text-sm font-medium transition-all';
-
-      $('speaker1BadgeText').textContent = (s1Active ? '🎙️ À la parole : ' : '⏳ En attente : ') + s1;
-      $('speaker2BadgeText').textContent = (!s1Active ? '🎙️ À la parole : ' : '⏳ En attente : ') + s2;
-      $('passTurnBtnLabel').textContent = '🔄 Passer la parole à ' + (s1Active ? s2 : s1);
-    }
-
-    ['studentName', 'student1Name', 'student2Name'].forEach((id) => {
-      $(id).addEventListener('input', (e) => {
-        e.target.classList.remove('border-[#d9383a]');
-        if (id !== 'studentName') updateSpeakerBadges();
-      });
-    });
-
-    $('swapSpeakersBtn').addEventListener('click', () => {
-      const tmp = $('student1Name').value;
-      $('student1Name').value = $('student2Name').value;
-      $('student2Name').value = tmp;
-      updateSpeakerBadges();
-    });
-
-    function passTurn() {
-      if (mode !== 'pair' || !recorder || recorder.state !== 'recording') return;
-      const { s1, s2 } = getSpeakerNames();
-      activeSpeaker = activeSpeaker === 1 ? 2 : 1;
-      const speakerLabel = activeSpeaker === 1 ? s1 : s2;
-      finalText = finalText.trim() + (finalText.trim() ? '\n\n' : '') + `[${speakerLabel}] : `;
-      $('transcript').value = finalText;
-      updateSpeakerBadges();
-    }
-
-    $('passTurnBtn').addEventListener('click', passTurn);
-
-    document.addEventListener('keydown', (e) => {
-      if (mode === 'pair' && recorder && recorder.state === 'recording') {
-        if (e.key === 'Tab' || (e.altKey && e.key.toLowerCase() === 's')) {
-          e.preventDefault();
-          passTurn();
-        }
-      }
-    });
-
-    // ---------------------------------------------------------
-    // 3. Noise Suppression Toggle & Visualizer
-    // ---------------------------------------------------------
-    $('noiseSuppressToggle').addEventListener('click', () => {
-      if (recorder && recorder.state === 'recording') return;
-      noiseSuppression = !noiseSuppression;
-      $('noiseSuppressToggle').setAttribute('aria-pressed', String(noiseSuppression));
-      $('noiseSuppressIcon').textContent = noiseSuppression ? '🔇' : '🎙️';
-      $('noiseSuppressLabel').textContent = noiseSuppression ? 'Anti-bruit : Activé' : 'Anti-bruit : Désactivé';
-      $('noiseSuppressToggle').className = noiseSuppression
-        ? 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[11px] font-medium hover:bg-emerald-500/25 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
-        : 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-700/70 border border-slate-600 text-slate-300 text-[11px] font-medium hover:bg-slate-700 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed';
-    });
-
-    function drawBar(ctx, x, y, w, h, r) {
-      if (typeof ctx.roundRect === 'function') {
-        ctx.roundRect(x, y, w, h, r);
-      } else {
-        ctx.rect(x, y, w, h);
-      }
-    }
-
-    function drawIdleVisualizer() {
-      const canvas = $('visualizer');
+    /**
+     * 1. AMBIENT HTML5 CANVAS ACOUSTIC WAVEFORM
+     * Renders a smooth, calming, continuous breathing equalizer visualization.
+     * Purely visual—no microphone access or browser permissions requested.
+     */
+    (function initAmbientWaveform() {
+      const canvas = document.getElementById('studioWaveformCanvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      canvas.width = canvas.offsetWidth || 640;
-      canvas.height = canvas.offsetHeight || 64;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const bars = 44;
-      const barWidth = Math.max(3, (canvas.width / bars) - 3);
-      for (let i = 0; i < bars; i++) {
-        const x = i * (barWidth + 3);
-        const h = 6;
-        const y = (canvas.height - h) / 2;
-        ctx.fillStyle = '#334155';
+
+      let width = 0;
+      let height = 0;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let phase = 0;
+      let waveMode = 'solo'; // 'solo' or 'pair'
+
+      // Expose wave mode switcher globally for the visual toggle buttons
+      window.setWaveMode = function(mode) {
+        waveMode = mode;
+        const soloBtn = document.getElementById('wave-btn-solo');
+        const pairBtn = document.getElementById('wave-btn-pair');
+        if (soloBtn && pairBtn) {
+          if (mode === 'solo') {
+            soloBtn.className = 'px-2.5 py-1 rounded-lg bg-[#164b9b] text-white transition-colors';
+            pairBtn.className = 'px-2.5 py-1 rounded-lg text-slate-400 hover:text-white transition-colors';
+          } else {
+            pairBtn.className = 'px-2.5 py-1 rounded-lg bg-[#d9383a] text-white transition-colors';
+            soloBtn.className = 'px-2.5 py-1 rounded-lg text-slate-400 hover:text-white transition-colors';
+          }
+        }
+      };
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        width = rect.width;
+        height = rect.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+
+      function drawRoundedBar(x, y, w, h, r) {
+        const radius = Math.min(r, w / 2, h / 2);
         ctx.beginPath();
-        drawBar(ctx, x, y, barWidth, h, 3);
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + w - radius, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+        ctx.lineTo(x + w, y + h - radius);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+        ctx.lineTo(x + radius, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
         ctx.fill();
       }
-    }
 
-    function startVisualizer(mediaStream) {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContextClass();
-      const source = audioCtx.createMediaStreamSource(mediaStream);
-      analyser = audioCtx.createAnalyser();
-      analyser.fftSize = 128;
-      source.connect(analyser);
+      function renderLoop() {
+        if (!width || !height) resizeCanvas();
 
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-      const canvas = $('visualizer');
-      const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, width, height);
 
-      function renderFrame() {
-        animFrameId = requestAnimationFrame(renderFrame);
-        analyser.getByteFrequencyData(dataArray);
-        canvas.width = canvas.offsetWidth || 640;
-        canvas.height = canvas.offsetHeight || 64;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const centerY = height / 2;
+        const barWidth = 4;
+        const barGap = 5;
+        const totalStep = barWidth + barGap;
+        const barCount = Math.max(16, Math.floor((width - 24) / totalStep));
+        const startX = (width - (barCount * totalStep - barGap)) / 2;
 
-        const bars = 44;
-        const barWidth = Math.max(3, (canvas.width / bars) - 3);
-        for (let i = 0; i < bars; i++) {
-          const val = dataArray[i % bufferLength] || 0;
-          const percent = val / 255;
-          const h = Math.max(6, percent * (canvas.height - 8));
-          const x = i * (barWidth + 3);
-          const y = (canvas.height - h) / 2;
-          ctx.fillStyle = percent > 0.55 ? '#38bdf8' : percent > 0.2 ? '#60a5fa' : '#475569';
-          ctx.beginPath();
-          drawBar(ctx, x, y, barWidth, h, 3);
-          ctx.fill();
+        // Draw subtle background harmonic ribbon
+        ctx.save();
+        ctx.beginPath();
+        for (let x = 0; x <= width; x += 6) {
+          const norm = x / width;
+          const envelope = Math.sin(norm * Math.PI);
+          const yOffset = Math.sin(norm * 8 - phase * 1.3) * 18 * envelope;
+          if (x === 0) ctx.moveTo(x, centerY + yOffset);
+          else ctx.lineTo(x, centerY + yOffset);
         }
-      }
-      renderFrame();
-    }
+        ctx.strokeStyle = waveMode === 'pair'
+          ? 'rgba(217, 56, 58, 0.25)'
+          : 'rgba(56, 189, 248, 0.22)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
 
-    function stopVisualizer() {
-      if (animFrameId) {
-        cancelAnimationFrame(animFrameId);
-        animFrameId = null;
-      }
-      if (audioCtx) {
-        audioCtx.close().catch(() => {});
-        audioCtx = null;
-      }
-      drawIdleVisualizer();
-    }
+        // Draw vertical equalizer bars
+        for (let i = 0; i < barCount; i++) {
+          const norm = i / (barCount - 1); // 0 to 1 across width
+          // Bell-curve envelope so edges taper gently
+          const envelope = Math.pow(Math.sin(norm * Math.PI), 1.35);
 
-    window.addEventListener('resize', () => {
-      if (!animFrameId) drawIdleVisualizer();
-    });
-    drawIdleVisualizer();
-
-    // ---------------------------------------------------------
-    // 4. Helpers: Status, Timer, Word Count, Name Validation
-    // ---------------------------------------------------------
-    function setStatus(text, tone = 'info') {
-      $('statusText').textContent = text;
-      const banner = $('statusBanner');
-      if (tone === 'recording') {
-        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-rose-50/90 border border-rose-200 text-rose-950 text-sm transition-colors';
-      } else if (tone === 'success') {
-        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-emerald-50/90 border border-emerald-200 text-emerald-950 text-sm transition-colors';
-      } else if (tone === 'error') {
-        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50/90 border border-amber-200 text-amber-950 text-sm transition-colors';
-      } else {
-        banner.className = 'flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50/80 border border-blue-200/80 text-slate-700 text-sm transition-colors';
-      }
-    }
-
-    function formatTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = sec % 60;
-      return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-    }
-
-    function updateTimerDisplay(isRecording) {
-      $('timer').textContent = formatTime(elapsedSeconds);
-      const badge = $('recordingBadge');
-      const dot = $('recordingDot');
-      const label = $('recordingLabel');
-
-      if (elapsedSeconds >= 30) {
-        badge.className = 'flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-sm font-medium transition-colors';
-        dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500' + (isRecording ? ' recording-dot' : '');
-        label.textContent = isRecording ? '30s+ ✓' : 'Terminé';
-      } else if (isRecording) {
-        badge.className = 'flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-[#d9383a] text-sm font-medium transition-colors';
-        dot.className = 'w-2.5 h-2.5 rounded-full bg-[#d9383a] recording-dot';
-        label.textContent = 'En direct';
-      } else {
-        badge.className = 'flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium transition-colors';
-        dot.className = 'w-2.5 h-2.5 rounded-full bg-slate-400';
-        label.textContent = 'Prêt';
-      }
-    }
-
-    function updateWordCount() {
-      const raw = ($('transcript').value || '').trim();
-      const words = raw ? raw.split(/\s+/).filter(Boolean).length : 0;
-      $('wordCount').textContent = words + (words > 1 ? ' mots' : ' mot');
-    }
-
-    function validateNames() {
-      if (mode === 'independent') {
-        const input = $('studentName');
-        if (!input.value.trim()) {
-          input.classList.remove('shake-input');
-          void input.offsetWidth;
-          input.classList.add('shake-input', 'border-[#d9383a]');
-          input.focus();
-          setStatus('Veuillez entrer votre nom et prénom avant de commencer.', 'error');
-          return false;
-        }
-        input.classList.remove('border-[#d9383a]');
-        return true;
-      } else {
-        const in1 = $('student1Name');
-        const in2 = $('student2Name');
-        let ok = true;
-        if (!in1.value.trim()) {
-          in1.classList.remove('shake-input');
-          void in1.offsetWidth;
-          in1.classList.add('shake-input', 'border-[#d9383a]');
-          in1.focus();
-          ok = false;
-        } else {
-          in1.classList.remove('border-[#d9383a]');
-        }
-        if (!in2.value.trim()) {
-          in2.classList.remove('shake-input');
-          void in2.offsetWidth;
-          in2.classList.add('shake-input', 'border-[#d9383a]');
-          if (ok) in2.focus();
-          ok = false;
-        } else {
-          in2.classList.remove('border-[#d9383a]');
-        }
-        if (!ok) {
-          setStatus('Veuillez entrer les noms des deux élèves avant de commencer.', 'error');
-        }
-        return ok;
-      }
-    }
-
-    function slugify(str) {
-      return (str || 'eleve')
-        .trim()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-zA-Z0-9_-]+/g, '_')
-        .replace(/^_+|_+$/g, '') || 'eleve';
-    }
-
-    function getFileBaseName() {
-      if (mode === 'independent') {
-        return slugify($('studentName').value) + '_habitudes-alimentaires';
-      }
-      const { s1, s2 } = getSpeakerNames();
-      return slugify(s1) + '_' + slugify(s2) + '_habitudes-alimentaires';
-    }
-
-    // ---------------------------------------------------------
-    // 5. MP3 Audio Encoding via lamejs
-    // ---------------------------------------------------------
-    async function convertToMp3(rawBlob, fallbackExt) {
-      try {
-        if (!window.lamejs || !window.lamejs.Mp3Encoder) {
-          return { blob: rawBlob, ext: fallbackExt };
-        }
-        const arrayBuf = await rawBlob.arrayBuffer();
-        const Ctx = window.AudioContext || window.webkitAudioContext;
-        const decodeCtx = new Ctx();
-        const audioBuf = await decodeCtx.decodeAudioData(arrayBuf);
-        await decodeCtx.close();
-
-        const sampleRate = audioBuf.sampleRate;
-        const channelData = audioBuf.getChannelData(0);
-        const samples = new Int16Array(channelData.length);
-        for (let i = 0; i < channelData.length; i++) {
-          const s = Math.max(-1, Math.min(1, channelData[i]));
-          samples[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
-        }
-
-        const encoder = new window.lamejs.Mp3Encoder(1, sampleRate, 128);
-        const mp3Chunks = [];
-        const step = 1152;
-        for (let i = 0; i < samples.length; i += step) {
-          const slice = samples.subarray(i, i + step);
-          const buf = encoder.encodeBuffer(slice);
-          if (buf.length > 0) mp3Chunks.push(buf);
-        }
-        const tail = encoder.flush();
-        if (tail.length > 0) mp3Chunks.push(tail);
-
-        return {
-          blob: new Blob(mp3Chunks, { type: 'audio/mp3' }),
-          ext: 'mp3'
-        };
-      } catch (err) {
-        console.warn('MP3 fallback used:', err);
-        return { blob: rawBlob, ext: fallbackExt };
-      }
-    }
-
-    // ---------------------------------------------------------
-    // 6. Food Habits Exit Ticket Evaluation Engine (English Feedback)
-    // ---------------------------------------------------------
-    function evaluateFoodHabits(transcriptText, durationSec) {
-      const cleanedText = (transcriptText || '')
-        .replace(/\[[^\]]+\]\s*:\s*/g, ' ')
-        .trim();
-      const lower = cleanedText.toLowerCase();
-
-      // Unicode-friendly French word boundaries
-      const B_START = '(?:^|[^a-zA-ZÀ-ÿ])';
-      const B_END = '(?=$|[^a-zA-ZÀ-ÿ])';
-
-      // Criterion 1: être + 2 expressions (allergique, au régime, en bonne santé, gourmand)
-      const hasEtre =
-        new RegExp(B_START + '(suis|es|est|sommes|êtes|etes|sont|étais|etais|était|etait|serai|sera|être|etre)' + B_END, 'i').test(lower) ||
-        new RegExp(B_START + "(c['’]est|n['’]est)" + B_END, 'i').test(lower);
-
-      const exprList = [
-        { label: 'allergique', regex: new RegExp(B_START + 'allergiques?' + B_END, 'i') },
-        { label: 'au régime', regex: new RegExp(B_START + 'au\\s+r[ée]gimes?' + B_END, 'i') },
-        { label: 'en bonne santé', regex: new RegExp(B_START + '(?:en\\s+)?bonne\\s+sant[ée]' + B_END, 'i') },
-        { label: 'gourmand(e)', regex: new RegExp(B_START + 'gourmand(?:e|s|es)?' + B_END, 'i') }
-      ];
-
-      const exprMatches = exprList.map((e) => ({ label: e.label, found: e.regex.test(lower) }));
-      const foundExprs = exprMatches.filter((e) => e.found);
-      const usedAllergique = exprMatches[0].found;
-      const allergiqueHasPrep = new RegExp(B_START + 'allergiques?\\s+(?:à|a|au|aux)' + B_END, 'i').test(lower);
-      const crit1Pass = hasEtre && foundExprs.length >= 2;
-
-      // Criterion 2: 3 verbs (cuisiner, déguster, gaspiller, partager, recycler)
-      const verbList = [
-        { label: 'cuisiner', regex: new RegExp(B_START + 'cuisin(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') },
-        { label: 'déguster', regex: new RegExp(B_START + 'd[ée]gust(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') },
-        { label: 'gaspiller', regex: new RegExp(B_START + 'gaspill(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') },
-        { label: 'partager', regex: new RegExp(B_START + 'partag(?:e|es|eons|ons|ez|ent|er|[ée](?:e|s|es)?|eais|eait|ais|ait|erai|era)' + B_END, 'i') },
-        { label: 'recycler', regex: new RegExp(B_START + 'recycl(?:e|es|ons|ez|ent|er|[ée](?:e|s|es)?|ais|ait|aient|erai|era)' + B_END, 'i') }
-      ];
-
-      const verbMatches = verbList.map((v) => ({ label: v.label, found: v.regex.test(lower) }));
-      const foundVerbs = verbMatches.filter((v) => v.found);
-      const crit2Pass = foundVerbs.length >= 3;
-
-      // Criterion 3: 1 negative (ne... pas / plus / jamais / rien / personne)
-      const completeNegRegex = new RegExp(
-        B_START + "(?:ne|n['’])\\s*[a-zàâäéèêëîïôöùûüç'-]+(?:\\s+[a-zàâäéèêëîïôöùûüç'-]+){0,2}\\s+(?:pas|plus|jamais|rien|personne)" + B_END,
-        'gi'
-      );
-      const personneSubjectRegex = new RegExp(B_START + "personne\\s+(?:ne|n['’])" + B_END, 'gi');
-      const completeNegMatches = [
-        ...(cleanedText.match(completeNegRegex) || []),
-        ...(cleanedText.match(personneSubjectRegex) || [])
-      ].map((m) => m.trim());
-
-      const hasDroppedNe = new RegExp(B_START + '(?:pas|plus|jamais)' + B_END, 'i').test(lower) && completeNegMatches.length === 0;
-      const hasUnreducedArticleAfterNeg = new RegExp(B_START + '(?:pas|plus|jamais)\\s+(?:du|de\\s+la|des|un|une)' + B_END, 'i').test(lower);
-      const crit3Pass = completeNegMatches.length >= 1;
-
-      // Criterion 4: Spoke for at least 30 seconds
-      const crit4Pass = durationSec >= 30;
-
-      const totalScore = [crit1Pass, crit2Pass, crit3Pass, crit4Pass].filter(Boolean).length;
-
-      // Build English encouragement & suggestions
-      let encouragement = '';
-      if (!cleanedText) {
-        encouragement = 'No French speech was detected in the transcript. Check that your microphone is unmuted, speak clearly in French, and click Reattempt Recording.';
-      } else if (totalScore === 4) {
-        encouragement = `Bravo ! You met all 4 exit ticket criteria and spoke for ${durationSec} seconds. Listen to your MP3 playback to double-check pronunciation, then download your 2 files.`;
-      } else if (totalScore >= 2) {
-        encouragement = `Bon travail ! You met ${totalScore} out of 4 criteria (${durationSec}s). Review the quick tips below and try one more recording to hit all 4 targets.`;
-      } else {
-        encouragement = `Good start (${durationSec}s)! Use the checklist and model sentences above to add the missing expressions, verbs, and negation in your next take.`;
-      }
-
-      const suggestions = [];
-
-      if (!hasEtre) {
-        suggestions.push({
-          title: 'Add conjugated être',
-          detail: 'Start by describing yourself with <strong>être</strong> (e.g., <em>Je suis gourmand(e)</em> or <em>Je suis en bonne santé</em>).'
-        });
-      }
-      if (foundExprs.length < 2) {
-        const missingExpr = exprMatches.filter((e) => !e.found).map((e) => '<em>' + e.label + '</em>').join(', ');
-        suggestions.push({
-          title: `Use 2 expressions with être (${foundExprs.length}/2 detected)`,
-          detail: `Include at least two of: <em>allergique, au régime, en bonne santé, gourmand(e)</em>. Missing options: ${missingExpr}.`
-        });
-      }
-      if (usedAllergique && !allergiqueHasPrep) {
-        suggestions.push({
-          title: 'Preposition after allergique',
-          detail: "Remember to follow <strong>allergique</strong> with <strong>à / au / à la / à l' / aux</strong> (e.g., <em>Je suis allergique aux arachides</em>)."
-        });
-      }
-
-      if (!crit2Pass) {
-        const missingVerbs = verbMatches.filter((v) => !v.found).map((v) => '<em>' + v.label + '</em>').join(', ');
-        suggestions.push({
-          title: `Include 3 target verbs (${foundVerbs.length}/3 detected)`,
-          detail: `Use at least 3 of: <em>cuisiner, déguster, gaspiller, partager, recycler</em>. Try adding sentences with: ${missingVerbs}.`
-        });
-      }
-
-      if (!crit3Pass) {
-        if (hasDroppedNe) {
-          suggestions.push({
-            title: "Keep « ne / n' » before the verb",
-            detail: "You used <em>pas / plus / jamais</em>, but missed <strong>ne</strong> or <strong>n'</strong> before the verb (e.g., <em>Je <strong>ne</strong> gaspille jamais...</em> or <em>Je <strong>ne</strong> suis pas...</em>)."
-          });
-        } else {
-          suggestions.push({
-            title: 'Add 1 negative sentence (ne... pas / plus / jamais)',
-            detail: 'Include at least one negative structure such as <em>Je ne gaspille jamais de nourriture</em> or <em>Je ne suis pas au régime</em>.'
-          });
-        }
-      } else if (hasUnreducedArticleAfterNeg) {
-        suggestions.push({
-          title: "Article change after negation (de / d')",
-          detail: "After <em>ne... pas / plus / jamais</em>, replace <em>du / de la / des / un / une</em> with <strong>de</strong> or <strong>d'</strong> (e.g., <em>Je ne gaspille jamais <strong>de</strong> plastique</em>)."
-        });
-      }
-
-      if (!crit4Pass) {
-        const diff = 30 - durationSec;
-        suggestions.push({
-          title: `Speak for at least 30 seconds (${durationSec}s / 30s)`,
-          detail: `Add about <strong>${diff} more second${diff === 1 ? '' : 's'}</strong> by giving examples of what you cook, who you share meals with, or what you recycle.`
-        });
-      }
-
-      return {
-        totalScore,
-        crit1Pass,
-        hasEtre,
-        exprMatches,
-        foundExprs,
-        crit2Pass,
-        verbMatches,
-        foundVerbs,
-        crit3Pass,
-        completeNegMatches,
-        crit4Pass,
-        durationSec,
-        encouragement,
-        suggestions
-      };
-    }
-
-    function renderFeedbackUI(ev) {
-      lastEvaluation = ev;
-      const section = $('grammarFeedbackSection');
-      section.classList.remove('hidden');
-
-      $('criteriaScorePill').textContent = `${ev.totalScore} / 4 criteria`;
-      $('criteriaScorePill').className =
-        ev.totalScore === 4
-          ? 'px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold'
-          : 'px-3 py-1 rounded-full bg-indigo-100 text-indigo-950 text-xs font-bold';
-
-      $('feedbackEncouragement').textContent = ev.encouragement;
-
-      // 4-Criteria Visual Scorecard Grid
-      const cards = [
-        {
-          pass: ev.crit1Pass,
-          title: '1. Être + 2 expr.',
-          status: `${ev.foundExprs.length}/2 expr.`,
-          sub: ev.foundExprs.length ? ev.foundExprs.map((e) => e.label).join(', ') : 'allergique, au régime, en bonne santé, gourmand'
-        },
-        {
-          pass: ev.crit2Pass,
-          title: '2. 3 verbes cibles',
-          status: `${ev.foundVerbs.length}/3 verbs`,
-          sub: ev.foundVerbs.length ? ev.foundVerbs.map((v) => v.label).join(', ') : 'cuisiner, déguster, gaspiller, partager, recycler'
-        },
-        {
-          pass: ev.crit3Pass,
-          title: '3. Une négation',
-          status: ev.crit3Pass ? 'Detected' : 'Missing',
-          sub: ev.crit3Pass ? ev.completeNegMatches[0] : 'ne... pas / ne... plus / ne... jamais'
-        },
-        {
-          pass: ev.crit4Pass,
-          title: '4. Durée (30s+)',
-          status: `${ev.durationSec}s / 30s`,
-          sub: ev.crit4Pass ? 'Goal reached!' : `Need ${30 - ev.durationSec}s more`
-        }
-      ];
-
-      const grid = $('criteriaFourGrid');
-      grid.innerHTML = '';
-      cards.forEach((c) => {
-        const div = document.createElement('div');
-        div.className = c.pass
-          ? 'rounded-xl border border-emerald-300 bg-emerald-50/80 px-3 py-2.5 text-xs'
-          : 'rounded-xl border border-amber-300 bg-amber-50/70 px-3 py-2.5 text-xs';
-        div.innerHTML = `
-          <div class="flex items-center justify-between gap-2 font-bold ${c.pass ? 'text-emerald-900' : 'text-amber-950'}">
-            <span>${c.pass ? '✅' : '⚠️'} ${c.title}</span>
-            <span class="px-2 py-0.5 rounded-full text-[11px] ${c.pass ? 'bg-emerald-200/80 text-emerald-950' : 'bg-amber-200/80 text-amber-950'}">${c.status}</span>
-          </div>
-          <p class="text-[11px] mt-1 truncate ${c.pass ? 'text-emerald-800' : 'text-amber-900'}">${c.sub}</p>
-        `;
-        grid.appendChild(div);
-      });
-
-      // Detected Chips
-      const chipsWrap = $('feedbackStrengths');
-      chipsWrap.innerHTML = '';
-      const allChips = [
-        { label: 'être', ok: ev.hasEtre },
-        ...ev.exprMatches.map((e) => ({ label: e.label, ok: e.found })),
-        ...ev.verbMatches.map((v) => ({ label: v.label, ok: v.found })),
-        { label: 'ne... pas/plus/jamais', ok: ev.crit3Pass }
-      ];
-      allChips.forEach((chip) => {
-        const span = document.createElement('span');
-        span.className = chip.ok
-          ? 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100/90 border border-emerald-300 text-emerald-900 text-[11px] font-semibold'
-          : 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-medium';
-        span.textContent = (chip.ok ? '✓ ' : '') + chip.label;
-        chipsWrap.appendChild(span);
-      });
-
-      // Actionable Suggestions List
-      const list = $('feedbackSuggestionsList');
-      list.innerHTML = '';
-      ev.suggestions.forEach((item) => {
-        const card = document.createElement('div');
-        card.className = 'rounded-xl bg-white border border-indigo-100 px-3.5 py-2.5 text-xs text-slate-700 leading-relaxed';
-        card.innerHTML = `<p class="font-bold text-indigo-950 mb-0.5">💡 ${item.title}</p><p>${item.detail}</p>`;
-        list.appendChild(card);
-      });
-
-      // Update Reattempt callout depending on whether the 2/4 unlock threshold is met
-      if (ev.totalScore < 2) {
-        $('reattemptCalloutTitle').textContent = `🔒 Download locked (${ev.totalScore}/4 criteria) — Meet at least 2/4 criteria to unlock!`;
-        $('reattemptCalloutDesc').innerHTML =
-          'Click <strong>Reattempt Recording</strong> and include at least 2 of the 4 checklist targets (e.g., <em>être + 2 expressions</em>, <em>3 target verbs</em>, <em>1 negative</em>, or <em>30+ seconds</em>).';
-      } else {
-        $('reattemptCalloutTitle').textContent = 'Want to aim for 4/4 criteria and 30+ seconds? Try one more take!';
-        $('reattemptCalloutDesc').innerHTML =
-          "Remember to pronounce <em>ne / n'</em> clearly before the verb and expand on what you cook, share, or recycle.";
-      }
-    }
-
-    // ---------------------------------------------------------
-    // 7. Recording Start / Stop & SpeechRecognition
-    // ---------------------------------------------------------
-    function unlockControlsAfterRecording() {
-      $('startBtn').disabled = false;
-      $('stopBtn').disabled = true;
-      $('passTurnBtn').disabled = true;
-      $('modeIndependentBtn').disabled = false;
-      $('modePairBtn').disabled = false;
-      $('swapSpeakersBtn').disabled = false;
-      $('noiseSuppressToggle').disabled = false;
-    }
-
-    $('startBtn').addEventListener('click', async () => {
-      if (!validateNames()) return;
-
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        setStatus('Votre navigateur ne prend pas en charge l\'enregistrement microphone.', 'error');
-        return;
-      }
-
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: true,
-            noiseSuppression: noiseSuppression,
-            autoGainControl: true
-          }
-        });
-
-        chunks = [];
-        finalText = '';
-        mp3Blob = null;
-        lastEvaluation = null;
-        if (audioUrl) {
-          URL.revokeObjectURL(audioUrl);
-          audioUrl = '';
-        }
-
-        $('playback').removeAttribute('src');
-        $('grammarFeedbackSection').classList.add('hidden');
-        $('downloadLockNotice').classList.add('hidden');
-        $('downloadConfirmBadge').classList.add('hidden');
-        $('downloadBothBtn').disabled = true;
-        $('audioDownload').disabled = true;
-        $('textDownload').disabled = true;
-
-        if (mode === 'pair') {
-          activeSpeaker = 1;
-          updateSpeakerBadges();
-          const { s1 } = getSpeakerNames();
-          finalText = `[${s1}] : `;
-          $('passTurnBtn').disabled = false;
-        }
-        $('transcript').value = finalText;
-        updateWordCount();
-
-        // Lock mode/name inputs while recording
-        $('modeIndependentBtn').disabled = true;
-        $('modePairBtn').disabled = true;
-        $('swapSpeakersBtn').disabled = true;
-        $('noiseSuppressToggle').disabled = true;
-
-        const mimeType =
-          typeof MediaRecorder !== 'undefined' && typeof MediaRecorder.isTypeSupported === 'function'
-            ? ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'].find((t) => MediaRecorder.isTypeSupported(t))
-            : undefined;
-        recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
-        const nativeExt = (recorder.mimeType || '').includes('mp4') ? 'm4a' : 'webm';
-
-        recorder.ondataavailable = (e) => {
-          if (e.data && e.data.size > 0) chunks.push(e.data);
-        };
-
-        recorder.onstop = async () => {
-          clearInterval(timerInterval);
-          elapsedSeconds = Math.max(1, Math.round((Date.now() - startTimeMs) / 1000));
-          updateTimerDisplay(false);
-          stopVisualizer();
-
-          if (stream) {
-            stream.getTracks().forEach((t) => t.stop());
-            stream = null;
-          }
-          $('micHint').textContent = 'Microphone arrêté';
-
-          setStatus('Encodage MP3 et analyse de vos habitudes alimentaires en cours...', 'info');
-
-          const rawBlob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
-          const converted = await convertToMp3(rawBlob, nativeExt);
-          mp3Blob = converted.blob;
-          audioExt = converted.ext;
-
-          audioUrl = URL.createObjectURL(mp3Blob);
-          $('playback').src = audioUrl;
-
-          unlockControlsAfterRecording();
-
-          const evaluation = evaluateFoodHabits($('transcript').value, elapsedSeconds);
-          renderFeedbackUI(evaluation);
-
-          // Only unlock download buttons if the student meets 2/4 requirements or more
-          const canDownload = evaluation.totalScore >= 2;
-          $('downloadBothBtn').disabled = !canDownload;
-          $('audioDownload').disabled = !canDownload;
-          $('textDownload').disabled = !canDownload;
-
-          if (canDownload) {
-            $('downloadLockNotice').classList.add('hidden');
-            setStatus(
-              `Enregistrement terminé ! Critères atteints (${evaluation.totalScore}/4). Lisez votre feedback ci-dessous, puis téléchargez vos 2 fichiers.`,
-              'success'
-            );
+          let amplitudeFactor;
+          if (waveMode === 'solo') {
+            // Single rhythmic speaker cadence
+            const w1 = Math.sin(i * 0.34 - phase * 1.8);
+            const w2 = Math.cos(i * 0.17 + phase * 1.1);
+            const breath = 0.72 + 0.28 * Math.sin(phase * 0.9);
+            amplitudeFactor = ((w1 * 0.55 + w2 * 0.45 + 1) / 2) * envelope * breath;
           } else {
-            $('downloadLockText').innerHTML =
-              `Téléchargement verrouillé (<strong>${evaluation.totalScore}/4 critères</strong>) : atteignez au moins <strong>2 critères sur 4</strong> pour débloquer vos fichiers. Cliquez sur <strong>Reattempt Recording</strong> pour réessayer !`;
-            $('downloadLockNotice').classList.remove('hidden');
-            setStatus(
-              `Téléchargement verrouillé (${evaluation.totalScore}/4 critère). Atteignez au moins 2/4 critères pour débloquer vos fichiers.`,
-              'error'
-            );
+            // Dual-speaker alternating harmonic cadence (Binôme)
+            const leftSpeaker = Math.pow(Math.max(0, Math.sin((1 - norm) * Math.PI)), 1.4) *
+              ((Math.sin(i * 0.42 - phase * 2.1) + 1) / 2) *
+              (0.65 + 0.35 * Math.sin(phase * 1.1));
+            const rightSpeaker = Math.pow(Math.max(0, Math.sin(norm * Math.PI)), 1.4) *
+              ((Math.cos(i * 0.38 + phase * 1.9) + 1) / 2) *
+              (0.65 + 0.35 * Math.cos(phase * 1.1));
+            amplitudeFactor = Math.max(leftSpeaker, rightSpeaker) * 0.95;
           }
+
+          const minHeight = 8;
+          const maxHeight = height * 0.78;
+          const barHeight = minHeight + amplitudeFactor * (maxHeight - minHeight);
+          const x = startX + i * totalStep;
+          const y = centerY - barHeight / 2;
+
+          // Color gradient across bars: Sky-400 -> Royal Blue -> Crimson Accent
+          if (waveMode === 'pair' && norm > 0.52) {
+            ctx.fillStyle = norm > 0.72 ? '#fb7185' : '#d9383a';
+          } else if (norm > 0.78) {
+            ctx.fillStyle = '#f43f5e';
+          } else if (norm > 0.42) {
+            ctx.fillStyle = '#3b82f6';
+          } else {
+            ctx.fillStyle = '#38bdf8';
+          }
+
+          drawRoundedBar(x, y, barWidth, barHeight, 2);
+        }
+
+        phase += 0.032;
+        requestAnimationFrame(renderLoop);
+      }
+
+      window.addEventListener('load', () => {
+        resizeCanvas();
+        renderLoop();
+      });
+    })();
+
+    /**
+     * 2. INTERACTIVE VISUAL LANGUAGE SWITCHER ("Bilingue" | "Français" | "中文")
+     * Smoothly updates welcome headlines, badges, step cards, and footer text.
+     */
+    const TRANSLATIONS = {
+      bilingual: {
+        badge: 'Bienvenue au studio vocal <span class="text-slate-300 mx-1">•</span> <span class="text-[#d9383a]">欢迎来到口语录音室</span>',
+        title: 'Donnez vie à votre voix en classe.',
+        subtitleZh: '用声音自信表达 <span class="text-slate-300 font-normal mx-1.5">|</span> <span class="text-[#d9383a]">课堂口语展示</span>',
+        description: 'Un espace calme, clair et bienveillant pour enregistrer votre billet de sortie oral — en <span class="font-semibold text-slate-800">Solo</span> ou en <span class="font-semibold text-slate-800">Binôme</span>, en français comme en chinois.',
+        ctaPrimary: 'Entrer dans le studio',
+        ctaSecondary: 'Aperçu du studio',
+        meta1: 'Lycée de Bayside • World Languages',
+        meta2: 'Aucun compte requis • Sans installation',
+        signal: 'Signal prêt • Anti-bruit actif',
+        float1: 'Solo &amp; Binôme (1–2 élèves)',
+        float2: '4 Critères de réussite',
+        float3: 'Export MP3 + TXT',
+        stepsHeading: 'Simple, structuré et prêt pour la classe.',
+        stepsSubheading: 'Trois étapes visuelles pour guider chaque prise de parole du début à la remise.',
+        step1Title: 'Mode &amp; Consigne',
+        step1Desc: 'Choisissez le mode <strong class="text-slate-800">Solo</strong> ou <strong class="text-slate-800">Binôme</strong> et préparez votre sujet d\'expression orale.',
+        step2Title: 'Onde Vocale en Direct',
+        step2Desc: 'Exprimez-vous naturellement pendant <strong class="text-slate-800">30+ secondes</strong> avec un retour visuel clair et apaisant.',
+        step3Title: 'Auto-évaluation &amp; Fichiers',
+        step3Desc: 'Validez vos <strong class="text-slate-800">4 critères</strong> de réussite et téléchargez vos fichiers <strong class="text-slate-800">MP3 + TXT</strong>.',
+        frDesc: 'Développez l\'aisance à l\'oral, la richesse du lexique et la spontanéité des échanges en classe de français.',
+        zhDesc: 'Travaillez la précision des tons, la fluidité des phrases et le dialogue authentique en classe de chinois.',
+        footerPrivacy: 'Confidentialité en classe : traitement local dans l\'onglet, sans serveur externe.'
+      },
+      fr: {
+        badge: 'Bienvenue au studio vocal <span class="text-slate-300 mx-1">•</span> <span class="text-[#164b9b]">Lycée de Bayside</span>',
+        title: 'Donnez vie à votre voix en classe.',
+        subtitleZh: 'Expression orale fluide &amp; confiante',
+        description: 'Un espace calme, clair et bienveillant pour enregistrer votre billet de sortie oral — en <span class="font-semibold text-slate-800">Solo</span> ou en <span class="font-semibold text-slate-800">Binôme</span>, directement depuis votre poste.',
+        ctaPrimary: 'Entrer dans le studio',
+        ctaSecondary: 'Aperçu du studio',
+        meta1: 'Département des Langues • Bayside High School',
+        meta2: 'Aucun compte requis • 100 % local',
+        signal: 'Signal prêt • Anti-bruit actif',
+        float1: 'Solo &amp; Binôme (1–2 élèves)',
+        float2: '4 Critères de réussite',
+        float3: 'Export MP3 + TXT',
+        stepsHeading: 'Simple, structuré et prêt pour la classe.',
+        stepsSubheading: 'Trois étapes visuelles pour guider chaque prise de parole du début à la remise.',
+        step1Title: 'Mode &amp; Consigne',
+        step1Desc: 'Choisissez le mode <strong class="text-slate-800">Solo</strong> ou <strong class="text-slate-800">Binôme</strong> et préparez votre sujet d\'expression orale.',
+        step2Title: 'Onde Vocale en Direct',
+        step2Desc: 'Exprimez-vous naturellement pendant <strong class="text-slate-800">30+ secondes</strong> avec un retour visuel clair et apaisant.',
+        step3Title: 'Auto-évaluation &amp; Fichiers',
+        step3Desc: 'Validez vos <strong class="text-slate-800">4 critères</strong> de réussite et téléchargez vos fichiers <strong class="text-slate-800">MP3 + TXT</strong>.',
+        frDesc: 'Développez l\'aisance à l\'oral, la richesse du lexique et la spontanéité des échanges en classe de français.',
+        zhDesc: 'Travaillez la précision des tons, la fluidité des phrases et le dialogue authentique en classe de chinois.',
+        footerPrivacy: 'Confidentialité en classe : traitement local dans l\'onglet, sans serveur externe.'
+      },
+      zh: {
+        badge: '<span class="text-[#d9383a]">欢迎来到口语录音室</span> <span class="text-slate-300 mx-1">•</span> 贝赛高中世界语言部',
+        title: '用声音自信表达你的想法。',
+        subtitleZh: '<span class="text-[#d9383a]">课堂口语展示</span> <span class="text-slate-300 font-normal mx-1.5">|</span> Billet de sortie',
+        description: '安静、清晰且友好的课堂口语录制空间——支持 <span class="font-semibold text-slate-800">单人 (Solo)</span> 或 <span class="font-semibold text-slate-800">双人对话 (Binôme)</span> 练习。',
+        ctaPrimary: '进入口语录音室',
+        ctaSecondary: '浏览录音室功能',
+        meta1: '贝赛高中 • 世界语言课程',
+        meta2: '无需注册账号 • 本地浏览器运行',
+        signal: '信号就绪 • 智能降噪已开启',
+        float1: '单人与双人模式 (1–2 名学生)',
+        float2: '4 项口语评价标准',
+        float3: '导出 MP3 + TXT 文件',
+        stepsHeading: '清晰直观的三步课堂口语流程。',
+        stepsSubheading: '从选择话题到自我评估与文件导出，每一步都一目了然。',
+        step1Title: '选择模式与话题',
+        step1Desc: '选择 <strong class="text-slate-800">单人</strong> 或 <strong class="text-slate-800">双人搭档</strong> 模式，快速进入口语表达主题。',
+        step2Title: '实时声波可视化',
+        step2Desc: '自然流畅地表达 <strong class="text-slate-800">30 秒以上</strong>，享受清晰柔和的实时声波反馈。',
+        step3Title: '自我评估与导出',
+        step3Desc: '核对 <strong class="text-slate-800">4 项成功标准</strong>，一键保存 <strong class="text-slate-800">MP3 音频与 TXT 文本</strong>。',
+        frDesc: '提升法语口语流利度、词汇丰富度以及课堂互动表达的自然感。',
+        zhDesc: '专注于声调准确度、语句流畅度以及真实情境下的中文双人对话练习。',
+        footerPrivacy: '课堂隐私保护：所有处理均在当前浏览器标签页本地完成，不上传服务器。'
+      }
+    };
+
+    function setDisplayLanguage(lang) {
+      const t = TRANSLATIONS[lang];
+      if (!t) return;
+
+      // Update active pill button styles
+      document.querySelectorAll('.lang-pill').forEach((btn) => {
+        const isActive = btn.getAttribute('data-lang-btn') === lang;
+        if (isActive) {
+          btn.className = 'lang-pill px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 bg-[#164b9b] text-white shadow-sm';
+        } else {
+          btn.className = 'lang-pill px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900';
+        }
+      });
+
+      // Subtle fade transition for text elements
+      const fadeTargets = document.querySelectorAll('.lang-fade');
+      fadeTargets.forEach((el) => el.classList.add('lang-updating'));
+
+      setTimeout(() => {
+        const map = {
+          'hero-badge': t.badge,
+          'hero-title': t.title,
+          'hero-subtitle-zh': t.subtitleZh,
+          'hero-description': t.description,
+          'cta-primary': t.ctaPrimary,
+          'cta-secondary': t.ctaSecondary,
+          'meta-1': t.meta1,
+          'meta-2': t.meta2,
+          'studio-signal-label': t.signal,
+          'float-badge-1': t.float1,
+          'float-badge-2': t.float2,
+          'float-badge-3': t.float3,
+          'steps-heading': t.stepsHeading,
+          'steps-subheading': t.stepsSubheading,
+          'step1-title': t.step1Title,
+          'step1-desc': t.step1Desc,
+          'step2-title': t.step2Title,
+          'step2-desc': t.step2Desc,
+          'step3-title': t.step3Title,
+          'step3-desc': t.step3Desc,
+          'fr-card-desc': t.frDesc,
+          'zh-card-desc': t.zhDesc,
+          'footer-privacy': t.footerPrivacy
         };
 
-        recorder.start(500);
-        startVisualizer(stream);
-        $('micHint').textContent = 'Microphone actif';
+        Object.entries(map).forEach(([id, html]) => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = html;
+        });
 
-        startTimeMs = Date.now();
-        elapsedSeconds = 0;
-        updateTimerDisplay(true);
-        timerInterval = setInterval(() => {
-          elapsedSeconds = Math.floor((Date.now() - startTimeMs) / 1000);
-          updateTimerDisplay(true);
-        }, 250);
+        fadeTargets.forEach((el) => el.classList.remove('lang-updating'));
+      }, 140);
+    }
 
-        $('startBtn').disabled = true;
-        $('stopBtn').disabled = false;
-
-        if (Speech) {
-          recognition = new Speech();
-          recognition.lang = $('language').value;
-          recognition.continuous = true;
-          recognition.interimResults = true;
-
-          recognition.onresult = (e) => {
-            let interim = '';
-            for (let i = e.resultIndex; i < e.results.length; i++) {
-              const seg = e.results[i][0].transcript;
-              if (e.results[i].isFinal) {
-                finalText += seg + ' ';
-              } else {
-                interim += seg;
-              }
-            }
-            $('transcript').value = (finalText + interim).trim();
-            updateWordCount();
-          };
-
-          recognition.onerror = (e) => {
-            if (e.error !== 'no-speech') {
-              setStatus('Enregistrement audio actif (remarque transcription : ' + e.error + ').', 'recording');
-            }
-          };
-
-          recognition.onend = () => {
-            if (recorder && recorder.state === 'recording') {
-              try {
-                recognition.start();
-              } catch (err) {}
-            }
-          };
-
-          try {
-            recognition.start();
-            setStatus('🎙️ Enregistrement en cours... Décrivez vos habitudes alimentaires pendant au moins 30 secondes.', 'recording');
-          } catch (err) {
-            setStatus('🎙️ Enregistrement audio en cours...', 'recording');
-          }
-        } else {
-          setStatus('🎙️ Enregistrement audio en cours (reconnaissance vocale non disponible sur ce navigateur).', 'recording');
-        }
-      } catch (err) {
-        if (stream) {
-          stream.getTracks().forEach((t) => t.stop());
-          stream = null;
-        }
-        stopVisualizer();
-        unlockControlsAfterRecording();
-        setStatus('Erreur microphone : ' + err.message, 'error');
+    /**
+     * 3. VISUAL CTA FEEDBACK (NO ALERT / NO MIC PERMISSION)
+     * Reveals a calm inline visual readiness note when clicking the hero CTA.
+     */
+    function triggerStudioWelcomeBanner() {
+      const toast = document.getElementById('studio-ready-toast');
+      if (!toast) return;
+      toast.classList.remove('hidden');
+      // Toggle wave preview to pair briefly so the user sees live visual feedback
+      if (typeof window.setWaveMode === 'function') {
+        window.setWaveMode('pair');
       }
-    });
-
-    $('stopBtn').addEventListener('click', () => {
-      $('stopBtn').disabled = true;
-      if (recognition) {
-        try {
-          recognition.onend = null;
-          recognition.stop();
-        } catch (err) {}
-      }
-      if (recorder && recorder.state !== 'inactive') {
-        recorder.stop();
-      } else {
-        unlockControlsAfterRecording();
-      }
-    });
-
-    // ---------------------------------------------------------
-    // 8. Reset / Reattempt Confirmation Modal
-    // ---------------------------------------------------------
-    function resetSession() {
-      if (recorder && recorder.state === 'recording') {
-        $('stopBtn').click();
-      }
-      if (audioUrl) {
-        URL.revokeObjectURL(audioUrl);
-        audioUrl = '';
-      }
-      mp3Blob = null;
-      chunks = [];
-      finalText = '';
-      elapsedSeconds = 0;
-      lastEvaluation = null;
-      updateTimerDisplay(false);
-
-      $('transcript').value = '';
-      updateWordCount();
-      $('playback').removeAttribute('src');
-      $('grammarFeedbackSection').classList.add('hidden');
-      $('downloadLockNotice').classList.add('hidden');
-      $('downloadConfirmBadge').classList.add('hidden');
-      $('downloadBothBtn').disabled = true;
-      $('audioDownload').disabled = true;
-      $('textDownload').disabled = true;
-
-      setStatus('Prêt pour un nouvel essai. Cliquez sur « ● Commencer » et parlez pendant au moins 30 secondes !', 'info');
     }
-
-    function openConfirmModal() {
-      $('confirmModal').classList.remove('hidden');
-    }
-    function closeConfirmModal() {
-      $('confirmModal').classList.add('hidden');
-    }
-
-    $('clearBtn').addEventListener('click', () => {
-      if ($('transcript').value.trim() || mp3Blob) {
-        openConfirmModal();
-      } else {
-        resetSession();
-      }
-    });
-
-    $('reattemptBtn').addEventListener('click', openConfirmModal);
-    $('cancelModalBtn').addEventListener('click', closeConfirmModal);
-    $('confirmModalBtn').addEventListener('click', () => {
-      closeConfirmModal();
-      resetSession();
-    });
-
-    // ---------------------------------------------------------
-    // 9. Dual File Download (.mp3 + .txt)
-    // ---------------------------------------------------------
-    function triggerDownload(blob, filename) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 2500);
-    }
-
-    function buildReportText() {
-      const studentLabel =
-        mode === 'independent'
-          ? ($('studentName').value || '').trim() || 'Non renseigné'
-          : `${getSpeakerNames().s1} & ${getSpeakerNames().s2} (Binôme)`;
-      const transcript = ($('transcript').value || '').trim() || '(Aucune transcription capturée)';
-      const ev = lastEvaluation || evaluateFoodHabits(transcript, elapsedSeconds);
-      const dateStr = new Date().toLocaleString('fr-FR');
-
-      return [
-        '================================================================',
-        'BILLET DE SORTIE : MES HABITUDES ALIMENTAIRES (FRANÇAIS)',
-        '================================================================',
-        `Élève(s) : ${studentLabel}`,
-        `Mode : ${mode === 'independent' ? 'Solo — Billet de sortie' : 'Binôme — Échange oral'}`,
-        `Date : ${dateStr}`,
-        `Durée : ${formatTime(ev.durationSec)} (${ev.durationSec}s / objectif : 30s+)`,
-        `Score critères : ${ev.totalScore} / 4`,
-        '',
-        '--- CRITÈRES DE RÉUSSITE ---',
-        `[${ev.crit1Pass ? '✓' : ' '}] 1. Être + 2 expressions : ${ev.foundExprs.map((e) => e.label).join(', ') || 'aucune'}`,
-        `[${ev.crit2Pass ? '✓' : ' '}] 2. 3 verbes cibles : ${ev.foundVerbs.map((v) => v.label).join(', ') || 'aucun'}`,
-        `[${ev.crit3Pass ? '✓' : ' '}] 3. Négation (ne... pas/plus/jamais) : ${ev.completeNegMatches.join(', ') || 'non détectée'}`,
-        `[${ev.crit4Pass ? '✓' : ' '}] 4. Durée >= 30 secondes : ${ev.durationSec}s`,
-        '',
-        '--- TRANSCRIPTION EN FRANÇAIS ---',
-        transcript,
-        ''
-      ].join('\n');
-    }
-
-    function downloadAudioOnly() {
-      if (!mp3Blob || !lastEvaluation || lastEvaluation.totalScore < 2) return;
-      triggerDownload(mp3Blob, `${getFileBaseName()}.${audioExt}`);
-    }
-
-    function downloadTextOnly() {
-      if (!lastEvaluation || lastEvaluation.totalScore < 2) return;
-      const txtBlob = new Blob([buildReportText()], { type: 'text/plain;charset=utf-8' });
-      triggerDownload(txtBlob, `${getFileBaseName()}.txt`);
-    }
-
-    $('downloadBothBtn').addEventListener('click', () => {
-      if (!lastEvaluation || lastEvaluation.totalScore < 2) return;
-      downloadAudioOnly();
-      setTimeout(() => {
-        downloadTextOnly();
-        $('downloadConfirmBadge').classList.remove('hidden');
-      }, 350);
-    });
-
-    $('audioDownload').addEventListener('click', downloadAudioOnly);
-    $('textDownload').addEventListener('click', downloadTextOnly);
   </script>
 </body>
 </html>
+<!-- tous droits reserves Monsieur Nan du lycée de Bayside -->
