@@ -909,8 +909,8 @@
         reattemptBoxTitle: "Want to try again after reviewing your feedback?",
         reattemptBoxDesc: "You can erase this attempt and record a fresh take before downloading your files.",
         reattemptBtn: "Reattempt Recording",
-        downloadBothBtn: "Download Both Files (Audio + Transcription)",
-        downloadAudioBtn: "Download Audio Only (audio)",
+        downloadBothBtn: "Download Both Files (MP3 + TXT)",
+        downloadAudioBtn: "Download MP3 Only",
         downloadTextBtn: "Download Text Only (TXT)",
         readyBadge: "Ready",
         recordingBadge: "Recording",
@@ -1047,8 +1047,8 @@
         reattemptBoxTitle: "Voulez-vous réessayer après avoir lu vos conseils ?",
         reattemptBoxDesc: "Vous pouvez effacer cet essai et enregistrer une nouvelle prise avant de télécharger vos fichiers.",
         reattemptBtn: "Recommencer l'enregistrement",
-        downloadBothBtn: "Télécharger les 2 fichiers (Audio + Transcription)",
-        downloadAudioBtn: "Télécharger l'audio seul (audio)",
+        downloadBothBtn: "Télécharger les 2 fichiers (MP3 + TXT)",
+        downloadAudioBtn: "Télécharger le MP3 seul",
         downloadTextBtn: "Télécharger le texte seul (TXT)",
         readyBadge: "Prêt",
         recordingBadge: "En direct",
@@ -1183,8 +1183,8 @@
         reattemptBoxTitle: "查看反馈后想再试一次吗？",
         reattemptBoxDesc: "在下载文件之前，您可以清除本次录音并重新录制一遍。",
         reattemptBtn: "重新录制",
-        downloadBothBtn: "同时下载两个文件 (audio 音频 + TXT 文本)",
-        downloadAudioBtn: "仅下载音频 (audio)",
+        downloadBothBtn: "同时下载两个文件 (MP3 音频 + TXT 文本)",
+        downloadAudioBtn: "仅下载音频 (MP3)",
         downloadTextBtn: "仅下载文本 (TXT)",
         readyBadge: "准备就绪",
         recordingBadge: "正在录音",
@@ -1319,8 +1319,8 @@
         reattemptBoxTitle: "¿Quieres intentarlo de nuevo después de revisar tus consejos?",
         reattemptBoxDesc: "Puedes borrar este intento y grabar una nueva toma antes de descargar tus archivos.",
         reattemptBtn: "Reintentar grabación",
-        downloadBothBtn: "Descargar ambos archivos (Audio + Transcripción)",
-        downloadAudioBtn: "Descargar solo el audio (audio)",
+        downloadBothBtn: "Descargar ambos archivos (MP3 + TXT)",
+        downloadAudioBtn: "Descargar solo el MP3",
         downloadTextBtn: "Descargar solo el texto (TXT)",
         readyBadge: "Listo",
         recordingBadge: "En vivo",
@@ -1455,8 +1455,8 @@
         reattemptBoxTitle: "フィードバックを確認してもう一度録音しますか？",
         reattemptBoxDesc: "ファイルをダウンロードする前に、現在の録音を消去して最初から録り直すことができます。",
         reattemptBtn: "録り直す",
-        downloadBothBtn: "両方のファイルをダウンロード (audio 音声 + TXT テキスト)",
-        downloadAudioBtn: "音声のみダウンロード (audio)",
+        downloadBothBtn: "両方のファイルをダウンロード (MP3 音声 + TXT テキスト)",
+        downloadAudioBtn: "音声のみダウンロード (MP3)",
         downloadTextBtn: "テキストのみダウンロード (TXT)",
         readyBadge: "準備完了",
         recordingBadge: "録音中",
@@ -1591,8 +1591,8 @@
         reattemptBoxTitle: "피드백을 확인한 후 다시 녹음해 보시겠어요?",
         reattemptBoxDesc: "파일을 다운로드하기 전에 현재 녹음을 지우고 처음부터 새로 녹음할 수 있습니다.",
         reattemptBtn: "다시 녹음하기",
-        downloadBothBtn: "두 파일 모두 다운로드 (audio 오디오 + TXT 텍스트)",
-        downloadAudioBtn: "오디오만 다운로드 (audio)",
+        downloadBothBtn: "두 파일 모두 다운로드 (MP3 오디오 + TXT 텍스트)",
+        downloadAudioBtn: "오디오만 다운로드 (MP3)",
         downloadTextBtn: "텍스트만 다운로드 (TXT)",
         readyBadge: "준비됨",
         recordingBadge: "녹음 중",
@@ -2842,6 +2842,7 @@
         this.audioBlob = null;
         this.audioUrl = null;
         this.audioExt = 'mp3';
+        this.mp3ExportPromise = null;
         this.animFrameId = null;
 
         this.renderUI();
@@ -4190,6 +4191,7 @@
           this.audioUrl = null;
         }
         this.audioBlob = null;
+        this.mp3ExportPromise = null;
         this.committedTranscript = '';
         this.interimTranscript = '';
         this.renderTranscript();
@@ -4869,12 +4871,68 @@
         setTimeout(() => URL.revokeObjectURL(url), 1500);
       }
 
-      downloadAudio() {
+      // Exports are MP3 + TXT. Recording and playback stay in the browser's
+      // native audio format; conversion happens only when a download is requested.
+      // Never rename WebM/WAV bytes to .mp3: that would produce an invalid file.
+      async getMp3ExportBlob() {
+        if (!this.audioBlob) throw new Error('No audio recording available.');
+        if (this.audioExt === 'mp3' && /mpeg|mp3/i.test(this.audioBlob.type)) return this.audioBlob;
+        if (this.mp3ExportPromise) return this.mp3ExportPromise;
+        this.mp3ExportPromise = (async () => {
+          // Allow the existing CDN encoder and its backup script to finish loading.
+          for (let i = 0; i < 24 && !(window.lamejs && window.lamejs.Mp3Encoder); i++) {
+            await new Promise(resolve => setTimeout(resolve, 125));
+          }
+          if (!window.lamejs || !window.lamejs.Mp3Encoder) {
+            throw new Error('MP3 encoder could not load. Check the school network connection and retry.');
+          }
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) throw new Error('This browser cannot convert recorded audio to MP3.');
+          const ctx = new AudioCtx();
+          try {
+            const bytes = await this.audioBlob.arrayBuffer();
+            const decoded = await ctx.decodeAudioData(bytes);
+            const targetRate = 44100;
+            // Convert the browser recording to mono for speech and consistent filenames.
+            const channels = decoded.numberOfChannels;
+            const first = decoded.getChannelData(0);
+            let mono = first;
+            if (channels > 1) {
+              mono = new Float32Array(decoded.length);
+              for (let c = 0; c < channels; c++) {
+                const data = decoded.getChannelData(c);
+                for (let i = 0; i < mono.length; i++) mono[i] += data[i] / channels;
+              }
+            }
+            const pcm = this.resampleLinear(mono, decoded.sampleRate, targetRate);
+            const result = this.encodeMp3(pcm, targetRate, 128);
+            if (!result || result.size < 128) throw new Error('MP3 encoding produced an empty file.');
+            return result;
+          } finally {
+            try { await ctx.close(); } catch (_) {}
+          }
+        })().catch(error => {
+          this.mp3ExportPromise = null; // A network problem can be retried.
+          throw error;
+        });
+        return this.mp3ExportPromise;
+      }
+
+      async downloadAudio() {
         if (!this.audioBlob) return;
-        const slug = this.getExportSlug();
-        const filename = `${slug}_audio.${this.audioExt}`;
-        this.triggerBrowserDownload(this.audioBlob, filename);
-        this.showDownloadConfirmation(`Downloaded ${filename}`);
+        this.setDownloadButtonsEnabled(false);
+        this.showDownloadConfirmation('Preparing MP3…');
+        try {
+          const mp3 = await this.getMp3ExportBlob();
+          const filename = `${this.getExportSlug()}_audio.mp3`;
+          this.triggerBrowserDownload(mp3, filename);
+          this.showDownloadConfirmation(`Downloaded ${filename}`);
+        } catch (error) {
+          console.error('MP3 export failed:', error);
+          this.showDownloadConfirmation(`MP3 not downloaded: ${error.message}`);
+        } finally {
+          this.setDownloadButtonsEnabled(true);
+        }
       }
 
       downloadText() {
@@ -4885,19 +4943,25 @@
         this.showDownloadConfirmation(`Downloaded ${filename}`);
       }
 
-      downloadBoth() {
+      async downloadBoth() {
         if (!this.audioBlob) return;
-        const slug = this.getExportSlug();
-        const audioFilename = `${slug}_audio.${this.audioExt}`;
-        const textFilename = `${slug}_transcription.txt`;
-
-        this.triggerBrowserDownload(this.audioBlob, audioFilename);
-        setTimeout(() => {
+        this.setDownloadButtonsEnabled(false);
+        this.showDownloadConfirmation('Preparing MP3 + TXT…');
+        try {
+          const mp3 = await this.getMp3ExportBlob();
+          const slug = this.getExportSlug();
+          const audioFilename = `${slug}_audio.mp3`;
+          const textFilename = `${slug}_transcription.txt`;
           const txtBlob = new Blob([this.buildTextReport()], { type: 'text/plain;charset=utf-8' });
-          this.triggerBrowserDownload(txtBlob, textFilename);
-        }, 250);
-
-        this.showDownloadConfirmation(`Downloaded both ${audioFilename} and ${textFilename}!`);
+          this.triggerBrowserDownload(mp3, audioFilename);
+          setTimeout(() => this.triggerBrowserDownload(txtBlob, textFilename), 350);
+          this.showDownloadConfirmation(`Downloaded both ${audioFilename} and ${textFilename}!`);
+        } catch (error) {
+          console.error('MP3 + TXT export failed:', error);
+          this.showDownloadConfirmation(`MP3 + TXT not downloaded: ${error.message}`);
+        } finally {
+          this.setDownloadButtonsEnabled(true);
+        }
       }
 
       showDownloadConfirmation(msg) {
