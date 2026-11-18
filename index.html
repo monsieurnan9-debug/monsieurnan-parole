@@ -3217,7 +3217,7 @@
                   >
                     <span>🔄</span>
                     <span id="${this.p}-passTurnBtnText">${t('passTurnBtn')}</span>
-                    <kbd class="px-1.5 py-0.5 rounded bg-amber-600/30 text-[10px] font-mono">Tab / Alt+S</kbd>
+                    <kbd class="px-1.5 py-0.5 rounded bg-amber-600/30 text-[10px] font-mono">Alt+S</kbd>
                   </button>
                 </div>
               </div>
@@ -3437,6 +3437,7 @@
         this.el('student1Label').textContent = t('student1Label');
         this.el('student2Label').textContent = t('student2Label');
         this.el('swapBtnText').textContent = t('swapBtn');
+        this.updatePairSwitchControls();
         this.el('dialectLabel').textContent = t('dialectLabel');
         for (const k of ['assignmentHeading','courseLabel','periodLabel','assignmentLabel','promptLabel','targetLabel','participationHeading','feedbackDisclaimer']) this.el(k).textContent = t(k);
         const targetMeta=STUDIO_META[this.cfg.id];
@@ -3522,6 +3523,12 @@
         this.el('student2Input').addEventListener('input', () => this.updateSpeakerBadges());
 
         this.el('swapBtn').addEventListener('click', () => {
+          // Before recording: exchange who speaks first. During recording:
+          // the same visible control switches the active partner instead of doing nothing.
+          if (this.isRecording) {
+            this.passTurn();
+            return;
+          }
           const s1 = this.el('student1Input');
           const s2 = this.el('student2Input');
           const temp = s1.value;
@@ -3592,7 +3599,7 @@
           const viewEl = document.getElementById(this.cfg.containerId);
           if (viewEl.classList.contains('hidden')) return;
 
-          if (e.altKey && e.key.toLowerCase() === 's') {
+          if (e.altKey && e.key.toLowerCase() === 's' && !e.repeat) {
             e.preventDefault();
             this.passTurn();
           }
@@ -3658,6 +3665,20 @@
 
         this.updateSpeakerBadges();
         this.updateParticipation();
+        this.updatePairSwitchControls();
+      }
+
+      // Keep both pair switching controls visibly in sync with the recorder state.
+      updatePairSwitchControls() {
+        const live = this.isRecording && this.taskMode === 'pair';
+        const switchButton = this.el('passTurnBtn');
+        const orderButton = this.el('swapBtn');
+        switchButton.disabled = !live;
+        switchButton.setAttribute('aria-disabled', String(!live));
+        switchButton.title = live ? 'Switch the active partner (Alt+S)' : 'Start recording to switch partners';
+        orderButton.disabled = false;
+        orderButton.title = live ? 'Switch to the other student during recording' : 'Exchange which student speaks first';
+        this.el('swapBtnText').textContent = live ? t('passTurnBtn') : t('swapBtn');
       }
 
       updateSpeakerBadges() {
@@ -3693,7 +3714,8 @@
       }
 
       passTurn() {
-        if (this.taskMode !== 'pair' || !this.isRecording || this.isPaused) return;
+        // Students may switch while paused, ready for their partner to resume.
+        if (this.taskMode !== 'pair' || !this.isRecording || this.isStopping) return;
 
         if (this.interimTranscript.trim()) {
           let chunk = this.interimTranscript.trim();
@@ -4131,6 +4153,7 @@
           this.setBannerKey('recording','bannerRecordingActive');
         }
         this.updatePauseControls();
+        this.updatePairSwitchControls();
       }
 
       async closeMicTest() {
@@ -4298,7 +4321,7 @@
           this.el('pauseBtn').disabled = false;
           this.el('student1Input').readOnly = true;
           this.el('student2Input').readOnly = true;
-          this.el('swapBtn').disabled = true;
+          this.updatePairSwitchControls();
           document.querySelectorAll(`input[name="${this.p}-taskMode"]`).forEach(r=>r.disabled=true);
           this.setStatusBadge('recording', t('recordingBadge'));
           this.setBannerKey('recording', 'bannerRecordingActive');
@@ -4463,7 +4486,7 @@
         this.el('pauseBtn').disabled = true;
         this.el('student1Input').readOnly = false;
         this.el('student2Input').readOnly = false;
-        this.el('swapBtn').disabled = false;
+        this.updatePairSwitchControls();
         document.querySelectorAll(`input[name="${this.p}-taskMode"]`).forEach(r=>r.disabled=false);
 
         if (silentStop) {
@@ -4783,6 +4806,7 @@
 
         this.updateTimerDisplay();
         this.updateSpeakerBadges();
+        this.updatePairSwitchControls();
         this.renderTranscript();
 
         const player = this.el('audioPlayer');
