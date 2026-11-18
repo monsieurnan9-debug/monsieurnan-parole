@@ -144,6 +144,24 @@
     .zh-pinyin-early {color:#406d93;}
     .zh-scaffold-note {font-size:11px;color:#64748b;line-height:1.5;}
     @media(max-width:560px){.home-atelier-welcome{padding:17px;min-height:120px;gap:8px}.home-atelier-art{width:33%;height:85px}.home-atelier-copy strong{font-size:24px}.home-atelier-subtitle{font-size:11px}}
+
+/* Studio Oral authored signature: shared atelier craftsmanship, individual cultural motifs */
+.studio-signature { position:relative; display:flex; gap:14px; justify-content:space-between; align-items:center; padding:12px 17px; border:1px solid #e4dbc9; border-radius:13px; background:linear-gradient(110deg,#fffdf8,#f8fafc); margin-top:10px; overflow:hidden; }
+.studio-signature:before { content:''; position:absolute; left:0;top:0;bottom:0;width:3px;background:#bf9862; }
+.signature-copy { min-width:0; }
+.signature-eyebrow { display:block; font:italic 11px Georgia,serif; letter-spacing:.08em; color:#936f45; }
+.signature-title { display:block; font:700 15px Georgia,serif; color:#17345b;margin-top:2px; }
+.signature-note { display:block; font:11px/1.5 system-ui,sans-serif;color:#69778a;margin-top:3px; }
+.signature-art { width:118px; height:65px; flex:none; }
+.signature-seal { appearance:none; display:inline-flex;align-items:center;gap:5px;margin-top:7px;padding:3px 8px;background:#fffdf8;border:1px solid #cfbb9b;border-radius:20px;color:#7a5836;cursor:pointer;font:italic 11px Georgia,serif; }
+.signature-seal:hover,.signature-seal:focus-visible { background:#f5e9d6;outline:2px solid #b69059;outline-offset:2px; }
+.signature-secret { display:none; margin-top:8px;max-width:390px;font:12px/1.5 system-ui,sans-serif;color:#39475b; }
+.signature-secret.revealed {display:block;}
+.home-author-mark { display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-top:8px; }
+.home-author-mark .signature-seal {margin-top:0;}
+@media(max-width:480px) {.signature-art { width:72px;height:50px;} .studio-signature{padding:10px;gap:7px;}.signature-title{font-size:13px;}}
+@media(prefers-reduced-motion:reduce){.signature-seal{transition:none;}}
+
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-900">
@@ -289,6 +307,8 @@
           <span class="home-atelier-eyebrow">Bayside High School <span aria-hidden="true">✦</span> Studio Oral</span>
           <strong>Les voix du monde.</strong>
           <span class="home-atelier-subtitle">Many languages. One place to speak, practice, and grow.</span>
+          <button type="button" class="signature-seal" aria-expanded="false" onclick="toggleStudioSecret(this)">✦ Le petit secret de l’atelier</button>
+          <span class="signature-secret" role="status">Conçu avec soin par Monsieur Nan, professeur de français à Bayside. Chaque langue a sa voix ; la curiosité les relie. · Crafted by a French teacher for every language learner.</span>
         </div>
         <svg class="home-atelier-art" viewBox="0 0 350 108" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <g stroke="#2d5478" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2904,6 +2924,15 @@
           </div>
         ` : '';
 
+        const culturalSignature = {
+          french: { eyebrow:'Un mot du professeur', title:'L’art de parler, partout.', note:'Un carnet de langue, imaginé par un professeur de français.', secret:'Petit secret : « Oser parler, c’est déjà progresser. » — Monsieur Nan', art:`<svg viewBox="0 0 118 65" fill="none" aria-hidden="true"><g stroke="#244c76" stroke-width="1.7"><path d="M8 60V30Q8 8 30 8Q52 8 52 30V60M15 60V31Q15 16 30 16Q45 16 45 31V60M17 37H43M30 16V60"/><path d="M62 60V24M70 60V24M62 30Q66 21 70 30M58 47Q66 33 74 47"/></g><g stroke="#ae7e46" stroke-width="1.6"><path d="M92 10L106 24L92 38L78 24Z M92 10V38M78 24H106M92 18L98 24L92 30L86 24Z"/></g></svg>`},
+          chinese: { eyebrow:'墨香 · A touch of ink', title:'一笔一画，一字一句。', note:'Ink-brush lines and a guzheng-inspired string pattern.', secret:'彩蛋 · Easter egg: 千里之行，始于足下。Every journey begins with a first step.', art:`<svg viewBox="0 0 118 65" fill="none" aria-hidden="true"><g stroke="#a24239" stroke-width="1.5"><path d="M8 13H53V54H8Z M8 33H53 M30 13V54"/><path d="M13 18L48 48M48 18L13 48" stroke-opacity=".22"/></g><g stroke="#9e7248" stroke-width="1.35"><path d="M65 20Q87 11 108 20L104 48Q87 55 68 48Z"/><path d="M70 22L72 47M77 20L79 49M84 19L86 50M91 19L93 49M98 20L100 48"/></g><circle cx="30" cy="33" r="3" fill="#a24239"/></svg>`},
+          spanish: { eyebrow:'Arte y conversación', title:'Cada voz cuenta.', note:'A small ceramic-tile rhythm inspired by Hispanic craft traditions.', secret:'Un secreto del taller: ¡Atrévete a hablar! Every voice belongs here.', art:`<svg viewBox="0 0 118 65" fill="none" aria-hidden="true"><g stroke="#bc804e" stroke-width="1.7"><rect x="12" y="9" width="46" height="46" rx="3"/><path d="M35 11L56 32L35 53L14 32Z M35 15V49M18 32H52 M23 20L47 44M47 20L23 44"/></g><g stroke="#244c76" stroke-width="2"><path d="M70 52Q85 8 102 52M76 52Q85 28 96 52"/><path d="M66 54H106"/></g></svg>`},
+          japanese: { eyebrow:'ことばの工房 · Language workshop', title:'一言から、世界へ。', note:'A quiet seigaiha wave motif and Japanese-inspired paper lines.', secret:'小さな発見: 一歩ずつ。One step, one sentence at a time.', art:`<svg viewBox="0 0 118 65" fill="none" aria-hidden="true"><g stroke="#386a8c" stroke-width="1.6"><path d="M4 49Q18 21 32 49Q46 21 60 49Q74 21 88 49Q102 21 116 49"/><path d="M4 60Q18 32 32 60Q46 32 60 60Q74 32 88 60Q102 32 116 60"/><path d="M4 38Q18 10 32 38Q46 10 60 38Q74 10 88 38Q102 10 116 38"/></g><circle cx="95" cy="12" r="8" fill="#be806a" opacity=".67"/></svg>`},
+          korean: { eyebrow:'말의 리듬 · Rhythm of language', title:'한마디씩, 자신 있게.', note:'Hangul strokes and a playful music-inspired rhythm.', secret:'숨은 메시지: 천천히, 꾸준히! Speak bravely, one phrase at a time.', art:`<svg viewBox="0 0 118 65" fill="none" aria-hidden="true"><g stroke="#274b80" stroke-width="2.2" stroke-linecap="round"><path d="M10 14H31V36H10Z M17 14V36M39 16V42M48 16V42M39 29H48"/><path d="M65 46V30M74 46V19M83 46V26M92 46V12M101 46V23"/></g><circle cx="20" cy="50" r="6" fill="#bd6370" opacity=".7"/><circle cx="47" cy="51" r="5" fill="#7097bc" opacity=".65"/></svg>`}
+        }[this.cfg.id];
+        const studioSignatureHTML = culturalSignature ? `<div class="studio-signature" aria-label="Language studio cultural decoration"><div class="signature-copy"><span class="signature-eyebrow">${culturalSignature.eyebrow}</span><strong class="signature-title">${culturalSignature.title}</strong><span class="signature-note">${culturalSignature.note}</span><button type="button" class="signature-seal" aria-expanded="false" onclick="toggleStudioSecret(this)">✦ Atelier secret</button><div class="signature-secret" role="status">${culturalSignature.secret}</div></div><div class="signature-art">${culturalSignature.art}</div></div>` : '';
+
         container.innerHTML = `
           <div class="space-y-6">
             <!-- Studio Header Card -->
@@ -2940,6 +2969,7 @@
               </div>
             </div>
 
+            ${studioSignatureHTML}
             ${this.cfg.id === 'french' ? `<section class="french-atelier bg-white border border-blue-200 rounded-2xl shadow-sm p-5 sm:p-6 space-y-3 studio-enhancement" aria-label="French quick start">
               <div class="flex items-center justify-between flex-wrap gap-2"><h2 class="font-extrabold text-[#164b9b] text-lg">À toi de parler ! <span class="atelier-mini-title" aria-hidden="true">· On y va !</span></h2><span class="text-xs text-slate-500">Choisis → Présente-toi → Parle !</span></div>
               <div class="francophone-ornament" aria-label="Décor inspiré des ateliers et des arts du monde francophone">
@@ -5065,6 +5095,14 @@
         e.preventDefault(); e.returnValue = '';
       }
     });
+
+    function toggleStudioSecret(button) {
+      const message = button.nextElementSibling;
+      if (!message || !message.classList.contains('signature-secret')) return;
+      const show = !message.classList.contains('revealed');
+      message.classList.toggle('revealed', show);
+      button.setAttribute('aria-expanded', String(show));
+    }
 
     async function switchView(targetView) {
       if (currentView === targetView) return;
