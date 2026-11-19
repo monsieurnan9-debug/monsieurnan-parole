@@ -2837,6 +2837,9 @@
         this.recognition = null;
         this.committedTranscript = '';
         this.interimTranscript = '';
+        this.recognitionEpoch = 0;
+        this.recognitionFinalIndices = new Set();
+        this.recognizedWords = [];
 
         this.lastPromptRequirements = [];
         this.audioBlob = null;
@@ -3713,18 +3716,64 @@
         }
       }
 
+      // Browser recognition sometimes sends an already recognized phrase again.
+      // Deduplicate long rolling prefixes and overlapping result windows without
+      // discarding ordinary repeated short greetings in student dialogues.
+      appendDistinctRecognition(text) {
+        let words = String(text || '').trim().split(/\s+/u).filter(Boolean);
+        if (!words.length) return;
+        const clean = value => value.toLocaleLowerCase().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+        const existing = this.recognizedWords || [];
+        const normalized = words.map(clean);
+        const old = existing.map(clean);
+        // Some implementations return the *whole running transcript* each time.
+        // Strip its known prefix only if enough words match to be confident.
+        let start = 0;
+        const prefix = Math.min(old.length, normalized.length);
+        if (prefix >= 4 && old.slice(0, prefix).every((w, i) => w === normalized[i])) {
+          start = prefix;
+        } else {
+          let overlap = 0;
+          for (let n = Math.min(old.length, normalized.length); n >= 4; n--) {
+            if (old.slice(-n).every((w, i) => w === normalized[i])) { overlap = n; break; }
+          }
+          start = overlap;
+        }
+        words = words.slice(start);
+        if (!words.length) return;
+        const chunk = words.join(' ');
+        const addSpace = this.cfg.countMode === 'words' && this.committedTranscript.length &&
+          !this.committedTranscript.endsWith(' ') && !this.committedTranscript.endsWith('\n');
+        this.committedTranscript += (addSpace ? ' ' : '') + chunk;
+        existing.push(...words);
+      }
+
+      // Stop the old recognition window before changing the speaker label.
+      // Late callbacks from the previous window are discarded by the epoch guard.
+      endRecognitionWindow() {
+        this.recognitionEpoch++;
+        if (this.recognition) {
+          const old = this.recognition;
+          this.recognition = null;
+          old.onresult = null;
+          old.onend = null;
+          try { old.abort(); } catch (_) {}
+        }
+        this.recognitionFinalIndices = new Set();
+      }
+
       passTurn() {
         // Students may switch while paused, ready for their partner to resume.
         if (this.taskMode !== 'pair' || !this.isRecording || this.isStopping) return;
 
+        // Commit the last visible interim once, then discard any late callbacks.
         if (this.interimTranscript.trim()) {
           let chunk = this.interimTranscript.trim();
-          if (this.cfg.hasIcBoost && this.icBoostEnabled) {
-            chunk = this.applyIcVocabCorrections(chunk);
-          }
-          this.committedTranscript += (this.committedTranscript && !this.committedTranscript.endsWith(' ') && !this.committedTranscript.endsWith('\n') ? ' ' : '') + chunk;
-          this.interimTranscript = '';
+          if (this.cfg.hasIcBoost && this.icBoostEnabled) chunk = this.applyIcVocabCorrections(chunk);
+          this.appendDistinctRecognition(chunk);
         }
+        this.interimTranscript = '';
+        this.endRecognitionWindow();
 
         this.activeSpeaker = this.activeSpeaker === 1 ? 2 : 1;
         this.speakerTurns += 1;
@@ -3736,6 +3785,7 @@
         this.committedTranscript += `\n\n[${nextSpeakerName}]: `;
         this.updateSpeakerBadges();
         this.renderTranscript();
+        if (!this.isPaused) this.startSpeechRecognition();
         this.setBannerKey('recording', 'bannerTurnPassed', { name: nextSpeakerName });
       }
 
@@ -4137,11 +4187,12 @@
           this.isPaused = true;
           if (this.mediaRecorder?.state === 'recording') this.mediaRecorder.pause();
           if (this.recognition) {
-            try { this.recognition.onend = null; this.recognition.stop(); } catch (_) {}
+            this.recognitionEpoch++;
+            try { this.recognition.onresult = null; this.recognition.onend = null; this.recognition.stop(); } catch (_) {}
             this.recognition = null;
           }
           if (this.interimTranscript.trim()) {
-            this.committedTranscript += ' ' + this.interimTranscript.trim();
+            this.appendDistinctRecognition(this.interimTranscript);
             this.interimTranscript = '';
             this.renderTranscript();
           }
@@ -4217,6 +4268,8 @@
         this.mp3ExportPromise = null;
         this.committedTranscript = '';
         this.interimTranscript = '';
+        this.recognizedWords = [];
+        this.recognitionFinalIndices = new Set();
         this.renderTranscript();
         this.el('audioPlayer').removeAttribute('src');
         this.el('audioPlayer').load();
@@ -4362,20 +4415,21 @@
           }
         }
 
+        const epoch = ++this.recognitionEpoch;
+        this.recognitionFinalIndices = new Set();
         recognition.onresult = (event) => {
+          if (epoch !== this.recognitionEpoch || !this.isRecording || this.isPaused) return;
           let interim = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
             const res = event.results[i];
             let text = res[0].transcript;
             if (res.isFinal) {
+              if (this.recognitionFinalIndices.has(i)) continue;
+              this.recognitionFinalIndices.add(i);
               if (this.cfg.hasIcBoost && this.icBoostEnabled) {
                 text = this.applyIcVocabCorrections(text);
               }
-              const needsSpace = this.cfg.countMode === 'words' &&
-                this.committedTranscript.length > 0 &&
-                !this.committedTranscript.endsWith(' ') &&
-                !this.committedTranscript.endsWith('\n');
-              this.committedTranscript += (needsSpace ? ' ' : '') + text.trim();
+              this.appendDistinctRecognition(text);
             } else {
               interim += text;
             }
@@ -4392,6 +4446,8 @@
         };
 
         recognition.onend = () => {
+          if (epoch !== this.recognitionEpoch) return;
+          this.recognitionFinalIndices = new Set();
           if (this.isRecording && !this.isPaused) {
             try {
               recognition.start();
@@ -4432,7 +4488,9 @@
         this.drawIdleVisualizer();
 
         if (this.recognition) {
+          this.recognitionEpoch++;
           try {
+            this.recognition.onresult = null;
             this.recognition.onend = null;
             this.recognition.stop();
           } catch (_) {}
@@ -4441,16 +4499,10 @@
 
         if (this.interimTranscript.trim()) {
           let tail = this.interimTranscript.trim();
-          if (this.cfg.hasIcBoost && this.icBoostEnabled) {
-            tail = this.applyIcVocabCorrections(tail);
-          }
-          const needsSpace = this.cfg.countMode === 'words' &&
-            this.committedTranscript.length > 0 &&
-            !this.committedTranscript.endsWith(' ') &&
-            !this.committedTranscript.endsWith('\n');
-          this.committedTranscript += (needsSpace ? ' ' : '') + tail;
-          this.interimTranscript = '';
+          if (this.cfg.hasIcBoost && this.icBoostEnabled) tail = this.applyIcVocabCorrections(tail);
+          this.appendDistinctRecognition(tail);
         }
+        this.interimTranscript = '';
         this.renderTranscript();
 
         if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
