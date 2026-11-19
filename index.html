@@ -162,6 +162,14 @@
 @media(max-width:480px) {.signature-art { width:72px;height:50px;} .studio-signature{padding:10px;gap:7px;}.signature-title{font-size:13px;}}
 @media(prefers-reduced-motion:reduce){.signature-seal{transition:none;}}
 
+
+    /* Student-first task display: mission visually precedes supporting controls. */
+    .student-mission-card {border:3px solid #164b9b!important;border-left:9px solid #d9383a!important;background:linear-gradient(110deg,#eff6ff,#fffdf7)!important;padding:20px 22px!important;box-shadow:0 9px 25px rgba(22,75,155,.13);scroll-margin-top:150px;}
+    .student-mission-heading {display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#164b9b;margin-bottom:10px;}
+    .student-mission-fr {font:800 clamp(20px,2.5vw,27px)/1.45 Inter,system-ui,sans-serif!important;color:#12284b!important;}
+    .student-mission-en {font:700 clamp(16px,2vw,20px)/1.5 Inter,system-ui,sans-serif;color:#243956;background:#fff;border:1px solid #bed4ef;padding:12px 14px;border-radius:12px;margin-top:12px;}
+    .student-mission-en strong {font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#164b9b;display:block;margin-bottom:4px;}
+    @media(max-width:520px){.student-mission-card{padding:15px!important;}.student-mission-fr{font-size:19px!important;}}
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-900">
@@ -2521,6 +2529,7 @@
       {id:'f1-u3', course:'French 1', label:'EC1 · Unité 3 — La vie en famille', quarter:'Q4'},
       {id:'f2-u4', course:'French 2', label:'EC1 · Unité 4 — Bon appétit', quarter:'Q1'},
       {id:'f2-u5', course:'French 2', label:'EC1 · Unité 5 — Le temps libre', quarter:'Q2'},
+      {id:'f2-chef', course:'French 2', label:'Atelier · J’écris comme un(e) chef !', quarter:'U4–U5'},
       {id:'f2-u6', course:'French 2', label:'EC1 · Unité 6 — En ville', quarter:'Q3–Q4'},
       {id:'f3-ec2u3',course:'French 3',label:'EC2 · Unité 3 — Au boulot, les bénévoles !',quarter:'Q1'},
       {id:'f3-ec2u5',course:'French 3',label:'EC2 · Unité 5 — Des conseils pour une vie saine',quarter:'Q2'},
@@ -2559,16 +2568,68 @@
       const [label,pattern,tip]=rule;
       return [{label:'Jour '+task.day+' · '+label, status:!speech.trim()?'unknown':pattern.test(speech)?'detected':'missing',detail:(pattern.test(speech)?'Une forme attendue a été reconnue. Vérifie la phrase en réécoutant ton audio.':tip+' La transcription peut manquer des formes correctes.'),id:'packet-focus'}];
     }
+    const FRENCH_ENGLISH_TASK_PROMPTS = {
+    "packet-f2-u4-01": "Name meals and drinks, and say whether you are hungry or thirsty.",
+    "packet-f2-u4-02": "Present two foods from a market and explain what you like.",
+    "packet-f2-u4-03": "Say what you eat and drink using du, de la, de l’, or des.",
+    "packet-f2-u4-04": "Describe what you eat and drink throughout a typical day.",
+    "packet-f2-u4-05": "Explain what you choose or order for a meal.",
+    "packet-f2-u4-06": "Say where you are going and what you are going to eat soon.",
+    "packet-f2-u4-07": "Optional oral review: summarize the foods and eating habits studied in this unit.",
+    "packet-f2-u4-08": "Role-play a café conversation: politely order a drink and a meal.",
+    "packet-f2-u4-09": "Present two menu choices and state their prices.",
+    "packet-f2-u4-10": "Name two foods you do not eat or never eat.",
+    "packet-f2-u4-11": "Explain what you do not eat or what is missing from a meal, using rien or personne.",
+    "packet-f2-u4-12": "Describe one responsible food habit and explain why it matters.",
+    "packet-f2-u4-13": "Optional oral review: explain how to order food and eat responsibly.",
+    "packet-f2-u4-14": "Present the menu of your Francophone café and recommend one meal.",
+    "packet-f2-u5-01": "Name two sports you play and one activity you enjoy.",
+    "packet-f2-u5-02": "Present an instrument or activity and explain where you practice it.",
+    "packet-f2-u5-03": "Explain where you go for leisure activities using au, à la, à l’, or aux.",
+    "packet-f2-u5-04": "Talk about an activity you do with friends on the weekend.",
+    "packet-f2-u5-05": "Say what you are going to do this weekend using aller + infinitive.",
+    "packet-f2-u5-06": "Optional oral review: present your hobbies and plans.",
+    "packet-f2-u5-07": "Invite a friend to an activity; accept or decline politely and ask a question.",
+    "packet-f2-u5-08": "Describe the clothes you wear in a particular situation.",
+    "packet-f2-u5-09": "Describe the weather and explain which clothes you will wear.",
+    "packet-f2-u5-10": "Ask two questions using quel, quelle, quels, or quelles.",
+    "packet-f2-u5-11": "Optional oral review: explain your favorite activities and the weather.",
+    "packet-f2-u5-12": "Present your favorite leisure activities and a weekend plan.",
+    "packet-f2-u6-01": "Name three shops and explain what you buy at each.",
+    "packet-f2-u6-02": "Describe purchases, their prices, and the department where they are found.",
+    "packet-f2-u6-03": "Say what you want to, can, and must do around town.",
+    "packet-f2-u6-04": "Role-play a dialogue between a customer and a shopkeeper.",
+    "packet-f2-u6-05": "Optional oral review: describe a shopping trip.",
+    "packet-f2-u6-06": "Explain one advantage or disadvantage of shopping online.",
+    "packet-f2-u6-07": "Say what you sell, wait for, hear, or lose in a city situation.",
+    "packet-f2-u6-08": "Describe the locations of three stores on a map.",
+    "packet-f2-u6-09": "Optional oral review: describe shops and where they are located.",
+    "packet-f2-u6-10": "Present a Francophone town center and locate its major shops."
+};
     const FRENCH_QUICK_TASKS = [
       {id:'f1-greeting',course:'French 1',curriculumUnit:'f1-pre',unit:'salutations',title:'Bonjour ! Fais connaissance',prompt:'Présente-toi. Salue une personne, dis ton prénom, demande comment elle va et termine la conversation poliment.',goal:'Use a greeting, a question and a polite goodbye.',required:['salutations'],bank:['Bonjour !','Salut !','Je m’appelle…','Comment ça va ?','Ça va bien, merci.','Et toi ?','Au revoir !']},
       {id:'f1-calendar',course:'French 1',curriculumUnit:'f1-pre',unit:'questions',title:'Le calendrier',prompt:'Dis quel jour nous sommes et présente une date importante. Pose une question avec quand ou quelle.',goal:'Say dates and use a question word.',required:['questions'],bank:['Aujourd’hui, c’est…','Nous sommes lundi.','Mon anniversaire est le…','Quelle est la date ?','C’est quand ?']},
+      // Packet: J’ÉCRIS COMME UN(E) CHEF ! (Unité 4 revision / Unité 5 preview).
+      // Day 2 and Day 3 remain WRITING assignments; recording is only optional oral rehearsal.
+      {id:'chef-exit-1',course:'French 2',curriculumUnit:'f2-chef',unit:'connectors',day:1,mode:'speaking',title:'Jour 1 · Billet de sortie — Ma recette en 4 étapes',
+       prompt:'Explique comment tu prépares un plat simple (un sandwich, une salade, des pâtes ou des céréales). Présente 4 étapes avec 4 connecteurs différents et 4 verbes en -er différents. Parle pendant 45 secondes.',
+       english:'Explain how you make a simple food (a sandwich, salad, pasta, or cereal). Give 4 steps using 4 different sequencing connectors and 4 different -er verbs. Speak for 45 seconds.',
+       goal:'45 seconds · 4 ordered steps · 4 different connectors · 4 different -er verbs · at least 3 food words with articles.',required:['connectors','er'],bank:['Voici ma recette…','D’abord, je lave…','Ensuite, je coupe…','Puis, je mélange…','Enfin, je mange…']},
+      {id:'chef-exit-2',course:'French 2',curriculumUnit:'f2-chef',unit:'connectors',day:2,mode:'writing',title:'Jour 2 · Billet de sortie — Répondre à Lina',
+       prompt:'Lina demande : « Qu’est-ce que tu aimes cuisiner ? » Rédige un commentaire de 60 à 80 mots. Cite son blog deux fois avec « Selon » ou « D’après » et les numéros de ligne. Donne deux opinions avec « Je pense que » ou « À mon avis » et « parce que ». Utilise une négation.',
+       english:'Lina asks, “What do you like to cook?” Write a 60–80-word comment. Cite her blog twice using Selon or D’après and line numbers; give two opinions using Je pense que or À mon avis with parce que; include one negative sentence. Consult Lina’s blog on page 7 of your packet.',
+       goal:'WRITING · 60–80 words · 2 citations with line numbers · 2 opinions with reasons · 1 negation. Oral rehearsal here is optional.',required:[],bank:['Salut Lina ! Merci pour ton blog.','Selon Lina, … (ligne …)','D’après Lina, … (ligne …)','Je pense que… parce que…','À mon avis… parce que…','Je ne… jamais…']},
+      {id:'chef-exit-3',course:'French 2',curriculumUnit:'f2-chef',unit:'future',day:3,mode:'writing',title:'Jour 3 · Billet de sortie — Ma recette rédigée',
+       prompt:'Rédige le brouillon d’une recette pour un plat simple (60 à 80 mots). Utilise 4 connecteurs (« d’abord », « ensuite », « puis », « enfin »), une opinion (« je pense que » ou « à mon avis »), une négation, un futur proche et un adjectif possessif.',
+       english:'Write a 60–80-word draft of your own recipe for a simple food. Include 4 connectors (d’abord, ensuite, puis, enfin), 1 opinion (je pense que / à mon avis), 1 negative sentence, 1 near-future expression (futur proche), and 1 possessive adjective.',
+       goal:'WRITING · 60–80 words · 4 connectors · 1 opinion · 1 negation · 1 futur proche · 1 possessive adjective. Oral rehearsal here is optional.',required:[],bank:['D’abord, nous préparons…','Ensuite, nous mélangeons…','Puis, nous ajoutons…','Enfin, nous goûtons…','À mon avis…','Je ne mange jamais…','Nous allons préparer…','Ma recette…']},
       ...FRENCH_PACKET_DAYS.map(d=>({id:d.id,course:FRENCH_CURRICULUM_UNITS.find(u=>u.id===d.curriculumUnit).course,curriculumUnit:d.curriculumUnit,unit:d.unit,title:d.title,prompt:d.prompt,goal:d.goal,required:d.required,bank:d.bank,day:d.day,mode:d.mode})),
       {id:'fr-free',course:'Production libre',curriculumUnit:'fr-libre',unit:'free',title:'Production libre · Parle de ton choix',prompt:'Parle librement d’un sujet de ton choix. Exprime au moins deux idées compréhensibles et donne des détails. Aucun temps grammatical particulier n’est obligatoire.',goal:'Communicate your own ideas clearly. No specific tense or grammar target is required.',required:[],bank:['Je voudrais parler de…','À mon avis…','Pour moi…','Par exemple…','parce que…','Et toi ?']}
     ];
     /* Student-facing bilingual choice labels; internal IDs and transcription language remain unchanged. */
     const EN_FRENCH_UNITS = {
       'f1-pre':'Getting started / Greetings','f1-u1':'Identity','f1-u2':'At school','f1-u3':'Family and home',
-      'f2-u4':'Food and dining','f2-u5':'Free time','f2-u6':'Around town',
+      'f2-u4':'Food and dining','f2-u5':'Free time','f2-chef':'Write like a chef! · Exit tickets','f2-u6':'Around town',
       'f3-ec2u3':'Volunteering and responsibilities','f3-ec2u5':'Healthy living','f3-ec2u6':'Travel in new ways',
       'fr-libre':'Your choice / Free speaking'
     };
@@ -2747,7 +2808,7 @@
         `Speaking practice: ${topic}. Say 2–3 short, complete sentences in Mandarin using today's lesson language. Add one personal detail.`;
       return {english:optional, title:topic, vocab:chineseTerms};
     }
-    const FRENCH_UNIT_VOCABULARY = {"f1-pre":["bonjour — hello","salut — hi","au revoir — goodbye","comment ça va ? — how are you?","je m’appelle… — my name is…","merci — thank you","s’il vous plaît — please","lundi / mardi — Monday / Tuesday","aujourd’hui — today","demain — tomorrow"],"f1-u1":["américain(e) — American","canadien(ne) — Canadian","québécois(e) — Québécois","bilingue — bilingual","un(e) artiste — artist","un(e) élève — student","un musicien / une musicienne — musician","sympa — nice","sportif / sportive — athletic","j’aime — I like","je n’aime pas — I do not like","parce que — because"],"f1-u2":["un cahier — notebook","un stylo — pen","un crayon — pencil","une trousse — pencil case","un sac à dos — backpack","les maths — math","le français — French","les sciences — science","facile — easy","difficile — difficult","une salle de classe — classroom","la bibliothèque — library","étudier — to study","travailler — to work"],"f1-u3":["ma mère — my mother","mon père — my father","mon frère — my brother","ma sœur — my sister","mes parents — my parents","le chien / le chat — dog / cat","gentil / gentille — kind","grand / grande — tall","une maison — house","un appartement — apartment","la cuisine — kitchen","la chambre — bedroom"],"f2-u4":["le pain — bread","la viande — meat","le poisson — fish","les légumes — vegetables","un marché — market","au café — at the café","du pain — some bread","de la salade — some salad","de l’eau — some water","des fruits — some fruits","j’ai faim — I am hungry","j’ai soif — I am thirsty","je voudrais — I would like","l’addition — bill"],"f2-u5":["faire du vélo — cycling","jouer au foot — soccer","jouer de la guitare — play guitar","le cinéma — cinema","un concert — concert","le week-end — weekend","demain — tomorrow","ce samedi — this Saturday","je vais + infinitif — going to","le soleil — sunshine","il pleut — it rains","une veste — jacket","une saison — season"],"f2-u6":["la boulangerie — bakery","la pharmacie — pharmacy","la pâtisserie — pastry shop","le magasin — store","l’épicerie — grocery store","le métro — metro","la poste — post office","les soldes — sales","acheter — to buy","vendre — to sell","à gauche — left","à droite — right","en face de — opposite","près de — near"],"f3-ec2u3":["faire la vaisselle — wash dishes","passer l’aspirateur — vacuum","ranger — tidy","une association — organization","un bénévole — volunteer","le bénévolat — volunteering","aider — help","la communauté — community","faire ma part — do my part","pouvoir — can","vouloir — want","choisir — choose","finir — finish"],"f3-ec2u5":["une habitude saine — healthy habit","le sport — sport","la santé — health","le sommeil — sleep","le stress — stress","avoir mal à — to have pain","le médecin — doctor","le pharmacien — pharmacist","se réveiller — wake up","se coucher — go to bed","il faut — one must","je conseille de — I advise"],"f3-ec2u6":["un passeport — passport","une valise — suitcase","un billet — ticket","l’aéroport — airport","un hébergement — lodging","une famille d’accueil — host family","le Cameroun — Cameroon","un voyageur — traveler","un touriste — tourist","je voyagerai — I will travel","je visiterai — I will visit","j’y vais — I go there"],"fr-libre":["à mon avis — in my opinion","je pense que — I think that","par exemple — for example","parce que — because","ensuite — next","enfin — finally"]};
+    const FRENCH_UNIT_VOCABULARY = {"f1-pre":["bonjour — hello","salut — hi","au revoir — goodbye","comment ça va ? — how are you?","je m’appelle… — my name is…","merci — thank you","s’il vous plaît — please","lundi / mardi — Monday / Tuesday","aujourd’hui — today","demain — tomorrow"],"f1-u1":["américain(e) — American","canadien(ne) — Canadian","québécois(e) — Québécois","bilingue — bilingual","un(e) artiste — artist","un(e) élève — student","un musicien / une musicienne — musician","sympa — nice","sportif / sportive — athletic","j’aime — I like","je n’aime pas — I do not like","parce que — because"],"f1-u2":["un cahier — notebook","un stylo — pen","un crayon — pencil","une trousse — pencil case","un sac à dos — backpack","les maths — math","le français — French","les sciences — science","facile — easy","difficile — difficult","une salle de classe — classroom","la bibliothèque — library","étudier — to study","travailler — to work"],"f1-u3":["ma mère — my mother","mon père — my father","mon frère — my brother","ma sœur — my sister","mes parents — my parents","le chien / le chat — dog / cat","gentil / gentille — kind","grand / grande — tall","une maison — house","un appartement — apartment","la cuisine — kitchen","la chambre — bedroom"],"f2-u4":["le pain — bread","la viande — meat","le poisson — fish","les légumes — vegetables","un marché — market","au café — at the café","du pain — some bread","de la salade — some salad","de l’eau — some water","des fruits — some fruits","j’ai faim — I am hungry","j’ai soif — I am thirsty","je voudrais — I would like","l’addition — bill"],"f2-u5":["faire du vélo — cycling","jouer au foot — soccer","jouer de la guitare — play guitar","le cinéma — cinema","un concert — concert","le week-end — weekend","demain — tomorrow","ce samedi — this Saturday","je vais + infinitif — going to","le soleil — sunshine","il pleut — it rains","une veste — jacket","une saison — season"],"f2-u6":["la boulangerie — bakery","la pharmacie — pharmacy","la pâtisserie — pastry shop","le magasin — store","l’épicerie — grocery store","le métro — metro","la poste — post office","les soldes — sales","acheter — to buy","vendre — to sell","à gauche — left","à droite — right","en face de — opposite","près de — near"],"f3-ec2u3":["faire la vaisselle — wash dishes","passer l’aspirateur — vacuum","ranger — tidy","une association — organization","un bénévole — volunteer","le bénévolat — volunteering","aider — help","la communauté — community","faire ma part — do my part","pouvoir — can","vouloir — want","choisir — choose","finir — finish"],"f3-ec2u5":["une habitude saine — healthy habit","le sport — sport","la santé — health","le sommeil — sleep","le stress — stress","avoir mal à — to have pain","le médecin — doctor","le pharmacien — pharmacist","se réveiller — wake up","se coucher — go to bed","il faut — one must","je conseille de — I advise"],"f3-ec2u6":["un passeport — passport","une valise — suitcase","un billet — ticket","l’aéroport — airport","un hébergement — lodging","une famille d’accueil — host family","le Cameroun — Cameroon","un voyageur — traveler","un touriste — tourist","je voyagerai — I will travel","je visiterai — I will visit","j’y vais — I go there"],"f2-chef":["d’abord — first","ensuite — next","puis — then","enfin — finally","selon — according to","d’après — according to","à mon avis — in my opinion","parce que — because","ne… jamais — never","je vais préparer — I am going to prepare","mon / ma / mes — my","laver — to wash","couper — to cut","mélanger — to mix","ajouter — to add"],"fr-libre":["à mon avis — in my opinion","je pense que — I think that","par exemple — for example","parce que — because","ensuite — next","enfin — finally"]};
     OTHER_GUIDED.chinese.units.unshift(...CHINESE_PACKET_UNITS);
     OTHER_GUIDED.chinese.tasks.unshift(...CHINESE_PACKET_TASKS);
 
@@ -3004,7 +3065,7 @@
                 </svg>
               </div><p class="text-sm text-slate-600"><span id="${this.p}-quickDesc">Choisis ton niveau, ton unité, puis le jour du cahier. La consigne orale apparaît automatiquement : zéro texte à saisir.</span></p>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3"><label class="text-xs font-bold text-slate-700"><span id="${this.p}-quickCourseLabel">Course</span><select id="${this.p}-quickCourse" class="mt-1.5 w-full border border-slate-300 rounded-xl px-3 py-2.5 bg-white"><option value="French 1">Français 1 / French 1</option><option value="French 2">Français 2 / French 2</option><option value="French 3">Français 3 / French 3</option><option value="Production libre">Production libre / Free speaking</option></select></label><label class="text-xs font-bold text-slate-700"><span id="${this.p}-quickUnitLabel">Textbook unit</span><select id="${this.p}-quickUnit" class="mt-1.5 w-full border border-slate-300 rounded-xl px-3 py-2.5 bg-white"></select></label><label class="text-xs font-bold text-slate-700"><span id="${this.p}-quickTaskLabel">Jour du cahier</span><select id="${this.p}-quickTask" class="mt-1.5 w-full border border-slate-300 rounded-xl px-3 py-2.5 bg-white"></select></label></div>
-              <div class="rounded-xl bg-blue-50 border border-blue-100 p-3"><p id="${this.p}-missionText" class="text-sm font-semibold text-blue-950"></p><p id="${this.p}-missionGoal" class="mt-1 text-xs text-slate-600"></p><p id="${this.p}-packetStatus" class="mt-2 text-xs font-semibold text-blue-800"></p></div>
+              <div class="student-mission-card rounded-xl" role="region" aria-label="Your task: French and English directions" aria-live="polite"><div class="student-mission-heading">🎯 TA MISSION · YOUR TASK</div><p id="${this.p}-missionText" class="student-mission-fr" lang="fr"></p><div class="student-mission-en" lang="en"><strong>English · What to do</strong><p id="${this.p}-missionEnglish"></p></div><p id="${this.p}-missionGoal" class="mt-3 text-sm font-semibold text-slate-700"></p><p id="${this.p}-packetStatus" class="mt-2 text-xs font-semibold text-blue-800"></p></div>
               <button type="button" id="${this.p}-frenchDrawerToggle" aria-expanded="false" class="w-full flex justify-between items-center text-left rounded-xl bg-slate-900 text-white px-4 py-3 font-bold text-sm"><span>🗣️ Ma boîte à outils · Un petit coup de pouce !</span><span id="${this.p}-frenchDrawerChevron">＋</span></button>
               <div id="${this.p}-frenchDrawer" class="hidden rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-3"><p id="${this.p}-coachIntro" class="text-xs text-slate-600">Use these starters to plan your own sentences. These are examples, not automatic answers.</p><div id="${this.p}-frenchCoachTabs" class="flex gap-1.5 flex-wrap"></div><div id="${this.p}-frenchCoachPhrases" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div><p id="${this.p}-coachFootnote" class="text-xs text-slate-500">Tap the speaker icon to hear a model. Speech playback depends on your browser's installed French voice.</p></div>
               <p id="${this.p}-quickCustomHint" class="text-xs text-slate-500">Need a custom assignment or different period? Open optional assignment details below.</p>
@@ -3017,7 +3078,7 @@
                 <label class="text-xs font-bold"><span id="${this.p}-guidedUnitLabel"></span><select id="${this.p}-guidedUnit" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
                 <label class="text-xs font-bold"><span id="${this.p}-guidedTaskLabel"></span><select id="${this.p}-guidedTask" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
               </div>
-              <div class="rounded-xl bg-blue-50 p-3"><p id="${this.p}-guidedPrompt" class="text-sm text-blue-950 font-semibold"></p><p id="${this.p}-guidedGoal" class="text-xs text-slate-600 mt-1"></p></div>
+              <div class="student-mission-card rounded-xl"><div class="student-mission-heading">🎯 YOUR TASK · TU MISIÓN</div><p id="${this.p}-guidedPrompt" class="student-mission-fr"></p><p id="${this.p}-guidedGoal" class="text-xs text-slate-600 mt-1"></p></div>
               <button id="${this.p}-guidedDrawerToggle" type="button" aria-expanded="false" class="w-full text-left flex justify-between rounded-xl bg-slate-900 text-white px-4 py-3 font-semibold text-sm"><span id="${this.p}-guidedDrawerTitle"></span><span>＋</span></button>
               <div id="${this.p}-guidedDrawer" class="hidden rounded-xl border bg-slate-50 p-3 space-y-2"><p id="${this.p}-guidedDrawerNote" class="text-xs text-slate-600"></p><div id="${this.p}-guidedPhrases" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div></div>
             </section>` : ''}
@@ -3029,7 +3090,7 @@
                 <label class="text-xs font-bold">Lesson / 課<select id="ja-packetUnit" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
                 <label class="text-xs font-bold">Day / 日<select id="ja-packetDay" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
               </div>
-              <div class="rounded-xl bg-rose-50/60 border border-rose-100 p-3" aria-live="polite"><p id="ja-packetInstruction" class="text-sm font-semibold text-blue-950" lang="en"></p><p id="ja-packetFocus" class="mt-2 text-xs text-slate-600"></p><p id="ja-packetOptional" class="mt-2 text-xs text-amber-800"></p></div>
+              <div class="rounded-xl bg-rose-50/60 border border-rose-100 p-3" aria-live="polite"><p id="ja-packetInstruction" class="student-mission-fr" lang="en"></p><p id="ja-packetFocus" class="mt-2 text-xs text-slate-600"></p><p id="ja-packetOptional" class="mt-2 text-xs text-amber-800"></p></div>
               <button id="ja-packetToolToggle" type="button" aria-expanded="false" class="w-full text-left flex justify-between rounded-xl bg-slate-900 text-white px-4 py-3 font-semibold text-sm"><span>🗣️ ことばのヒント · Speaking toolbox</span><span id="ja-packetToolChevron">＋</span></button>
               <div id="ja-packetTool" class="hidden rounded-xl border bg-slate-50 p-3 space-y-2"><p class="text-xs text-slate-600">Unit and day-specific phrases. Try saying your own sentences. Romaji is only shown for selected beginner examples.</p><div id="ja-packetWords" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div></div>
             </section>` : ''}
@@ -4099,9 +4160,21 @@
         this.el('assignmentInput').value=task.title;
         this.el('promptInput').value=task.prompt;
         this.el('missionText').textContent=task.prompt;
+        const enMission=this.el('missionEnglish');
+        if(enMission){
+          if(task.english || FRENCH_ENGLISH_TASK_PROMPTS[task.id]){enMission.textContent=task.english || FRENCH_ENGLISH_TASK_PROMPTS[task.id];}
+          else if(task.id==='f1-greeting'){enMission.textContent='Introduce yourself: greet someone, say your name, ask how they are, and end politely.';}
+          else if(task.id==='f1-calendar'){enMission.textContent='Say today’s day and an important date. Ask a question using quand or quelle.';}
+          else if(task.id==='fr-free'){enMission.textContent='Speak freely about a topic you choose. Share at least two understandable ideas and add details; no specific verb tense is required.';}
+          else {
+            const match=EN_FRENCH_TOPICS.find(([rx])=>rx.test(String(task.title).replace(/^Jour\s+\d+\s*[·:–-]\s*/iu,'')));
+            const topic=match?.[1]||EN_FRENCH_UNITS[task.curriculumUnit]||'today’s lesson';
+            enMission.textContent='Speak in French about '+topic.toLowerCase()+'. Follow the detailed French directions above and use the structures from today’s packet.';
+          }
+        }
         const q=FRENCH_QUICK_I18N[currentUiLang]||FRENCH_QUICK_I18N.en;
         this.el('missionGoal').textContent=q[3]+task.goal;
-        this.el('packetStatus').textContent=task.day ? (task.mode==='review' ? '✍️ Jour du cahier : activité d’écriture / Checkpoint — entraînement oral facultatif.' : '🎙️ Jour '+task.day+' : entraînement oral lié au cahier.') : '🗣️ Activité de démarrage ou production libre.';
+        this.el('packetStatus').textContent=task.day ? ((task.mode==='review'||task.mode==='writing') ? '✍️ Écriture / Writing assignment — recording is OPTIONAL speaking rehearsal, not the written submission.' : '🎙️ Jour '+task.day+' : entraînement oral lié au cahier.') : '🗣️ Activité de démarrage ou production libre.';
         this.el('levelGuidance').textContent=this.getLevelGuidance();
         this.renderFrenchCoach(task);
         this.refreshPromptPreview();
@@ -4755,7 +4828,7 @@
           report.suggestions = tailored.suggestions;
           const analysis=detectPromptRequirements(this.el('promptInput').value,course,this.el('topicSelect').value);
           const selectedDay=FRENCH_QUICK_TASKS.find(x=>x.id===this.el('quickTask').value);
-          const checks=selectedDay?.mode==='review' ? [] : evaluatePromptRequirements(analysis,cleanSpeech);
+          const checks=(selectedDay?.mode==='review'||selectedDay?.mode==='writing') ? [] : evaluatePromptRequirements(analysis,cleanSpeech);
           checks.unshift(...packetDayFeedback(selectedDay,cleanSpeech));
           this.renderPromptChecklist(analysis,checks);
           this.lastPromptRequirements=checks;
