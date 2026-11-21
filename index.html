@@ -3078,7 +3078,7 @@
                 <label class="text-xs font-bold"><span id="${this.p}-guidedUnitLabel"></span><select id="${this.p}-guidedUnit" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
                 <label class="text-xs font-bold"><span id="${this.p}-guidedTaskLabel"></span><select id="${this.p}-guidedTask" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
               </div>
-              <div class="student-mission-card rounded-xl"><div class="student-mission-heading">🎯 YOUR TASK · TU MISIÓN</div><p id="${this.p}-guidedPrompt" class="student-mission-fr"></p><p id="${this.p}-guidedGoal" class="text-xs text-slate-600 mt-1"></p></div>
+              <div class="student-mission-card rounded-xl" role="region" aria-label="Your speaking task" aria-live="polite"><div class="student-mission-heading">🎯 ${this.cfg.id === 'spanish' ? 'TU MISIÓN · YOUR TASK' : this.cfg.id === 'chinese' ? '你的任务 · YOUR TASK' : 'TA MISSION · YOUR TASK'}</div><p id="${this.p}-guidedPrompt" class="student-mission-fr"></p><p id="${this.p}-guidedGoal" class="text-xs text-slate-600 mt-1"></p></div>
               <button id="${this.p}-guidedDrawerToggle" type="button" aria-expanded="false" class="w-full text-left flex justify-between rounded-xl bg-slate-900 text-white px-4 py-3 font-semibold text-sm"><span id="${this.p}-guidedDrawerTitle"></span><span>＋</span></button>
               <div id="${this.p}-guidedDrawer" class="hidden rounded-xl border bg-slate-50 p-3 space-y-2"><p id="${this.p}-guidedDrawerNote" class="text-xs text-slate-600"></p><div id="${this.p}-guidedPhrases" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div></div>
             </section>` : ''}
@@ -3090,7 +3090,7 @@
                 <label class="text-xs font-bold">Lesson / 課<select id="ja-packetUnit" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
                 <label class="text-xs font-bold">Day / 日<select id="ja-packetDay" class="mt-1 w-full p-2 border rounded-xl bg-white"></select></label>
               </div>
-              <div class="rounded-xl bg-rose-50/60 border border-rose-100 p-3" aria-live="polite"><p id="ja-packetInstruction" class="student-mission-fr" lang="en"></p><p id="ja-packetFocus" class="mt-2 text-xs text-slate-600"></p><p id="ja-packetOptional" class="mt-2 text-xs text-amber-800"></p></div>
+              <div class="student-mission-card rounded-xl" role="region" aria-label="Your Japanese speaking task" aria-live="polite"><div class="student-mission-heading">🎯 あなたのミッション · YOUR TASK</div><p id="ja-packetInstruction" class="student-mission-fr" lang="en"></p><p id="ja-packetFocus" class="mt-2 text-xs text-slate-600"></p><p id="ja-packetOptional" class="mt-2 text-xs text-amber-800"></p></div>
               <button id="ja-packetToolToggle" type="button" aria-expanded="false" class="w-full text-left flex justify-between rounded-xl bg-slate-900 text-white px-4 py-3 font-semibold text-sm"><span>🗣️ ことばのヒント · Speaking toolbox</span><span id="ja-packetToolChevron">＋</span></button>
               <div id="ja-packetTool" class="hidden rounded-xl border bg-slate-50 p-3 space-y-2"><p class="text-xs text-slate-600">Unit and day-specific phrases. Try saying your own sentences. Romaji is only shown for selected beginner examples.</p><div id="ja-packetWords" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div></div>
             </section>` : ''}
@@ -3382,6 +3382,27 @@
                 <audio id="${this.p}-audioPlayer" controls class="w-full h-10"></audio>
               </div>
 
+              <!-- French pair peer checklist: generated from the selected speaking task. -->
+              ${this.cfg.id === 'french' ? `<section id="${this.p}-peerFeedbackSection" class="hidden rounded-2xl border border-blue-200 bg-[#fffdf8] p-4 sm:p-5 space-y-4 studio-enhancement" aria-label="Task-specific peer checklist">
+                <div>
+                  <h3 class="text-base sm:text-lg font-extrabold text-[#17345b]">🤝 Partner Checklist <span class="text-sm font-semibold text-slate-600">· Easy Peer Feedback</span></h3>
+                  <p class="text-xs sm:text-sm text-slate-600 mt-1">Listen to your partner (or read their writing). Check each thing they did well. Leave a box blank if they did not do it.</p>
+                  <p class="text-xs text-amber-800 mt-2">Speech recognition can make mistakes. Check the audio before judging your partner.</p>
+                </div>
+                <div id="${this.p}-peerTaskHeading" class="rounded-lg bg-blue-50 border border-blue-200 p-3 text-sm font-bold text-[#164b9b]"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                  ${[1,2].map(n => `<div class="rounded-xl border border-slate-200 bg-white p-3 space-y-3">
+                    <h4 id="${this.p}-peerTitle${n}" class="font-bold text-sm text-[#164b9b]">Partner feedback</h4>
+                    <div id="${this.p}-peerChecks${n}" class="space-y-2" role="group" aria-label="Partner ${n} assessment checklist"></div>
+                    <label class="block text-sm font-semibold text-slate-800" for="${this.p}-peerPraise${n}">🌟 What my partner did well</label>
+                    <textarea id="${this.p}-peerPraise${n}" maxlength="400" rows="2" class="w-full rounded-xl border border-slate-300 bg-white p-3 text-sm" placeholder="Ex. I understood your answers because you spoke clearly."></textarea>
+                    <label class="block text-sm font-semibold text-slate-800" for="${this.p}-peerImprove${n}">💡 One thing my partner can improve</label>
+                    <textarea id="${this.p}-peerImprove${n}" maxlength="400" rows="2" class="w-full rounded-xl border border-slate-300 bg-white p-3 text-sm" placeholder="Ex. Add one more detail in your answer."></textarea>
+                  </div>`).join('')}
+                </div>
+                <p class="text-xs font-medium text-[#164b9b]">Your checklist and comments will be included in the existing TXT download.</p>
+              </section>` : ''}
+
               <!-- Automatic English Grammar & Speaking Feedback Loop (Shown After Stopping) -->
               <div id="${this.p}-feedbackContainer" class="hidden space-y-4 pt-2">
                 <!-- Encouraging Summary Banner -->
@@ -3583,8 +3604,8 @@
           });
         });
 
-        this.el('student1Input').addEventListener('input', () => this.updateSpeakerBadges());
-        this.el('student2Input').addEventListener('input', () => this.updateSpeakerBadges());
+        this.el('student1Input').addEventListener('input', () => { this.updateSpeakerBadges(); this.updatePeerFeedbackLabels(); });
+        this.el('student2Input').addEventListener('input', () => { this.updateSpeakerBadges(); this.updatePeerFeedbackLabels(); });
 
         this.el('swapBtn').addEventListener('click', () => {
           // Before recording: exchange who speaks first. During recording:
@@ -3598,6 +3619,7 @@
           const temp = s1.value;
           s1.value = s2.value;
           s2.value = temp;
+          this.updatePeerFeedbackLabels();
           this.updateSpeakerBadges();
           this.setBannerKey('info', 'bannerSwapped');
         });
@@ -3681,7 +3703,7 @@
           this.updateFrenchTopics();
           this.setupFrenchQuickStart();
           this.el('topicSelect').addEventListener('change',()=>this.refreshPromptPreview());
-          this.el('promptInput').addEventListener('input',()=>this.refreshPromptPreview());
+          this.el('promptInput').addEventListener('input',()=>{this.refreshPromptPreview();this.renderFrenchPeerChecklist();});
           this.refreshPromptPreview();
         }
         this.el('startBtn').addEventListener('click', () => this.startRecording());
@@ -3695,6 +3717,148 @@
         this.el('downloadBothBtn').addEventListener('click', () => this.downloadBoth());
         this.el('downloadAudioBtn').addEventListener('click', () => this.downloadAudio());
         this.el('downloadTextBtn').addEventListener('click', () => this.downloadText());
+      }
+
+      // Peer feedback is deliberately in simple English: it should communicate
+      // actionable feedback rather than become another target-language exercise.
+      // Each checkbox describes evidence students can actually observe.
+      getFrenchPeerCriteria() {
+        const task = FRENCH_QUICK_TASKS.find(x => x.id === this.el('quickTask').value);
+        const writing = task?.mode === 'writing';
+        const selectedEnglish = task && (task.english || FRENCH_ENGLISH_TASK_PROMPTS[task.id]);
+        const customized = this.el('promptInput').value.trim();
+        const promptEdited = !!customized && customized !== (task?.prompt?.trim() || '');
+        const directions = (promptEdited ? customized : (selectedEnglish || customized || task?.goal || '')).replace(/\s+/g, ' ').trim();
+        const specific = [];
+        const add = (key, label) => { if (!specific.some(x => x.key === key)) specific.push({key, label}); };
+        // These two writing exit tickets have exact, multi-part requirements.
+        // Don't collapse a detailed written assignment into a vague speaking check.
+        if (!promptEdited && task?.id === 'chef-exit-3') {
+          add('words', 'My partner wrote 60–80 words.');
+          add('recipe', 'My partner wrote a recipe for a simple dish.');
+          add('connectors', 'My partner used four sequencing words (d’abord, ensuite, puis, enfin).');
+          add('opinion', 'My partner gave an opinion.');
+          add('negative', 'My partner included a negative sentence.');
+          add('future', 'My partner used futur proche (aller + infinitive).');
+          add('possessive', 'My partner used a possessive adjective (such as mon, ma, or mes).');
+        } else if (!promptEdited && task?.id === 'chef-exit-2') {
+          add('words', 'My partner wrote 60–80 words.');
+          add('answer', 'My partner answered Lina’s question about cooking.');
+          add('citations', 'My partner cited Lina’s blog twice, with line numbers.');
+          add('opinions', 'My partner gave two opinions and explained why.');
+          add('negative', 'My partner included a negative sentence.');
+        } else if (!promptEdited && task?.id === 'chef-exit-1') {
+          add('dish', 'My partner explained how to prepare a simple dish.');
+          add('steps', 'My partner described four steps in order.');
+          add('connectors', 'My partner used four different sequencing words.');
+          add('verbs', 'My partner used four different -er verbs.');
+          add('duration', 'My partner spoke for about 45 seconds.');
+        } else {
+          // Translate the teacher's directions into observable, first-person
+          // student checks. Avoid copying the prompt as an instruction.
+          const text = directions.toLowerCase();
+          const quantity = (pattern) => {
+            const match = text.match(pattern);
+            return match ? match[1] : null;
+          };
+          const wordCount = quantity(/(\d+\s*(?:–|-|to)\s*\d+)\s*words?/i);
+          if (wordCount) add('words', `My partner wrote ${wordCount.replace(/\s*(?:–|-|to)\s*/i, '–')} words.`);
+          const connectorCount = quantity(/(\d+)\s*(?:different\s+)?(?:sequencing\s+)?connectors?/i);
+          if (connectorCount) add('connectors', `My partner used ${connectorCount} sequencing or linking words.`);
+          const steps = quantity(/(\d+)\s*(?:ordered\s+)?steps?/i);
+          if (steps) add('steps', `My partner included ${steps} steps in order.`);
+          const questions = quantity(/(\d+)\s*questions?/i);
+          if (questions) add('questions', `My partner asked ${questions} questions.`);
+          const items = quantity(/(\d+)\s*(?:foods?|shops?|sports?|activities|stores|choices)/i);
+          if (items) add('items', `My partner included the requested ${items} examples.`);
+          if (/recipe|dish|cook|prepar/.test(text)) add('topic-recipe', `My partner ${writing ? 'wrote' : 'talked'} about a recipe or dish.`);
+          else if (/food|meal|drink|café|menu|order/.test(text)) add('topic-food', `My partner ${writing ? 'wrote' : 'talked'} about food, drinks, or meals.`);
+          else if (/shopping|shop|store|buy|price/.test(text)) add('topic-shop', `My partner ${writing ? 'wrote' : 'talked'} about shopping or stores.`);
+          else if (/weekend|future plan|going to do/.test(text)) add('topic-plans', `My partner ${writing ? 'wrote' : 'talked'} about plans or activities.`);
+          else if (/hobbies|sport|leisure|instrument/.test(text)) add('topic-hobbies', `My partner ${writing ? 'wrote' : 'talked'} about hobbies or activities.`);
+          else if (/weather|clothes/.test(text)) add('topic-weather', `My partner ${writing ? 'wrote' : 'talked'} about weather or clothing.`);
+          else if (/invite|accept|decline/.test(text)) add('topic-invite', 'My partner invited someone and responded politely.');
+          else if (/introduc|greet|name/.test(text)) add('topic-intro', 'My partner introduced someone or used a greeting.');
+          else if (/directions|map|locations?/.test(text)) add('topic-places', 'My partner described places or directions.');
+          if (/futur proche|aller\s*\+\s*infinitive|near.future/.test(text)) add('future', 'My partner used futur proche (aller + infinitive).');
+          if (/negati|ne\.{0,3}pas|never eat/.test(text)) add('negative', 'My partner used a negative sentence.');
+          if (/opinions?/.test(text)) add('opinion', 'My partner shared an opinion.');
+          if (/because|explain why|reasons?/.test(text)) add('reasons', 'My partner explained their ideas with a reason.');
+          if (/quel, quelle|question words?/.test(text)) add('question-words', 'My partner used the question words from this task.');
+          if (/partitive|du, de la|de l’|de l'/.test(text)) add('partitive', 'My partner used the food articles from this task.');
+          if (/possessive/.test(text)) add('possessive', 'My partner used a possessive adjective.');
+          if (/compar/.test(text)) add('comparison', 'My partner compared two things.');
+          if (/ask.*answer|dialogue|conversation|role.play/.test(text)) add('interaction', 'My partner asked or answered questions during the conversation.');
+          if (/45 seconds?/.test(text)) add('duration', 'My partner spoke for about 45 seconds.');
+          // Some curriculum units specify grammar separately from the directions.
+          if (!promptEdited && task?.required?.length) {
+            const grammar = {
+              salutations: 'My partner used a greeting or introduction.',
+              er: 'My partner used the required -er verbs.',
+              questions: 'My partner asked a question.',
+              future: 'My partner used futur proche (aller + infinitive).',
+              connectors: 'My partner used linking or sequencing words.',
+              negation: 'My partner used a negative sentence.',
+              past: 'My partner used passé composé.',
+              partitives: 'My partner used the correct food articles.',
+              possessives: 'My partner used a possessive adjective.',
+              adjectives: 'My partner used descriptive adjectives.',
+              comparisons: 'My partner compared two things.',
+              directions: 'My partner gave directions.',
+              articles: 'My partner used articles (le, la, un, une, etc.).'
+            };
+            for (const requirement of task.required) {
+              if (grammar[requirement] && !specific.some(x => x.label === grammar[requirement])) {
+                add(`grammar-${requirement}`, grammar[requirement]);
+              }
+            }
+          }
+          if (!specific.length) add('task-response', `My partner ${writing ? 'completed the writing task' : 'talked about the assigned topic'}.`);
+        }
+        const common = writing ? [
+          {key:'understood', label:'I could understand what my partner wrote.'},
+          {key:'meaning', label:'My partner’s ideas made sense and answered the question.'},
+          {key:'review', label:'I checked the actual writing, not just the automatic transcript.'}
+        ] : [
+          {key:'understood', label:'I could understand what my partner said.'},
+          {key:'meaning', label:'My partner’s answers made sense.'},
+          {key:'transcript', label:'I checked the transcript against the audio. I noticed any mistakes.'}
+        ];
+        return [...common, ...specific];
+      }
+
+      renderFrenchPeerChecklist() {
+        if(this.cfg.id !== 'french') return;
+        const criteria = this.getFrenchPeerCriteria();
+        const task = FRENCH_QUICK_TASKS.find(x => x.id === this.el('quickTask').value);
+        this.peerCriteria = criteria;
+        this.peerCriteriaTaskKey = `${this.el('quickTask').value}|${this.el('promptInput').value}`;
+        this.el('peerTaskHeading').textContent = `🎯 ${task?.title || this.el('assignmentInput').value || 'Speaking activity'} · ${criteria.length} easy checks`;
+        [1,2].forEach(n=>{
+          const holder = this.el(`peerChecks${n}`);
+          holder.replaceChildren();
+          criteria.forEach((criterion,i)=>{
+            const label = document.createElement('label');
+            label.className='flex items-start gap-2 cursor-pointer p-2 rounded-lg border border-slate-200 hover:bg-blue-50 text-sm leading-relaxed';
+            const checkbox=document.createElement('input');
+            checkbox.type='checkbox';
+            checkbox.className='mt-1 h-4 w-4 shrink-0 accent-blue-700';
+            checkbox.dataset.peerCheck=criterion.key;
+            checkbox.dataset.evaluator=String(n);
+            checkbox.setAttribute('aria-label',criterion.label);
+            const span=document.createElement('span');span.textContent=criterion.label;
+            label.append(checkbox,span);holder.appendChild(label);
+          });
+        });
+      }
+
+      // Feedback direction is explicit: Student 1 evaluates Student 2, and vice versa.
+      updatePeerFeedbackLabels() {
+        if (this.cfg.id !== 'french') return;
+        const first = this.el('student1Input').value.trim() || 'Student 1';
+        const second = this.el('student2Input').value.trim() || 'Student 2';
+        this.el('peerTitle1').textContent = `${first} → ${second} · Feedback for ${second}`;
+        this.el('peerTitle2').textContent = `${second} → ${first} · Feedback for ${first}`;
       }
 
       setTaskMode(mode) {
@@ -3727,6 +3891,10 @@
           this.el('participationPanel').classList.add('hidden');
         }
 
+        if (this.cfg.id === 'french') {
+          this.el('peerFeedbackSection').classList.toggle('hidden', mode !== 'pair');
+          this.updatePeerFeedbackLabels();
+        }
         this.updateSpeakerBadges();
         this.updateParticipation();
         this.updatePairSwitchControls();
@@ -4178,6 +4346,7 @@
         this.el('levelGuidance').textContent=this.getLevelGuidance();
         this.renderFrenchCoach(task);
         this.refreshPromptPreview();
+        this.renderFrenchPeerChecklist();
       }
 
       updateFrenchTopics() {
@@ -4939,6 +5108,10 @@
         player.load();
         this.el('audioMeta').textContent = t('noRecordingYet');
 
+        if (this.cfg.id === 'french') {
+          ['peerPraise1','peerImprove1','peerPraise2','peerImprove2'].forEach(id => { this.el(id).value = ''; });
+          this.el('peerFeedbackSection').querySelectorAll('input[data-peer-check]').forEach(box=>{ box.checked=false; });
+        }
         this.lastFeedbackReport = null;
         this.lastPromptRequirements = [];
         if(this.cfg.id==='french')this.el('requirementsWrap').classList.add('hidden');
@@ -4996,6 +5169,30 @@
           row(m.date,dateTimeStr),row(m.duration,this.formatTime(this.secondsElapsed)),
           '-----------------------------------------------------------',m.transcript,
           '-----------------------------------------------------------',transcriptBody,'',
+          ...(this.cfg.id === 'french' && this.taskMode === 'pair' ? [
+            '-----------------------------------------------------------',
+            'PEER FEEDBACK / PARTNER CHECKLIST',
+            '-----------------------------------------------------------',
+            ...[1,2].flatMap(n => {
+              const evaluator = (n === 1 ? s1 : s2) || `Student ${n}`;
+              const recipient = (n === 1 ? s2 : s1) || `Student ${n === 1 ? 2 : 1}`;
+              const checked = this.peerCriteria || [];
+              const evaluatedTask = this.el('quickTask').value;
+              const nowTask = `${evaluatedTask}|${this.el('promptInput').value}`;
+              const criteriaReady = this.peerCriteriaTaskKey === nowTask;
+              const assessments = criteriaReady ? checked.map(c=>{
+                const box = [...this.el(`peerChecks${n}`).querySelectorAll('input[data-peer-check]')].find(x=>x.dataset.peerCheck===c.key);
+                return `${box?.checked ? '[✓] Yes' : '[ ] Not yet'} — ${c.label}`;
+              }) : ['Checklist changed after recording; please review the current task.'];
+              return [
+                `${evaluator} → ${recipient}`,
+                ...assessments,
+                `What my partner did well: ${this.el('peerPraise' + n).value.trim() || 'Not provided'}`,
+                `One thing my partner can improve: ${this.el('peerImprove' + n).value.trim() || 'Not provided'}`,
+                ''
+              ];
+            })
+          ] : []),
           '-----------------------------------------------------------',m.feedback,
           '-----------------------------------------------------------',
           ...(this.lastFeedbackReport ? [this.lastFeedbackReport.summary,
