@@ -2626,6 +2626,464 @@
       ...FRENCH_PACKET_DAYS.map(d=>({id:d.id,course:FRENCH_CURRICULUM_UNITS.find(u=>u.id===d.curriculumUnit).course,curriculumUnit:d.curriculumUnit,unit:d.unit,title:d.title,prompt:d.prompt,goal:d.goal,required:d.required,bank:d.bank,day:d.day,mode:d.mode})),
       {id:'fr-free',course:'Production libre',curriculumUnit:'fr-libre',unit:'free',title:'Production libre · Parle de ton choix',prompt:'Parle librement d’un sujet de ton choix. Exprime au moins deux idées compréhensibles et donne des détails. Aucun temps grammatical particulier n’est obligatoire.',goal:'Communicate your own ideas clearly. No specific tense or grammar target is required.',required:[],bank:['Je voudrais parler de…','À mon avis…','Pour moi…','Par exemple…','parce que…','Et toi ?']}
     ];
+    const FRENCH_SPEAKING_PEER_CHECKS = {
+  "packet-f1-u1-01": [
+    "My partner shared their name and nationality.",
+    "My partner gave another detail about their identity."
+  ],
+  "packet-f1-u1-02": [
+    "My partner described two jobs or occupations.",
+    "My partner said who does those jobs."
+  ],
+  "packet-f1-u1-03": [
+    "My partner used “je suis” to introduce themselves.",
+    "My partner described another person using “il est” or “elle est”."
+  ],
+  "packet-f1-u1-04": [
+    "My partner described themselves with an adjective.",
+    "My partner described a classmate with two adjectives."
+  ],
+  "packet-f1-u1-05": [
+    "My partner named activities they like.",
+    "My partner explained why they like an activity."
+  ],
+  "packet-f1-u1-06": [
+    "My partner named two activities they like.",
+    "My partner named one activity they do not like."
+  ],
+  "packet-f1-u1-07": [
+    "My partner asked two questions.",
+    "My partner used question words such as où, quand, or pourquoi."
+  ],
+  "packet-f1-u1-08": [
+    "My partner asked a question in two different ways.",
+    "My partner answered the question."
+  ],
+  "packet-f1-u1-09": [
+    "My partner shared an idea about Québec.",
+    "My partner mentioned identity or languages in Québec."
+  ],
+  "packet-f1-u1-10": [
+    "My partner introduced themselves.",
+    "My partner shared a preference and asked the audience a question."
+  ],
+  "packet-f1-u2-01": [
+    "My partner named at least three school supplies.",
+    "My partner asked what an object is."
+  ],
+  "packet-f1-u2-02": [
+    "My partner described things in the classroom.",
+    "My partner used un, une, and des."
+  ],
+  "packet-f1-u2-03": [
+    "My partner gave the prices of two objects.",
+    "My partner said what is not in their bag."
+  ],
+  "packet-f1-u2-04": [
+    "My partner named two school subjects.",
+    "My partner shared an opinion about a subject."
+  ],
+  "packet-f1-u2-05": [
+    "My partner talked about school subjects they like or prefer.",
+    "My partner used le, la, l’, or les."
+  ],
+  "packet-f1-u2-06": [
+    "My partner gave the times of two school activities.",
+    "My partner connected each time to the correct activity."
+  ],
+  "packet-f1-u2-07": [
+    "My partner described their school schedule.",
+    "My partner used 24-hour times."
+  ],
+  "packet-f1-u2-08": [
+    "My partner talked about school subjects and supplies.",
+    "My partner described their school schedule."
+  ],
+  "packet-f1-u2-09": [
+    "My partner mentioned two places or people at school.",
+    "My partner explained who owns an object."
+  ],
+  "packet-f1-u2-10": [
+    "My partner described two school activities.",
+    "My partner used present-tense -ER verbs."
+  ],
+  "packet-f1-u2-11": [
+    "My partner compared their activities with classmates’ activities.",
+    "My partner used two -ER verb forms and a negative sentence."
+  ],
+  "packet-f1-u2-12": [
+    "My partner described their school.",
+    "My partner talked about what they do during the school day."
+  ],
+  "packet-f1-u2-13": [
+    "My partner described subjects and school times.",
+    "My partner mentioned school places and activities."
+  ],
+  "packet-f1-u3-01": [
+    "My partner introduced at least three family members.",
+    "My partner explained how the family members are related."
+  ],
+  "packet-f1-u3-02": [
+    "My partner said how many siblings or pets they have.",
+    "My partner used avoir or a negative sentence."
+  ],
+  "packet-f1-u3-03": [
+    "My partner described their family.",
+    "My partner used three different possessive adjectives."
+  ],
+  "packet-f1-u3-04": [
+    "My partner described another person’s family.",
+    "My partner used possessives such as son, sa, ses, notre, or leurs."
+  ],
+  "packet-f1-u3-05": [
+    "My partner described two family members.",
+    "My partner mentioned personality, hair, or eyes using être or avoir."
+  ],
+  "packet-f1-u3-06": [
+    "My partner named three rooms at home.",
+    "My partner described an activity in the home."
+  ],
+  "packet-f1-u3-07": [
+    "My partner introduced their family.",
+    "My partner described their home."
+  ],
+  "packet-f1-u3-08": [
+    "My partner asked two questions about family or home.",
+    "My partner answered using complete sentences."
+  ],
+  "packet-f1-u3-09": [
+    "My partner described their home.",
+    "My partner used “il y a” and “il n’y a pas de”."
+  ],
+  "packet-f1-u3-10": [
+    "My partner shared three facts about family or home.",
+    "My partner explained a preference."
+  ],
+  "packet-f1-u3-11": [
+    "My partner explained two parts of their family album.",
+    "My partner gave details about the family members."
+  ],
+  "packet-f1-u3-12": [
+    "My partner described their family album.",
+    "My partner explained the layout of their home."
+  ],
+  "packet-f2-u4-01": [
+    "My partner named meals or drinks.",
+    "My partner said whether they were hungry or thirsty."
+  ],
+  "packet-f2-u4-02": [
+    "My partner described two foods from the market.",
+    "My partner explained which foods they like."
+  ],
+  "packet-f2-u4-03": [
+    "My partner talked about what they eat and drink.",
+    "My partner used du, de la, de l’, or des."
+  ],
+  "packet-f2-u4-04": [
+    "My partner described food they eat during the day.",
+    "My partner described drinks they have during the day."
+  ],
+  "packet-f2-u4-05": [
+    "My partner explained what they choose for a meal.",
+    "My partner used prendre or choisir."
+  ],
+  "packet-f2-u4-06": [
+    "My partner said where they are going to go.",
+    "My partner explained what they are going to eat using futur proche."
+  ],
+  "packet-f2-u4-07": [
+    "My partner named foods from this unit.",
+    "My partner described their eating habits."
+  ],
+  "packet-f2-u4-08": [
+    "My partner ordered a drink and a dish.",
+    "My partner used polite expressions in the café dialogue."
+  ],
+  "packet-f2-u4-09": [
+    "My partner described two menu choices.",
+    "My partner gave the prices for both choices."
+  ],
+  "packet-f2-u4-10": [
+    "My partner named two foods they do not eat.",
+    "My partner used a negative expression."
+  ],
+  "packet-f2-u4-11": [
+    "My partner explained what they do not eat or who is missing.",
+    "My partner used rien or personne."
+  ],
+  "packet-f2-u4-12": [
+    "My partner described a responsible eating habit.",
+    "My partner gave a reason for that habit."
+  ],
+  "packet-f2-u4-13": [
+    "My partner explained how to order food.",
+    "My partner described a responsible eating choice."
+  ],
+  "packet-f2-u4-14": [
+    "My partner described their café menu.",
+    "My partner recommended a meal."
+  ],
+  "packet-f2-u5-01": [
+    "My partner named two sports they do.",
+    "My partner mentioned another activity they enjoy."
+  ],
+  "packet-f2-u5-02": [
+    "My partner named an instrument or activity.",
+    "My partner explained where they do that activity."
+  ],
+  "packet-f2-u5-03": [
+    "My partner said where they go for an activity.",
+    "My partner used au, à la, à l’, or aux."
+  ],
+  "packet-f2-u5-04": [
+    "My partner described a weekend activity.",
+    "My partner explained how they do it with friends."
+  ],
+  "packet-f2-u5-05": [
+    "My partner described a weekend plan.",
+    "My partner used aller + infinitive."
+  ],
+  "packet-f2-u5-06": [
+    "My partner described their hobbies.",
+    "My partner shared a future plan."
+  ],
+  "packet-f2-u5-07": [
+    "My partner invited someone to an activity.",
+    "My partner accepted or declined politely and asked a question."
+  ],
+  "packet-f2-u5-08": [
+    "My partner described clothing for a situation.",
+    "My partner named what they were wearing."
+  ],
+  "packet-f2-u5-09": [
+    "My partner described the weather.",
+    "My partner explained what clothes they are going to wear."
+  ],
+  "packet-f2-u5-10": [
+    "My partner asked two questions.",
+    "My partner used forms of quel or quelle."
+  ],
+  "packet-f2-u5-11": [
+    "My partner described favorite activities.",
+    "My partner talked about the weather."
+  ],
+  "packet-f2-u5-12": [
+    "My partner described favorite hobbies.",
+    "My partner shared a weekend plan."
+  ],
+  "packet-f2-u6-01": [
+    "My partner named three stores or businesses.",
+    "My partner explained what they buy at those places."
+  ],
+  "packet-f2-u6-02": [
+    "My partner described items they buy.",
+    "My partner gave prices and named the store sections."
+  ],
+  "packet-f2-u6-03": [
+    "My partner said what they want to do.",
+    "My partner said what they can or must do in town."
+  ],
+  "packet-f2-u6-04": [
+    "My partner acted as a customer or shopkeeper.",
+    "My partner asked or answered a shopping question."
+  ],
+  "packet-f2-u6-05": [
+    "My partner described a shopping trip.",
+    "My partner mentioned a store and something purchased."
+  ],
+  "packet-f2-u6-06": [
+    "My partner explained one benefit or drawback of online shopping.",
+    "My partner gave a relevant reason or example."
+  ],
+  "packet-f2-u6-07": [
+    "My partner described a situation in town.",
+    "My partner used a verb such as vendre, attendre, entendre, or perdre."
+  ],
+  "packet-f2-u6-08": [
+    "My partner located three stores on a map.",
+    "My partner used location expressions."
+  ],
+  "packet-f2-u6-09": [
+    "My partner named shops from the unit.",
+    "My partner described where the shops are."
+  ],
+  "packet-f2-u6-10": [
+    "My partner introduced a francophone town center.",
+    "My partner explained where major shops are located."
+  ],
+  "packet-f3-ec2u3-01": [
+    "My partner described chores they do.",
+    "My partner said which chores they prefer."
+  ],
+  "packet-f3-ec2u3-02": [
+    "My partner said when chores are done.",
+    "My partner negotiated how to share the chores."
+  ],
+  "packet-f3-ec2u3-03": [
+    "My partner said what they want to do to help.",
+    "My partner said what they can do to help."
+  ],
+  "packet-f3-ec2u3-04": [
+    "My partner proposed an activity.",
+    "My partner explained their choice using choisir or finir."
+  ],
+  "packet-f3-ec2u3-05": [
+    "My partner described their responsibilities.",
+    "My partner explained a choice they make."
+  ],
+  "packet-f3-ec2u3-06": [
+    "My partner described two volunteer qualities.",
+    "My partner explained why those qualities are useful."
+  ],
+  "packet-f3-ec2u3-07": [
+    "My partner proposed a community service activity.",
+    "My partner explained whom the activity would help."
+  ],
+  "packet-f3-ec2u3-08": [
+    "My partner asked two questions to a volunteer.",
+    "My partner used quel or qu’est-ce que."
+  ],
+  "packet-f3-ec2u3-09": [
+    "My partner explained where volunteers work.",
+    "My partner explained what they do there."
+  ],
+  "packet-f3-ec2u3-10": [
+    "My partner explained an idea about volunteering.",
+    "My partner connected ideas with qui, que, or où."
+  ],
+  "packet-f3-ec2u3-11": [
+    "My partner explained why they want to volunteer.",
+    "My partner shared an opinion about helping."
+  ],
+  "packet-f3-ec2u3-12": [
+    "My partner stated an opinion about volunteering.",
+    "My partner gave a reason to support that opinion."
+  ],
+  "packet-f3-ec2u3-13": [
+    "My partner introduced themselves to an organization.",
+    "My partner explained why they should be selected."
+  ],
+  "packet-f3-ec2u5-01": [
+    "My partner named two healthy habits.",
+    "My partner explained how the habits support health."
+  ],
+  "packet-f3-ec2u5-02": [
+    "My partner described an eating habit.",
+    "My partner used trop or pas assez."
+  ],
+  "packet-f3-ec2u5-03": [
+    "My partner gave two health tips.",
+    "My partner used il est important de or pour + infinitive."
+  ],
+  "packet-f3-ec2u5-04": [
+    "My partner shared a health statistic or survey result.",
+    "My partner explained what the number means."
+  ],
+  "packet-f3-ec2u5-05": [
+    "My partner described a healthy habit.",
+    "My partner offered health advice."
+  ],
+  "packet-f3-ec2u5-06": [
+    "My partner named two body parts.",
+    "My partner explained where someone hurts."
+  ],
+  "packet-f3-ec2u5-07": [
+    "My partner described symptoms during a doctor dialogue.",
+    "My partner asked or answered a doctor’s question."
+  ],
+  "packet-f3-ec2u5-08": [
+    "My partner gave two direct health tips.",
+    "My partner used commands."
+  ],
+  "packet-f3-ec2u5-09": [
+    "My partner explained a source of stress.",
+    "My partner suggested a way to feel better."
+  ],
+  "packet-f3-ec2u5-10": [
+    "My partner described three parts of a daily routine.",
+    "My partner used reflexive verbs."
+  ],
+  "packet-f3-ec2u5-11": [
+    "My partner described a screen-time habit.",
+    "My partner shared an opinion about it."
+  ],
+  "packet-f3-ec2u5-12": [
+    "My partner suggested a way to reduce screen time.",
+    "My partner supported the suggestion with a reason."
+  ],
+  "packet-f3-ec2u5-13": [
+    "My partner gave specific health tips for teens.",
+    "My partner explained how at least one tip helps."
+  ],
+  "packet-f3-ec2u6-01": [
+    "My partner named a travel destination.",
+    "My partner described where it is located."
+  ],
+  "packet-f3-ec2u6-02": [
+    "My partner described the climate of a place.",
+    "My partner explained why they want to visit."
+  ],
+  "packet-f3-ec2u6-03": [
+    "My partner described what they will do on a trip.",
+    "My partner used two forms of the simple future tense."
+  ],
+  "packet-f3-ec2u6-04": [
+    "My partner described an alternative travel experience.",
+    "My partner mentioned volunteering or staying with a host family."
+  ],
+  "packet-f3-ec2u6-05": [
+    "My partner described a travel plan.",
+    "My partner explained its cultural value."
+  ],
+  "packet-f3-ec2u6-06": [
+    "My partner explained what to pack.",
+    "My partner explained what they must prepare."
+  ],
+  "packet-f3-ec2u6-07": [
+    "My partner answered a travel question.",
+    "My partner replaced a noun with le, la, or les."
+  ],
+  "packet-f3-ec2u6-08": [
+    "My partner acted out an airport conversation.",
+    "My partner used y to refer to a place."
+  ],
+  "packet-f3-ec2u6-09": [
+    "My partner compared two places to stay.",
+    "My partner chose one option."
+  ],
+  "packet-f3-ec2u6-10": [
+    "My partner described three future trip activities.",
+    "My partner used the simple future tense."
+  ],
+  "packet-f3-ec2u6-11": [
+    "My partner gave two tips for respectful travel.",
+    "My partner explained how to respect local people."
+  ],
+  "packet-f3-ec2u6-12": [
+    "My partner explained a difference between tourists and travelers.",
+    "My partner supported the comparison with an example."
+  ],
+  "packet-f3-ec2u6-13": [
+    "My partner presented a travel plan.",
+    "My partner explained why they deserve a travel scholarship."
+  ],
+  "f1-greeting": [
+    "My partner greeted someone and said their name.",
+    "My partner asked how someone was and ended politely."
+  ],
+  "f1-calendar": [
+    "My partner said today’s day and an important date.",
+    "My partner asked a question using quand or quelle."
+  ],
+  "chef-exit-1": [
+    "My partner explained a recipe in four steps.",
+    "My partner used four sequencing words and four different -er verbs."
+  ],
+  "fr-free": [
+    "My partner shared at least two ideas about a chosen topic.",
+    "My partner added a detail or example to explain their ideas."
+  ]
+};
     /* Student-facing bilingual choice labels; internal IDs and transcription language remain unchanged. */
     const EN_FRENCH_UNITS = {
       'f1-pre':'Getting started / Greetings','f1-u1':'Identity','f1-u2':'At school','f1-u3':'Family and home',
@@ -3386,8 +3844,8 @@
               ${this.cfg.id === 'french' ? `<section id="${this.p}-peerFeedbackSection" class="hidden rounded-2xl border border-blue-200 bg-[#fffdf8] p-4 sm:p-5 space-y-4 studio-enhancement" aria-label="Task-specific peer checklist">
                 <div>
                   <h3 class="text-base sm:text-lg font-extrabold text-[#17345b]">🤝 Partner Checklist <span class="text-sm font-semibold text-slate-600">· Easy Peer Feedback</span></h3>
-                  <p class="text-xs sm:text-sm text-slate-600 mt-1">Listen to your partner (or read their writing). Check each thing they did well. Leave a box blank if they did not do it.</p>
-                  <p class="text-xs text-amber-800 mt-2">Speech recognition can make mistakes. Check the audio before judging your partner.</p>
+                  <p class="text-xs sm:text-sm text-slate-600 mt-1">Listen to your partner, then read the transcript. Check each true statement. Leave it blank if it is not true. For writing assignments, read the original writing.</p>
+                  <p class="text-xs text-amber-800 mt-2">If the computer gets a word wrong, do not count that as your partner’s mistake.</p>
                 </div>
                 <div id="${this.p}-peerTaskHeading" class="rounded-lg bg-blue-50 border border-blue-200 p-3 text-sm font-bold text-[#164b9b]"></div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
@@ -3815,16 +4273,28 @@
           }
           if (!specific.length) add('task-response', `My partner ${writing ? 'completed the writing task' : 'talked about the assigned topic'}.`);
         }
-        const common = writing ? [
+        if (!writing) {
+          // Exactly four checks for every speaking/review task: two universal,
+          // two individually authored from that day's curriculum prompt.
+          const matched = FRENCH_SPEAKING_PEER_CHECKS[task?.id];
+          const taskChecks = matched || [
+            'My partner spoke about the assigned topic.',
+            'My partner included a relevant detail or example.'
+          ];
+          return [
+            {key:'understood', label:'I could understand what my partner said.'},
+            {key:'transcript', label:'The transcript matches what my partner actually said.'},
+            {key:'task-1', label:taskChecks[0]},
+            {key:'task-2', label:taskChecks[1]}
+          ];
+        }
+        // Writing tasks preserve their more detailed, assignment-specific checks.
+        return [
           {key:'understood', label:'I could understand what my partner wrote.'},
           {key:'meaning', label:'My partner’s ideas made sense and answered the question.'},
-          {key:'review', label:'I checked the actual writing, not just the automatic transcript.'}
-        ] : [
-          {key:'understood', label:'I could understand what my partner said.'},
-          {key:'meaning', label:'My partner’s answers made sense.'},
-          {key:'transcript', label:'I checked the transcript against the audio. I noticed any mistakes.'}
+          {key:'review', label:'I read my partner’s actual writing.'},
+          ...specific
         ];
-        return [...common, ...specific];
       }
 
       renderFrenchPeerChecklist() {
