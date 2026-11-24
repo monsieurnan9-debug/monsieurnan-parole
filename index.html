@@ -3847,7 +3847,7 @@
               </div>
 
               <!-- French pair peer checklist: generated from the selected speaking task. -->
-              ${['french','spanish'].includes(this.cfg.id) ? `<section id="${this.p}-peerFeedbackSection" class="hidden rounded-2xl border border-blue-200 bg-[#fffdf8] p-4 sm:p-5 space-y-4 studio-enhancement" aria-label="Task-specific peer checklist">
+              ${['french','spanish','chinese'].includes(this.cfg.id) ? `<section id="${this.p}-peerFeedbackSection" class="hidden rounded-2xl border border-blue-200 bg-[#fffdf8] p-4 sm:p-5 space-y-4 studio-enhancement" aria-label="Task-specific peer checklist">
                 <div>
                   <h3 class="text-base sm:text-lg font-extrabold text-[#17345b]">🤝 Partner Checklist <span class="text-sm font-semibold text-slate-600">· Easy Peer Feedback</span></h3>
                   <p class="text-xs sm:text-sm text-slate-600 mt-1">Listen to your partner, then read the transcript. Check each true statement. Leave it blank if it is not true. For writing assignments, read the original writing.</p>
@@ -4163,7 +4163,7 @@
         });
         if (OTHER_GUIDED[this.cfg.id]) this.setupOtherGuided();
         if (this.cfg.id === 'japanese') this.setupJapanesePackets();
-        if(this.cfg.id==='spanish') this.el('promptInput').addEventListener('input',()=>this.renderFrenchPeerChecklist());
+        if(['spanish','chinese'].includes(this.cfg.id)) this.el('promptInput').addEventListener('input',()=>this.renderFrenchPeerChecklist());
         if (this.cfg.id === 'french') {
           this.updateFrenchTopics();
           this.setupFrenchQuickStart();
@@ -4304,7 +4304,7 @@
         ];
       }
 
-      peerTaskKey() { return `${this.el(this.cfg.id==='spanish'?'guidedTask':'quickTask').value}|${this.el('promptInput').value}`; }
+      peerTaskKey() { return `${this.el(this.cfg.id==='french'?'quickTask':'guidedTask').value}|${this.el('promptInput').value}`; }
       getSpanishPeerCriteria() {
         const task=OTHER_GUIDED.spanish.tasks.find(x=>x[0]===this.el('guidedTask').value);
         const m=SPANISH_PACKET_META[task?.[0]];
@@ -4317,10 +4317,24 @@
           ...(task?.[0]==='s-packet-u5-d12'?[{key:'saga',label:'My partner presented the Mini Saga expressively and gave two strengths and one suggestion.'}]:[])
         ];
       }
+      getChinesePeerCriteria() {
+        const task = OTHER_GUIDED.chinese.tasks.find(x => x[0] === this.el('guidedTask').value);
+        const focus = (task?.[4] || '').replace(/^本日学习重点：/, '').replace(/^本日以复习、阅读或书写为主；口语练习为可选项目。/, '').replace(/\s*·\s*(Snorkl|Dialogue\s*\d*)/gi, '').trim();
+        const words = (task?.[5] || []).filter(x => /[\u3400-\u9fff]/.test(x)).slice(0,5);
+        return [
+          {key:'questions',label:'My partner asked relevant questions and responded to my questions in Mandarin.'},
+          {key:'sentences',label:'My partner used complete sentences or meaningful complete responses, not just isolated words.'},
+          {key:'relevance',label:'My partner stayed on topic and responded meaningfully to what I said.'},
+          {key:'vocabulary',label:'My partner used vocabulary relevant to today’s task'+(words.length?' (e.g. '+words.join('、')+').':focus?' ('+focus+').':'.')},
+          {key:'grammar',label:'My partner used appropriate Chinese word order and sentence patterns'+(focus?' (lesson focus: '+focus+').':'.')},
+          {key:'understood',label:'I could understand my partner’s intended message without relying on the transcript.'},
+          {key:'pronunciation',label:'My partner’s pronunciation and tones were clear enough for me to understand the message, even if not perfect.'}
+        ];
+      }
       renderFrenchPeerChecklist() {
-        if(!['french','spanish'].includes(this.cfg.id)) return;
-        const criteria = this.cfg.id==='spanish'?this.getSpanishPeerCriteria():this.getFrenchPeerCriteria();
-        const task = this.cfg.id==='spanish'?{title:OTHER_GUIDED.spanish.tasks.find(x=>x[0]===this.el('guidedTask').value)?.[2]}:FRENCH_QUICK_TASKS.find(x => x.id === this.el('quickTask').value);
+        if(!['french','spanish','chinese'].includes(this.cfg.id)) return;
+        const criteria = this.cfg.id==='chinese'?this.getChinesePeerCriteria():this.cfg.id==='spanish'?this.getSpanishPeerCriteria():this.getFrenchPeerCriteria();
+        const task = this.cfg.id!=='french'?{title:OTHER_GUIDED[this.cfg.id].tasks.find(x=>x[0]===this.el('guidedTask').value)?.[2]}:FRENCH_QUICK_TASKS.find(x => x.id === this.el('quickTask').value);
         this.peerCriteria = criteria;
         this.peerCriteriaTaskKey = this.peerTaskKey();
         this.el('peerTaskHeading').textContent = `🎯 ${task?.title || this.el('assignmentInput').value || 'Speaking activity'} · ${criteria.length} easy checks`;
@@ -4344,7 +4358,7 @@
 
       // Feedback direction is explicit: Student 1 evaluates Student 2, and vice versa.
       updatePeerFeedbackLabels() {
-        if (!['french','spanish'].includes(this.cfg.id)) return;
+        if (!['french','spanish','chinese'].includes(this.cfg.id)) return;
         const first = this.el('student1Input').value.trim() || 'Student 1';
         const second = this.el('student2Input').value.trim() || 'Student 2';
         this.el('peerTitle1').textContent = `${first} → ${second} · Feedback for ${second}`;
@@ -4381,7 +4395,7 @@
           this.el('participationPanel').classList.add('hidden');
         }
 
-        if (['french','spanish'].includes(this.cfg.id)) {
+        if (['french','spanish','chinese'].includes(this.cfg.id)) {
           this.el('peerFeedbackSection').classList.toggle('hidden', mode !== 'pair');
           this.updatePeerFeedbackLabels();
         }
@@ -4702,7 +4716,7 @@
           }
         }
         this.el('levelGuidance').textContent=this.getLevelGuidance();
-        if(this.cfg.id==='spanish'){ this.renderFrenchPeerChecklist(); ['peerPraise1','peerImprove1','peerPraise2','peerImprove2'].forEach(id=>this.el(id).value=''); }
+        if(['spanish','chinese'].includes(this.cfg.id)){ this.renderFrenchPeerChecklist(); ['peerPraise1','peerImprove1','peerPraise2','peerImprove2'].forEach(id=>this.el(id).value=''); }
       }
 
       checkOtherGuided(speech) {
@@ -5599,7 +5613,7 @@
         player.load();
         this.el('audioMeta').textContent = t('noRecordingYet');
 
-        if (['french','spanish'].includes(this.cfg.id)) {
+        if (['french','spanish','chinese'].includes(this.cfg.id)) {
           ['peerPraise1','peerImprove1','peerPraise2','peerImprove2'].forEach(id => { this.el(id).value = ''; });
           this.el('peerFeedbackSection').querySelectorAll('input[data-peer-check]').forEach(box=>{ box.checked=false; });
         }
@@ -5660,7 +5674,7 @@
           row(m.date,dateTimeStr),row(m.duration,this.formatTime(this.secondsElapsed)),
           '-----------------------------------------------------------',m.transcript,
           '-----------------------------------------------------------',transcriptBody,'',
-          ...(['french','spanish'].includes(this.cfg.id) && this.taskMode === 'pair' ? [
+          ...(['french','spanish','chinese'].includes(this.cfg.id) && this.taskMode === 'pair' ? [
             '-----------------------------------------------------------',
             'PEER FEEDBACK / PARTNER CHECKLIST',
             '-----------------------------------------------------------',
