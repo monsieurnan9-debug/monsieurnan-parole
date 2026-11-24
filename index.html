@@ -3267,6 +3267,12 @@
       return {english:optional, title:topic, vocab:chineseTerms};
     }
     const FRENCH_UNIT_VOCABULARY = {"f1-pre":["bonjour — hello","salut — hi","au revoir — goodbye","comment ça va ? — how are you?","je m’appelle… — my name is…","merci — thank you","s’il vous plaît — please","lundi / mardi — Monday / Tuesday","aujourd’hui — today","demain — tomorrow"],"f1-u1":["américain(e) — American","canadien(ne) — Canadian","québécois(e) — Québécois","bilingue — bilingual","un(e) artiste — artist","un(e) élève — student","un musicien / une musicienne — musician","sympa — nice","sportif / sportive — athletic","j’aime — I like","je n’aime pas — I do not like","parce que — because"],"f1-u2":["un cahier — notebook","un stylo — pen","un crayon — pencil","une trousse — pencil case","un sac à dos — backpack","les maths — math","le français — French","les sciences — science","facile — easy","difficile — difficult","une salle de classe — classroom","la bibliothèque — library","étudier — to study","travailler — to work"],"f1-u3":["ma mère — my mother","mon père — my father","mon frère — my brother","ma sœur — my sister","mes parents — my parents","le chien / le chat — dog / cat","gentil / gentille — kind","grand / grande — tall","une maison — house","un appartement — apartment","la cuisine — kitchen","la chambre — bedroom"],"f2-u4":["le pain — bread","la viande — meat","le poisson — fish","les légumes — vegetables","un marché — market","au café — at the café","du pain — some bread","de la salade — some salad","de l’eau — some water","des fruits — some fruits","j’ai faim — I am hungry","j’ai soif — I am thirsty","je voudrais — I would like","l’addition — bill"],"f2-u5":["faire du vélo — cycling","jouer au foot — soccer","jouer de la guitare — play guitar","le cinéma — cinema","un concert — concert","le week-end — weekend","demain — tomorrow","ce samedi — this Saturday","je vais + infinitif — going to","le soleil — sunshine","il pleut — it rains","une veste — jacket","une saison — season"],"f2-u6":["la boulangerie — bakery","la pharmacie — pharmacy","la pâtisserie — pastry shop","le magasin — store","l’épicerie — grocery store","le métro — metro","la poste — post office","les soldes — sales","acheter — to buy","vendre — to sell","à gauche — left","à droite — right","en face de — opposite","près de — near"],"f3-ec2u3":["faire la vaisselle — wash dishes","passer l’aspirateur — vacuum","ranger — tidy","une association — organization","un bénévole — volunteer","le bénévolat — volunteering","aider — help","la communauté — community","faire ma part — do my part","pouvoir — can","vouloir — want","choisir — choose","finir — finish"],"f3-ec2u5":["une habitude saine — healthy habit","le sport — sport","la santé — health","le sommeil — sleep","le stress — stress","avoir mal à — to have pain","le médecin — doctor","le pharmacien — pharmacist","se réveiller — wake up","se coucher — go to bed","il faut — one must","je conseille de — I advise"],"f3-ec2u6":["un passeport — passport","une valise — suitcase","un billet — ticket","l’aéroport — airport","un hébergement — lodging","une famille d’accueil — host family","le Cameroun — Cameroon","un voyageur — traveler","un touriste — tourist","je voyagerai — I will travel","je visiterai — I will visit","j’y vais — I go there"],"f2-chef":["d’abord — first","ensuite — next","puis — then","enfin — finally","selon — according to","d’après — according to","à mon avis — in my opinion","parce que — because","ne… jamais — never","je vais préparer — I am going to prepare","mon / ma / mes — my","laver — to wash","couper — to cut","mélanger — to mix","ajouter — to add"],"fr-libre":["à mon avis — in my opinion","je pense que — I think that","par exemple — for example","parce que — because","ensuite — next","enfin — finally"]};
+
+    const SPANISH_PACKET_META = {"s-packet-u5-d01": {"title": "Ask about your neighborhood", "english": "Ask about the six places in the packet and describe them; switch roles.", "grammar": "hay, ser, adjective agreement", "vocab": "gimnasio, estadio, área verde, parque acuático, aeropuerto, monumento, accesible, seguro, moderno"}, "s-packet-u5-d02": {"title": "My ideal house", "english": "Interview each other about materials, builder and age/style of an ideal house.", "grammar": "estar hecho/a de; construyó, construyeron", "vocab": "piedra, ladrillo, madera, construyó, antigua, moderna"}, "s-packet-u5-d03": {"title": "Traffic reporter", "english": "Report three traffic problems and give two recommendations; switch roles.", "grammar": "es importante/necesario/recomendable + infinitive", "vocab": "tráfico, semáforo, conductor, peatón, carretera, transporte público, contaminación"}, "s-packet-u5-d04": {"title": "Do you agree?", "english": "Compare value rankings, explain opinions and politely agree or disagree.", "grammar": "creer/pensar que + indicative", "vocab": "diversidad, colaborar, confiar, tradiciones, respetar, paciencia, valor, costumbre"}, "s-packet-u5-d05": {"title": "Optional oral review", "english": "Optional oral rehearsal for the written Checkpoint B task; not a replacement.", "grammar": "present tense; adjective agreement; advice + infinitive", "vocab": "ciudad, monumento, tráfico, valor, costumbre, recomendable"}, "s-packet-u5-d06": {"title": "Interview about the past", "english": "Interview each other about childhood home, routines and food.", "grammar": "regular imperfect: -aba/-ía", "vocab": "vivía, jugaba, miraba, visitaba, comía, hacía, todos los días"}, "s-packet-u5-d07": {"title": "Childhood survey", "english": "Interview each other using the childhood survey; repeat with other classmates when possible.", "grammar": "imperfect of ser, ir, ver: era, iba, veía", "vocab": "infancia, era, iba, veía, vivía, fines de semana, tele"}, "s-packet-u5-d08": {"title": "An unforgettable day", "english": "Describe the setting and events of a memorable day, then ask follow-up questions.", "grammar": "imperfect for setting; preterite for events", "vocab": "mientras, de repente, después, era, hacía, estaba"}, "s-packet-u5-d09": {"title": "Tell your partner a legend", "english": "Retell the legend using the storyboard; listen for the setting, transitions and ending.", "grammar": "preterite and imperfect", "vocab": "leyenda, mientras, de repente, por último, Inti, lago"}, "s-packet-u5-d10": {"title": "Once upon a time", "english": "Tell each other about a time you wanted to do something but could not; ask why and what happened.", "grammar": "quería/quiso, podía/pudo, sabía/supo, conocía/conoció", "vocab": "quería, pude, conocí, sabía, supe, estuve"}, "s-packet-u5-d11": {"title": "Optional oral review", "english": "Optional oral rehearsal for the written essay; not a replacement.", "grammar": "preterite/imperfect; opinion and evidence", "vocab": "opinión, según, lectura, evidencia, pasado, tradición"}, "s-packet-u5-d12": {"title": "Mini Saga presentation", "english": "Present your 50-word Mini Saga expressively for 45–60 seconds; ask a question and give two strengths and one wish.", "grammar": "preterite/imperfect and sequence words", "vocab": "leyenda, hace mucho tiempo, de repente, mientras, al final"}};
+    OTHER_GUIDED.spanish.tasks.unshift(...[["s-packet-u5-d01", "s3b2u5", "Día 1 · ¿Qué hay en tu barrio?", "Pregunten qué lugares hay en sus barrios y cómo son. Completen la tabla del cuaderno y cambien de rol.", "hay, ser, adjective agreement", ["¿Qué hay en tu barrio?", "En mi barrio hay…", "¿Es accesible?", "Sí, es…"], [["Vocabulario del día", "gimnasio|estadio|área verde|parque acuático|aeropuerto|monumento|accesible|seguro|moderno"]]], ["s-packet-u5-d02", "s3b2u5", "Día 2 · Mi casa ideal", "Entrevisten a su compañero sobre los materiales de su casa ideal, quién la construyó y si es antigua o moderna. Cambien de rol.", "estar hecho/a de; construyó, construyeron", ["¿De qué está hecha tu casa ideal?", "Está hecha de…", "¿Quién la construyó?"], [["Vocabulario del día", "piedra|ladrillo|madera|construyó|antigua|moderna"]]], ["s-packet-u5-d03", "s3b2u5", "Día 3 · Reportero de tráfico", "Un reportero describe tres problemas de tráfico y da dos consejos. El oyente hace preguntas. Cambien de rol.", "es importante/necesario/recomendable + infinitive", ["¿Qué es recomendable?", "Hay mucho tráfico…", "Es necesario…"], [["Vocabulario del día", "tráfico|semáforo|conductor|peatón|carretera|transporte público|contaminación"]]], ["s-packet-u5-d04", "s3b2u5", "Día 4 · ¿Estás de acuerdo?", "Comparen sus listas de valores. Expliquen sus opiniones y expresen acuerdo o desacuerdo con respeto.", "creer/pensar que + indicative", ["Pienso que…", "¿Y tú?", "No estoy de acuerdo porque…"], [["Vocabulario del día", "diversidad|colaborar|confiar|tradiciones|respetar|paciencia|valor|costumbre"]]], ["s-packet-u5-d05", "s3b2u5", "Día 5 · Práctica 1 · repaso oral opcional", "Ensayen oralmente el correo a Camila: describan su ciudad y un problema de tráfico, den un consejo y comenten un valor. Háganse preguntas.", "present tense; adjective agreement; advice + infinitive", ["¿Cómo es tu ciudad?", "Es importante…", "Creo que…"], [["Vocabulario del día", "ciudad|monumento|tráfico|valor|costumbre|recomendable"]]], ["s-packet-u5-d06", "s3b2u5", "Día 6 · Entrevista del pasado", "Pregunten dónde vivían a los ocho años, qué hacían los fines de semana, qué comían y qué hacían todos los días. Cambien de rol.", "regular imperfect: -aba/-ía", ["¿Dónde vivías?", "¿Qué hacías los fines de semana?", "¿Qué comías con frecuencia?"], [["Vocabulario del día", "vivía|jugaba|miraba|visitaba|comía|hacía|todos los días"]]], ["s-packet-u5-d07", "s3b2u5", "Día 7 · Mi infancia · encuesta", "Pregunten cómo eran, adónde iban los fines de semana, qué veían en la tele y dónde vivían. Cambien de rol; repitan con otros compañeros si es posible.", "imperfect of ser, ir, ver: era, iba, veía", ["¿Cómo eras?", "¿Adónde ibas?", "¿Qué veías?"], [["Vocabulario del día", "infancia|era|iba|veía|vivía|fines de semana|tele"]]], ["s-packet-u5-d08", "s3b2u5", "Día 8 · Un día inolvidable", "Cuenten un día inolvidable: describan la escena en imperfecto y los acontecimientos en pretérito. Escuchen, pregunten y cambien de rol.", "imperfect for setting; preterite for events", ["¿Qué pasó?", "Era… y hacía…", "De repente…", "Después…"], [["Vocabulario del día", "mientras|de repente|después|era|hacía|estaba"]]], ["s-packet-u5-d09", "s3b2u5", "Día 9 · Cuéntala a tu compañero/a", "Usen el storyboard para contar la leyenda de Manco Cápac y Mama Ocllo. Escuchen si hay escena, mientras, de repente y final. Hagan preguntas y cambien de rol.", "preterite and imperfect", ["Hace mucho tiempo…", "Un día…", "Mientras…", "Por último…"], [["Vocabulario del día", "leyenda|mientras|de repente|por último|Inti|lago"]]], ["s-packet-u5-d10", "s3b2u5", "Día 10 · Una vez…", "Cuenten una experiencia en la que querían hacer algo pero no pudieron. El compañero pregunta por qué y qué pasó. Cambien de rol.", "quería/quiso, podía/pudo, sabía/supo, conocía/conoció", ["Quería… pero no pude…", "¿Por qué?", "¿Qué pasó?"], [["Vocabulario del día", "quería|pude|conocí|sabía|supe|estuve"]]], ["s-packet-u5-d11", "s3b2u5", "Día 11 · Práctica 2 · repaso oral opcional", "Ensayen oralmente su opinión para el ensayo de Checkpoint B. Expliquen su postura con tres evidencias de las lecturas y hagan preguntas.", "preterite/imperfect; opinion and evidence", ["En mi opinión…", "Según la lectura…", "¿Por qué?"], [["Vocabulario del día", "opinión|según|lectura|evidencia|pasado|tradición"]]], ["s-packet-u5-d12", "s3b2u5", "Día 12 · Proyecto · Mini Saga", "Lean y cuenten su Mini Saga de 50 palabras con expresión durante 45–60 segundos. Escuchen, hagan una pregunta y den dos estrellas y un deseo. Cambien de rol.", "preterite/imperfect and sequence words", ["Les voy a contar una leyenda…", "Hace mucho tiempo…", "Al final…"], [["Vocabulario del día", "leyenda|hace mucho tiempo|de repente|mientras|al final"]]]]);
+    Object.assign(SPANISH_PACKET_META,{"s-packet-u5-d01-exit": {"title": "Speaking exit ticket", "english": "Introduce your neighborhood to a visitor from Peru: four places, two descriptions and one recommendation. (30–45 seconds).", "grammar": "hay, ser, adjective agreement", "vocab": "gimnasio, estadio, área verde, parque acuático, aeropuerto, monumento, accesible, seguro, moderno"}, "s-packet-u5-d03-exit": {"title": "Speaking exit ticket", "english": "Describe your commute, transport, a problem and advice. (30–45 seconds).", "grammar": "es importante/necesario/recomendable + infinitive", "vocab": "tráfico, semáforo, conductor, peatón, carretera, transporte público, contaminación"}, "s-packet-u5-d04-exit": {"title": "Speaking exit ticket", "english": "Discuss two values, one custom and your opinion. (30–45 seconds).", "grammar": "creer/pensar que + indicative", "vocab": "diversidad, colaborar, confiar, tradiciones, respetar, paciencia, valor, costumbre"}, "s-packet-u5-d07-exit": {"title": "Speaking exit ticket", "english": "Describe your childhood, where you lived, went and what you watched. (30–45 seconds).", "grammar": "imperfect of ser, ir, ver: era, iba, veía", "vocab": "infancia, era, iba, veía, vivía, fines de semana, tele"}, "s-packet-u5-d09-exit": {"title": "Speaking exit ticket", "english": "Retell the legend in your own words using the storyboard. (45–60 seconds).", "grammar": "preterite and imperfect", "vocab": "leyenda, mientras, de repente, por último, Inti, lago"}, "s-packet-u5-d10-exit": {"title": "Speaking exit ticket", "english": "Describe a trip or moment: whom you met, what you wanted, could or could not do and where you were. (30–45 seconds).", "grammar": "quería/quiso, podía/pudo, sabía/supo, conocía/conoció", "vocab": "quería, pude, conocí, sabía, supe, estuve"}});
+    OTHER_GUIDED.spanish.tasks.push(...[["s-packet-u5-d01-exit", "s3b2u5", "Día 1 · Boleto de salida (Habla)", "Presenta tu ciudad o barrio a un visitante de Perú. Nombra cuatro lugares, describe dos con adjetivos y recomienda uno. (30–45 segundos).", "hay, ser, adjective agreement", ["¿Qué hay en tu barrio?", "En mi barrio hay…", "¿Es accesible?", "Sí, es…"], [["Vocabulario del día", "gimnasio|estadio|área verde|parque acuático|aeropuerto|monumento|accesible|seguro|moderno"]]], ["s-packet-u5-d03-exit", "s3b2u5", "Día 3 · Boleto de salida (Habla)", "Describe cómo llegas a la escuela, qué transporte usas, qué problema hay y qué consejo das. (30–45 segundos).", "es importante/necesario/recomendable + infinitive", ["¿Qué es recomendable?", "Hay mucho tráfico…", "Es necesario…"], [["Vocabulario del día", "tráfico|semáforo|conductor|peatón|carretera|transporte público|contaminación"]]], ["s-packet-u5-d04-exit", "s3b2u5", "Día 4 · Boleto de salida (Habla)", "Habla de dos valores importantes, una costumbre de tu familia o comunidad y tu opinión. (30–45 segundos).", "creer/pensar que + indicative", ["Pienso que…", "¿Y tú?", "No estoy de acuerdo porque…"], [["Vocabulario del día", "diversidad|colaborar|confiar|tradiciones|respetar|paciencia|valor|costumbre"]]], ["s-packet-u5-d07-exit", "s3b2u5", "Día 7 · Boleto de salida (Habla)", "Cuenta cómo era tu vida cuando eras niño/a: cómo eras, dónde vivías, adónde ibas y qué veías. (30–45 segundos).", "imperfect of ser, ir, ver: era, iba, veía", ["¿Cómo eras?", "¿Adónde ibas?", "¿Qué veías?"], [["Vocabulario del día", "infancia|era|iba|veía|vivía|fines de semana|tele"]]], ["s-packet-u5-d09-exit", "s3b2u5", "Día 9 · Boleto de salida (Habla)", "Cuenta la leyenda de Manco Cápac y Mama Ocllo con tus propias palabras. Usa tu storyboard. (45–60 segundos).", "preterite and imperfect", ["Hace mucho tiempo…", "Un día…", "Mientras…", "Por último…"], [["Vocabulario del día", "leyenda|mientras|de repente|por último|Inti|lago"]]], ["s-packet-u5-d10-exit", "s3b2u5", "Día 10 · Boleto de salida (Habla)", "Cuenta un viaje o un momento: a quién conociste, qué querías, qué pudiste o no pudiste hacer y dónde estuviste. (30–45 segundos).", "quería/quiso, podía/pudo, sabía/supo, conocía/conoció", ["Quería… pero no pude…", "¿Por qué?", "¿Qué pasó?"], [["Vocabulario del día", "quería|pude|conocí|sabía|supe|estuve"]]]]);
+    Object.entries(SPANISH_PACKET_META).forEach(([id,m])=>{EN_GUIDED_TASKS.spanish[id]=m.title;});
     OTHER_GUIDED.chinese.units.unshift(...CHINESE_PACKET_UNITS);
     OTHER_GUIDED.chinese.tasks.unshift(...CHINESE_PACKET_TASKS);
 
@@ -3841,7 +3847,7 @@
               </div>
 
               <!-- French pair peer checklist: generated from the selected speaking task. -->
-              ${this.cfg.id === 'french' ? `<section id="${this.p}-peerFeedbackSection" class="hidden rounded-2xl border border-blue-200 bg-[#fffdf8] p-4 sm:p-5 space-y-4 studio-enhancement" aria-label="Task-specific peer checklist">
+              ${['french','spanish'].includes(this.cfg.id) ? `<section id="${this.p}-peerFeedbackSection" class="hidden rounded-2xl border border-blue-200 bg-[#fffdf8] p-4 sm:p-5 space-y-4 studio-enhancement" aria-label="Task-specific peer checklist">
                 <div>
                   <h3 class="text-base sm:text-lg font-extrabold text-[#17345b]">🤝 Partner Checklist <span class="text-sm font-semibold text-slate-600">· Easy Peer Feedback</span></h3>
                   <p class="text-xs sm:text-sm text-slate-600 mt-1">Listen to your partner, then read the transcript. Check each true statement. Leave it blank if it is not true. For writing assignments, read the original writing.</p>
@@ -4157,6 +4163,7 @@
         });
         if (OTHER_GUIDED[this.cfg.id]) this.setupOtherGuided();
         if (this.cfg.id === 'japanese') this.setupJapanesePackets();
+        if(this.cfg.id==='spanish') this.el('promptInput').addEventListener('input',()=>this.renderFrenchPeerChecklist());
         if (this.cfg.id === 'french') {
           this.updateFrenchTopics();
           this.setupFrenchQuickStart();
@@ -4297,12 +4304,25 @@
         ];
       }
 
+      peerTaskKey() { return `${this.el(this.cfg.id==='spanish'?'guidedTask':'quickTask').value}|${this.el('promptInput').value}`; }
+      getSpanishPeerCriteria() {
+        const task=OTHER_GUIDED.spanish.tasks.find(x=>x[0]===this.el('guidedTask').value);
+        const m=SPANISH_PACKET_META[task?.[0]];
+        return [
+          {key:'questions',label:'My partner asked relevant questions and responded to mine.'},
+          {key:'sentences',label:'My partner answered using complete sentences.'},
+          {key:'relevance',label:'My partner stayed on topic and responded meaningfully to the task.'},
+          {key:'vocabulary',label:'My partner used vocabulary from today’s lesson'+(m?' (e.g. '+m.vocab+').':'.')},
+          {key:'verbs',label:'My partner conjugated verbs correctly for the subject and intended tense'+(m?' (focus: '+m.grammar+').':'.')},
+          ...(task?.[0]==='s-packet-u5-d12'?[{key:'saga',label:'My partner presented the Mini Saga expressively and gave two strengths and one suggestion.'}]:[])
+        ];
+      }
       renderFrenchPeerChecklist() {
-        if(this.cfg.id !== 'french') return;
-        const criteria = this.getFrenchPeerCriteria();
-        const task = FRENCH_QUICK_TASKS.find(x => x.id === this.el('quickTask').value);
+        if(!['french','spanish'].includes(this.cfg.id)) return;
+        const criteria = this.cfg.id==='spanish'?this.getSpanishPeerCriteria():this.getFrenchPeerCriteria();
+        const task = this.cfg.id==='spanish'?{title:OTHER_GUIDED.spanish.tasks.find(x=>x[0]===this.el('guidedTask').value)?.[2]}:FRENCH_QUICK_TASKS.find(x => x.id === this.el('quickTask').value);
         this.peerCriteria = criteria;
-        this.peerCriteriaTaskKey = `${this.el('quickTask').value}|${this.el('promptInput').value}`;
+        this.peerCriteriaTaskKey = this.peerTaskKey();
         this.el('peerTaskHeading').textContent = `🎯 ${task?.title || this.el('assignmentInput').value || 'Speaking activity'} · ${criteria.length} easy checks`;
         [1,2].forEach(n=>{
           const holder = this.el(`peerChecks${n}`);
@@ -4324,7 +4344,7 @@
 
       // Feedback direction is explicit: Student 1 evaluates Student 2, and vice versa.
       updatePeerFeedbackLabels() {
-        if (this.cfg.id !== 'french') return;
+        if (!['french','spanish'].includes(this.cfg.id)) return;
         const first = this.el('student1Input').value.trim() || 'Student 1';
         const second = this.el('student2Input').value.trim() || 'Student 2';
         this.el('peerTitle1').textContent = `${first} → ${second} · Feedback for ${second}`;
@@ -4361,7 +4381,7 @@
           this.el('participationPanel').classList.add('hidden');
         }
 
-        if (this.cfg.id === 'french') {
+        if (['french','spanish'].includes(this.cfg.id)) {
           this.el('peerFeedbackSection').classList.toggle('hidden', mode !== 'pair');
           this.updatePeerFeedbackLabels();
         }
@@ -4594,7 +4614,7 @@
         data.course.forEach((name,i)=>course.add(new Option(bilingualLabel(name,i===3?'Free speaking':'Level '+(i+1)),String(i))));
         const updateTask=()=>{
           const old=task.value; task.replaceChildren();
-          for(const entry of data.tasks.filter(x=>x[1]===unit.value)) {
+          for(const entry of data.tasks.filter(x=>x[1]===unit.value).sort((a,b)=>unit.value==='s3b2u5'?(a[0].startsWith('s-packet')?0:1)-(b[0].startsWith('s-packet')?0:1)||a[0].localeCompare(b[0]):0)) {
             const accessible=this.cfg.id==='chinese' ? chinesePacketEnglish(entry) : null;
             const stage=this.cfg.id==='chinese'?chinesePinyinStage(entry[0],entry[1],this.el('guidedCourse').value):'none';
             const zhTitle=entry[2].replace(/^第\d+天\s*\/\s*Day\s*\d+\s*[·•]\s*/, '');
@@ -4648,7 +4668,7 @@
             const py=chinesePinyin(zhTitle);
             if(py){const subtitle=document.createElement('span');subtitle.className='zh-pinyin '+(stage==='full'?'zh-pinyin-early':'');subtitle.textContent='Pinyin · '+py;p.appendChild(subtitle);}
           }
-        }else p.textContent=task[3];
+        }else {p.textContent=task[3]; if(this.cfg.id==='spanish' && SPANISH_PACKET_META[task[0]]) {const en=document.createElement('p');en.className='student-mission-en';en.lang='en';en.textContent=SPANISH_PACKET_META[task[0]].english;p.appendChild(en);} }
         const phase=this.cfg.id==='chinese'?chinesePinyinStage(task[0],task[1],this.el('guidedCourse').value):'none';
         const scaffold=phase==='full'?' · Pinyin support / 拼音辅助':phase==='titles'?' · Pinyin on lesson titles':phase==='keywords'?' · Minimal Pinyin support':'';
         this.el('guidedGoal').textContent=(this.cfg.id==='chinese'?'Today’s focus / 今日目标：':'Objetivo: ')+task[4]+scaffold;
@@ -4682,6 +4702,7 @@
           }
         }
         this.el('levelGuidance').textContent=this.getLevelGuidance();
+        if(this.cfg.id==='spanish'){ this.renderFrenchPeerChecklist(); ['peerPraise1','peerImprove1','peerPraise2','peerImprove2'].forEach(id=>this.el(id).value=''); }
       }
 
       checkOtherGuided(speech) {
@@ -5578,7 +5599,7 @@
         player.load();
         this.el('audioMeta').textContent = t('noRecordingYet');
 
-        if (this.cfg.id === 'french') {
+        if (['french','spanish'].includes(this.cfg.id)) {
           ['peerPraise1','peerImprove1','peerPraise2','peerImprove2'].forEach(id => { this.el(id).value = ''; });
           this.el('peerFeedbackSection').querySelectorAll('input[data-peer-check]').forEach(box=>{ box.checked=false; });
         }
@@ -5639,7 +5660,7 @@
           row(m.date,dateTimeStr),row(m.duration,this.formatTime(this.secondsElapsed)),
           '-----------------------------------------------------------',m.transcript,
           '-----------------------------------------------------------',transcriptBody,'',
-          ...(this.cfg.id === 'french' && this.taskMode === 'pair' ? [
+          ...(['french','spanish'].includes(this.cfg.id) && this.taskMode === 'pair' ? [
             '-----------------------------------------------------------',
             'PEER FEEDBACK / PARTNER CHECKLIST',
             '-----------------------------------------------------------',
@@ -5647,8 +5668,7 @@
               const evaluator = (n === 1 ? s1 : s2) || `Student ${n}`;
               const recipient = (n === 1 ? s2 : s1) || `Student ${n === 1 ? 2 : 1}`;
               const checked = this.peerCriteria || [];
-              const evaluatedTask = this.el('quickTask').value;
-              const nowTask = `${evaluatedTask}|${this.el('promptInput').value}`;
+              const nowTask = this.peerTaskKey();
               const criteriaReady = this.peerCriteriaTaskKey === nowTask;
               const assessments = criteriaReady ? checked.map(c=>{
                 const box = [...this.el(`peerChecks${n}`).querySelectorAll('input[data-peer-check]')].find(x=>x.dataset.peerCheck===c.key);
