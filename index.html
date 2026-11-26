@@ -171,6 +171,66 @@
     .student-mission-en strong {font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#164b9b;display:block;margin-bottom:4px;}
     @media(max-width:520px){.student-mission-card{padding:15px!important;}.student-mission-fr{font-size:19px!important;}}
   </style>
+
+<style id="atelier-entry-style">
+#atelierEntry[hidden]{display:none!important}
+#atelierEntry{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;overflow:auto;padding:22px;background:#f8f3e9;color:#17345b;isolation:isolate;text-align:center;}
+#atelierEntry::before{content:'';position:absolute;inset:14px;border:1px solid #b88a4b;pointer-events:none;z-index:-1}
+#atelierEntry::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#fffdf8 0%,transparent 72%);z-index:-2;pointer-events:none}
+.entry-inner{width:min(650px,100%);padding:22px 8px;}
+.entry-kicker{font:600 11px/1.5 Inter,system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#806039;}
+.entry-art{display:block;width: min(250px,55vw);height:125px;margin:12px auto 4px;color:#a77b43;}
+.entry-art path,.entry-art circle{stroke-dasharray:600;stroke-dashoffset:600;animation:entryInk 1.1s ease-out forwards;}
+.entry-tricolor{display:flex;width:54px;height:4px;margin:14px auto 20px;overflow:hidden;border-radius:2px;}
+.entry-tricolor i{flex:1;background:#164b9b}.entry-tricolor i:nth-child(2){background:#fff;border-block:1px solid #e4d5be}.entry-tricolor i:nth-child(3){background:#d9383a}
+.entry-title{font:500 clamp(26px,4vw,44px)/1.15 Georgia,'Times New Roman','Noto Sans SC','Noto Sans JP','Noto Sans KR',serif;letter-spacing:-.025em;margin:0;color:#17345b;}
+.entry-motto{font:italic 600 clamp(20px,2.8vw,26px)/1.3 Georgia,serif;color:#8c653b;margin:12px 0 8px;}
+.entry-translation{font:14px/1.5 Inter,system-ui,sans-serif;color:#52647a;margin:0 0 19px;}
+.entry-languages{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 14px;max-width:620px;}
+.entry-languages button,#entryContinue{border:1px solid #d9c9ad;background:#fffdf9;color:#17345b;border-radius:9px;padding:10px 15px;font:600 14px/1.3 Inter,'Noto Sans SC','Noto Sans JP','Noto Sans KR',system-ui,sans-serif;cursor:pointer;transition:background .15s,transform .15s;}
+.entry-languages button:hover{background:#eee2cc;transform:translateY(-2px)}
+#entryContinue{background:#17345b;color:white;border-color:#17345b;min-width:180px;}
+#entryContinue:hover{background:#254b78} .entry-credit{margin:20px 0 0;font:italic 12px/1.5 Georgia,serif;color:#806039;}
+.entry-reveal{animation:entryReveal .65s ease-out both;animation-delay:var(--delay,0s)}
+#atelierEntry.entry-leaving{animation:entryExit .3s ease-in both;pointer-events:none;}
+@keyframes entryInk{to{stroke-dashoffset:0}}
+@keyframes entryReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes entryExit{to{opacity:0;transform:scale(1.015)}}
+@media(max-height:650px){.entry-art{height:75px;margin-top:4px}.entry-inner{padding:8px}.entry-tricolor{margin:8px auto 12px}.entry-credit{margin-top:10px}}
+@media(prefers-reduced-motion:reduce){#atelierEntry *,#atelierEntry.entry-leaving{animation:none!important;transition:none!important;stroke-dashoffset:0!important}}
+
+/* A one-shot Parisian theatre reveal; no animation runs during recording. */
+#atelierEntry.entry-leaving{animation:none;pointer-events:none;overflow:hidden;background:transparent;}
+#atelierEntry.entry-leaving::before,#atelierEntry.entry-leaving::after{opacity:0;}
+.entry-curtain{position:absolute;inset:0;display:flex;pointer-events:none;z-index:-1;visibility:hidden;}
+.entry-curtain span{width:50%;height:100%;background:repeating-linear-gradient(90deg,#faf5eb 0%,#f3eadb 12%,#fffaf1 24%);border:1px solid #c9ab78;position:relative;}
+.entry-curtain span::after{content:'';position:absolute;inset:17px;border:1px solid #c4a16b;box-shadow:inset 0 0 0 5px #f8f0e2;}
+.entry-curtain span:first-child{border-right:3px solid #b88a4b;}
+.entry-curtain span:last-child{border-left:3px solid #b88a4b;}
+.entry-leaving .entry-curtain{visibility:visible;}
+.entry-leaving .entry-curtain span:first-child{animation:atelierDoorLeft 1.05s .40s cubic-bezier(.65,0,.25,1) both;}
+.entry-leaving .entry-curtain span:last-child{animation:atelierDoorRight 1.05s .40s cubic-bezier(.65,0,.25,1) both;}
+.entry-leaving .entry-inner{animation:atelierFarewell .43s ease-in both;}
+.entry-flight{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;visibility:hidden;z-index:2;}
+.entry-flight svg{width:min(300px,55vw);overflow:visible;}
+.entry-leaving .entry-flight{visibility:visible;animation:atelierFlight 1.25s .10s ease-in-out both;}
+.entry-flight path{stroke-dasharray:230;stroke-dashoffset:230;}
+.entry-leaving .entry-flight path{animation:atelierWave .65s .14s ease-out both;}
+.atelier-arrival{animation:atelierArrival .7s .55s cubic-bezier(.2,.75,.25,1) both!important;}
+@keyframes atelierDoorLeft{to{transform:translateX(-102%);}}
+@keyframes atelierDoorRight{to{transform:translateX(102%);}}
+@keyframes atelierFarewell{to{opacity:0;transform:scale(.96) translateY(-12px);}}
+@keyframes atelierFlight{0%{opacity:0;transform:scale(.65)}25%{opacity:1;transform:scale(1)}65%{opacity:1}100%{opacity:0;transform:scale(1.25) translateY(-20px)}}
+@keyframes atelierWave{to{stroke-dashoffset:0}}
+@keyframes atelierArrival{from{opacity:.15;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.atelier-arrival{animation:none!important;}}
+#entryCycleMotto{min-height:2.6em;display:flex;align-items:center;justify-content:center;font-style:normal;transition:opacity .22s ease,transform .22s ease;}#entryCycleMotto[lang="fr"],#entryCycleMotto[lang="es"]{font-style:italic}#entryCycleMotto.motto-out{opacity:0;transform:translateY(5px)}#entryCycleMotto:lang(zh),#entryCycleMotto:lang(ja),#entryCycleMotto:lang(ko){font-family:Georgia,"Noto Sans SC","Noto Sans JP","Noto Sans KR",serif}@media(prefers-reduced-motion:reduce){#entryCycleMotto{transition:none}}
+.entry-motto-translation[hidden]{display:none!important}.entry-motto-translation{font:500 clamp(14px,2vw,16px)/1.4 Inter,system-ui,sans-serif;color:#52647a;margin:5px 0 12px;}
+.entry-ui-picker{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin:0 auto 12px;font:12px Inter,system-ui,sans-serif;color:#52647a;}
+.entry-ui-picker select{background:#fffdf9;border:1px solid #d9c9ad;border-radius:7px;padding:6px 10px;color:#17345b;}
+@media(max-height:650px){.entry-art{height:58px}.entry-motto{font-size:clamp(18px,2.8vw,24px)}.entry-inner{padding:5px}.entry-credit{margin-top:7px}.entry-translation{margin-bottom:10px}}
+</style>
+
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-900">
 
@@ -313,8 +373,8 @@
       <div class="home-atelier-welcome" aria-label="Studio Oral decorative welcome">
         <div class="home-atelier-copy">
           <span class="home-atelier-eyebrow">Bayside High School <span aria-hidden="true">✦</span> Studio Oral</span>
-          <strong>Les voix du monde.</strong>
-          <span class="home-atelier-subtitle">Many languages. One place to speak, practice, and grow.</span>
+          <strong id="homeAtelierTitle">Les voix du monde.</strong>
+          <span id="homeAtelierSubtitle" class="home-atelier-subtitle">Many languages. One place to speak, practice, and grow.</span>
           <button type="button" class="signature-seal" aria-expanded="false" onclick="toggleStudioSecret(this)">✦ Le petit secret de l’atelier</button>
           <span class="signature-secret" role="status">Conçu avec soin par Monsieur Nan, professeur de français à Bayside. Chaque langue a sa voix ; la curiosité les relie. · Crafted by a French teacher for every language learner.</span>
         </div>
@@ -5982,6 +6042,7 @@
     function setUiLanguage(langCode) {
       if (!UI_TRANSLATIONS[langCode]) return;
       currentUiLang = langCode;
+      if (typeof window.updateAtelierLanguage === 'function') window.updateAtelierLanguage(langCode);
 
       try {
         localStorage.setItem('bayside_studio_ui_lang', langCode);
@@ -6075,7 +6136,7 @@
       initHomeShowcase();
 
       // Restore saved UI language if available
-      let savedLang = 'en';
+      let savedLang = (navigator.languages || [navigator.language || 'en']).map(x=>x.toLowerCase().split('-')[0]).find(x=>UI_TRANSLATIONS[x]) || 'en';
       try {
         const stored = localStorage.getItem('bayside_studio_ui_lang');
         if (stored && UI_TRANSLATIONS[stored]) savedLang = stored;
@@ -6259,5 +6320,86 @@
     window.addEventListener('DOMContentLoaded', initAllStudios);
   </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "df1e3b7e0b904c7f9693ff81ab50386b"}'></script><!-- End Cloudflare Web Analytics -->
+
+<!-- Optional, session-only French-inspired entry; all studios are equal destinations. -->
+<section id="atelierEntry" hidden role="dialog" aria-modal="true" aria-labelledby="entryTitle" tabindex="-1">
+  <div class="entry-curtain" aria-hidden="true"><span></span><span></span></div>
+  <div class="entry-flight" aria-hidden="true"><svg viewBox="0 0 300 100" fill="none" stroke-linecap="round"><path d="M8 50H44L56 35L70 65L84 18L100 82L115 35L130 65L145 8L160 92L175 35L190 65L205 18L220 82L235 35L250 50H292" stroke="#17345b" stroke-width="2.5"/><path d="M28 94H112" stroke="#164b9b" stroke-width="3"/><path d="M112 94H188" stroke="#fffdf8" stroke-width="3"/><path d="M188 94H272" stroke="#d9383a" stroke-width="3"/></svg></div>
+  <div class="entry-inner">
+    <p id="entryKicker" class="entry-kicker entry-reveal">Bayside High School · World Languages</p>
+    <svg class="entry-art" viewBox="0 0 250 125" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M8 111H242M22 111V64Q22 31 55 31T88 64V111M29 111V64Q29 39 55 39T81 64V111M29 73H81M55 39V111M40 111V73M70 111V73"/>
+      <path d="M92 111Q116 85 122 25L125 5L128 25Q134 85 158 111M106 91H144M111 75H139M118 51H132M113 75L137 75M101 111Q125 79 149 111M125 5V1M117 31H133M103 94L139 75M147 94L111 75" stroke="#17345b"/>
+      <path d="M164 111V64Q164 31 197 31T230 64V111M171 111V64Q171 39 197 39T223 64V111M171 73H223M197 39V111M182 111V73M212 111V73M13 20L17 12L21 20L17 28ZM233 20L237 12L241 20L237 28Z"/>
+      <circle cx="95" cy="20" r="2"/><circle cx="155" cy="20" r="2"/>
+    </svg>
+    <div class="entry-tricolor entry-reveal" aria-hidden="true" style="--delay:.15s"><i></i><i></i><i></i></div>
+    <h1 id="entryTitle" class="entry-title entry-reveal" lang="en" style="--delay:.10s">Welcome to Studio Oral</h1>
+    <p id="entryCycleMotto" class="entry-motto entry-reveal" lang="fr" style="--delay:.2s">Une langue, une voix, un monde.</p>
+    <p id="entryMottoTranslation" class="entry-motto-translation entry-reveal" style="--delay:.23s">One language, one voice, one world.</p>
+    <p id="entryTranslation" class="entry-translation entry-reveal" style="--delay:.25s">Welcome to the Speaking Hub. Every language has a voice.</p>
+    <button id="entryContinue" class="entry-reveal" style="--delay:.35s" type="button" data-entry-view="home">Enter the studio →</button>
+    <p id="entryCredit" class="entry-credit entry-reveal" lang="fr" style="--delay:.4s">Conçu par Monsieur Nan · L’art de communiquer</p>
+  </div>
+</section>
+
+<script id="atelier-entry-script">
+(function(){
+  const entry=document.getElementById('atelierEntry');
+  const key='studio_oral_entry_seen_v1';
+  let seen=false; try{seen=sessionStorage.getItem(key)==='1';}catch(_){}
+  const copy={"en": ["Welcome to Studio Oral", "One language, one voice, one world.", "A space for every language learner.", "Enter the studio →", "Choose a language studio", "Bayside High School · World Languages", "Designed by Monsieur Nan · The art of communication", "Interface language", "The voices of the world.", "Many languages. One place to speak, practice, and grow."], "fr": ["Bienvenue au Studio Oral", "Une langue, une voix, un monde.", "Un espace pour tous les apprenants de langues.", "Entrer dans le studio →", "Choisir un studio de langue", "Bayside High School · Langues du monde", "Conçu par Monsieur Nan · L’art de communiquer", "Langue de l’interface", "Les voix du monde.", "Plusieurs langues. Un espace pour parler, pratiquer et progresser."], "zh": ["欢迎来到 Studio Oral", "一种语言，一个声音，一个世界。", "属于每一位语言学习者的空间。", "进入口语中心 →", "选择语言工作室", "Bayside 高中 · 世界语言", "由 Nan 老师设计 · 沟通的艺术", "界面语言", "世界的声音。", "多种语言，一个练习口语、交流与成长的空间。"], "es": ["Te damos la bienvenida a Studio Oral", "Una lengua, una voz, un mundo.", "Un espacio para todos los estudiantes de idiomas.", "Entrar al estudio →", "Elegir un estudio de idiomas", "Bayside High School · Lenguas del mundo", "Diseñado por el profesor Nan · El arte de comunicar", "Idioma de la interfaz", "Las voces del mundo.", "Muchas lenguas. Un espacio para hablar, practicar y crecer."], "ja": ["Studio Oral へようこそ", "ひとつの言語、ひとつの声、ひとつの世界。", "すべての言語学習者のための場所。", "スタジオに入る →", "言語スタジオを選択", "ベイサイド高校 · 世界の言語", "Nan先生による制作 · コミュニケーションの芸術", "表示言語", "世界の声。", "さまざまな言語。話し、練習し、成長する場所。"], "ko": ["Studio Oral에 오신 것을 환영합니다", "하나의 언어, 하나의 목소리, 하나의 세계.", "모든 언어 학습자를 위한 공간입니다.", "스튜디오 입장 →", "언어 스튜디오 선택", "베이사이드 고등학교 · 세계 언어", "Nan 선생님 제작 · 소통의 예술", "인터페이스 언어", "세계의 목소리.", "다양한 언어. 말하고 연습하며 성장하는 공간."]};
+  function paint(lang){
+    if(!copy[lang])lang='en';const c=copy[lang];
+    const ids=['entryTitle','entryMottoTranslation','entryTranslation','entryContinue',null,'entryKicker','entryCredit','entryUiLabel','homeAtelierTitle','homeAtelierSubtitle'];
+    ids.forEach((id,i)=>{if(!id)return;const el=document.getElementById(id);if(el){el.textContent=c[i];el.lang=lang;}});
+    document.getElementById('entryMottoTranslation').hidden=lang===document.getElementById('entryCycleMotto').lang;
+    entry.lang=lang;
+  }
+  window.updateAtelierLanguage=paint;
+  let lang='';try{lang=localStorage.getItem('bayside_studio_ui_lang')||'';}catch(_){}
+  if(!copy[lang])lang=(navigator.languages||[navigator.language||'en']).map(x=>x.toLowerCase().split('-')[0]).find(x=>copy[x])||'en';
+  paint(lang);
+  if(seen)return;
+  const siblings=Array.from(document.body.children).filter(el=>el!==entry && !['SCRIPT','STYLE'].includes(el.tagName));
+  const previousOverflow=document.body.style.overflow;
+  const previousInert=siblings.map(el=>el.inert);
+  let closing=false;
+  entry.hidden=false; siblings.forEach(el=>el.inert=true);document.body.style.overflow='hidden';
+  entry.focus({preventScroll:true});
+  const motto=document.getElementById('entryCycleMotto');
+  const sequence=['fr','zh','es','ja','ko'];
+  let mottoIndex=0, mottoTimer=null, mottoFade=null;
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function nextMotto(){
+    if(closing)return;
+    motto.classList.add('motto-out');
+    mottoFade=setTimeout(()=>{
+      if(closing)return;
+      mottoIndex=(mottoIndex+1)%sequence.length;
+      const next=sequence[mottoIndex];
+      motto.textContent=copy[next][1];motto.lang=next;
+      document.getElementById('entryMottoTranslation').hidden=entry.lang===next;
+      motto.classList.remove('motto-out');
+      mottoTimer=setTimeout(nextMotto,2400);
+    },220);
+  }
+  if(!reducedMotion)mottoTimer=setTimeout(nextMotto,2400);
+  function leave(view){
+    if(closing)return;closing=true;clearTimeout(mottoTimer);clearTimeout(mottoFade);
+    try{sessionStorage.setItem(key,'1');}catch(_){}
+    const finish=()=>{entry.hidden=true;siblings.forEach((el,i)=>el.inert=previousInert[i]);document.body.style.overflow=previousOverflow;
+      const nav=document.querySelector('[data-nav="'+view+'"]');if(nav)nav.focus({preventScroll:true});};
+    if(typeof switchView==='function')switchView(view);
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){finish();return;}
+    const panel=document.getElementById(view+'View');
+    if(panel){panel.classList.add('atelier-arrival');setTimeout(()=>panel.classList.remove('atelier-arrival'),1500);}
+    entry.classList.add('entry-leaving');setTimeout(finish,1450);
+  }
+  entry.addEventListener('click',e=>{const button=e.target.closest('[data-entry-view]');if(button)leave(button.dataset.entryView);});
+  entry.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();leave('home');}else if(e.key==='Tab'){const buttons=Array.from(entry.querySelectorAll('select,button'));const first=buttons[0],last=buttons[buttons.length-1];if(e.shiftKey&&(document.activeElement===first||document.activeElement===entry)){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+})();
+</script>
+
 </body>
 </html>
